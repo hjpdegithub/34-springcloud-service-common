@@ -6,7 +6,6 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.springboot.boot.common.ExcelListener;
 import com.springboot.boot.common.enums.CommonEnum;
-import com.springboot.boot.modules.admin.dto.QuestionBankAddAndUpdateDto;
 import com.springboot.boot.modules.admin.entity.MpExamination;
 import com.springboot.boot.modules.admin.entity.MpOption;
 import com.springboot.boot.modules.admin.entity.MpQuestionBank;
@@ -110,14 +109,14 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
             }
         }
         if (singleChoiceNumInt != singleChoiceNumTmp) {
-            return "单选题数量已经达到上线";
+            return "单选题数量与试卷设定的数量不一致";
         }
         if (multipleChoiceNumInt != multipleChoiceNumTmp) {
-            return "多选题数量已经达到上线";
+            return "多选题数量与试卷设定的数量不一致";
         }
 
         if (judgeNumInt != judgeNumTmp) {
-            return "判断题数量已经达到上线";
+            return "判断题数量与试卷设定的数量不一致";
         }
         List<MpQuestionBankVo> originalList = new ArrayList<MpQuestionBankVo>();
 
