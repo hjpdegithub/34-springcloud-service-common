@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.CurriEliteMapper">
+
+    <select id="selectAll" resultType="com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo">
+     select * from mp_curriculum   order by  create_time desc limit   0,12;
+  </select>
+
+    <select id="curSecondDetailSelectById"
+            resultType="com.springboot.boot.modules.admin.vo.curriculum.CurSecondDetailVo">
+     select * from mp_curriculum a  inner join   mp_second_classify b
+        on b.id = a.gen_second_classify_id
+        where a.id= #{id}
+  </select>
+
+    <select id="selectReadCount" resultType="java.lang.Long">
+     select count(1) from mp_reading a where a.curriculum_id=#{id}
+  </select>
+
+    <select id="selectCurAttaUrl" resultType="java.lang.String">
+     select  a.file_url  from
+        mp_attachment_info  a ,
+        mp_business_attachment_info b,
+        mp_curriculum  c
+        where c.id = b.business_id
+          and b.attachment_id= a.id
+          and c.id = #{id}
+          and a.del_flag = 0
+          limit  0,1
+  </select>
+
+
+</mapper>

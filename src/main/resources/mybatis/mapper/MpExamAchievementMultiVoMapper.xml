@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpExamAchievementTwoMapper">
+    <select id="testResultQuery" resultType="com.springboot.boot.modules.admin.vo.test.MpExamAchievementMultiVo">
+        select
+
+        d.exam_time,
+        d.exam_id,
+        d.user_id,
+        d.create_time as start_time ,
+        a.name as testName,
+        d.exam_achievement as examAchievement,
+        d.if_whether as ifWhether,
+        c.name as testUserName,
+        c.unit_name as unitName,
+        c.department_name as departmentName
+        from
+        mp_examination a ,
+        (
+        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from  mp_exam_achievement  f
+        inner join
+        (SELECT   max( exam_achievement)  as exam_achievement  ,
+        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' group by exam_id, user_id )g
+        on  f.user_id =g.user_id
+        and  f.exam_id =g.exam_id
+        and f.exam_achievement =g.exam_achievement
+        GROUP BY  f.exam_id , f.user_id
+        )
+        b,
+        mp_user_authentication c,
+        mp_exam_achievement d
+
+        where d.exam_id = a.id
+        and b.user_id =d.user_id
+        and b.exam_id =d.exam_id
+        and b.create_time =d.create_time
+        and c.id = d.user_id
+        and c.dele_flag = '0'
+        and a.dele_flag = '0'
+        and d.dele_flag= '0'
+
+        <if test="dto.userId != null and dto.userId != ''">
+            and b.user_id = #{dto.userId}
+        </if>
+        <if test="dto.examId != null and dto.examId != ''">
+            and b.exam_id = #{dto.examId}
+        </if>
+        <if test="dto.startTime != null ">
+            and d.create_time >= #{dto.dateStart}
+            and d.create_time <![CDATA[<]]>   #{dto.dateEnd}
+        </if>
+        <if test="dto.testUserName != null  and  dto.testUserName != ''  ">
+            and c.name like CONCAT("%",#{dto.testUserName},"%")
+        </if>
+        <if test="dto.unitName != null  and  dto.unitName != ''  ">
+            and c.unit_name like CONCAT("%",#{dto.unitName},"%")
+        </if>
+
+        <if test="dto.departMentName != null  and  dto.departMentName != ''  ">
+            and c.department_name like CONCAT("%",#{dto.departMentName},"%")
+        </if>
+        <if test="dto.ifWhether != null  and  dto.ifWhether != ''  ">
+            and d.if_whether = #{dto.ifWhether}
+        </if>
+
+
+
+    </select>
+
+
+    <select id="testResultNoPageQuery" resultType="com.springboot.boot.modules.admin.vo.test.MpExamAchievementMultiVo">
+
+        select
+
+        d.exam_time,
+        d.exam_id,
+        d.user_id,
+        d.create_time as start_time ,
+        a.name as testName,
+        d.exam_achievement as examAchievement,
+        d.if_whether as ifWhether,
+        c.name as testUserName,
+        c.unit_name as unitName,
+        c.department_name as departmentName
+        from
+        mp_examination a ,
+        (
+        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from  mp_exam_achievement  f
+        inner join
+        (SELECT   max( exam_achievement)  as exam_achievement  ,
+        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' group by exam_id, user_id )g
+        on  f.user_id =g.user_id
+        and  f.exam_id =g.exam_id
+        and f.exam_achievement =g.exam_achievement
+        GROUP BY  f.exam_id , f.user_id
+        )
+        b,
+        mp_user_authentication c,
+        mp_exam_achievement d
+
+        where d.exam_id = a.id
+        and b.user_id =d.user_id
+        and b.exam_id =d.exam_id
+        and b.create_time =d.create_time
+        and c.id = d.user_id
+        and c.dele_flag = '0'
+        and a.dele_flag = '0'
+        and d.dele_flag= '0'
+
+        <if test="dto.userId != null and dto.userId != ''">
+            and b.user_id = #{dto.userId}
+        </if>
+        <if test="dto.examId != null and dto.examId != ''">
+            and b.exam_id = #{dto.examId}
+        </if>
+        <if test="dto.startTime != null ">
+            and d.create_time >= #{dto.dateStart}
+            and d.create_time <![CDATA[<]]>   #{dto.dateEnd}
+        </if>
+        <if test="dto.testUserName != null  and  dto.testUserName != ''  ">
+            and c.name like CONCAT("%",#{dto.testUserName},"%")
+        </if>
+        <if test="dto.unitName != null  and  dto.unitName != ''  ">
+            and c.unit_name like CONCAT("%",#{dto.unitName},"%")
+        </if>
+
+        <if test="dto.departMentName != null  and  dto.departMentName != ''  ">
+            and c.department_name like CONCAT("%",#{dto.departMentName},"%")
+        </if>
+        <if test="dto.ifWhether != null  and  dto.ifWhether != ''  ">
+            and d.if_whether = #{dto.ifWhether}
+        </if>
+
+
+
+    </select>
+
+
+    <select id="testUserList" resultType="com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo">
+        select
+        *
+        from
+        mp_user_authentication a
+        where
+        a.dele_flag = '0'
+        <if test="dto.userName != null and dto.userName != ''">
+            and a.name like CONCAT("%",#{dto.userName},"%")
+        </if>
+
+    </select>
+
+
+</mapper>

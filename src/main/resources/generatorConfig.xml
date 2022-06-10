@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- 本地数据库驱动程序jar包的全路径 -->
+    <classPathEntry location="D:\environment\maven\maven-repository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <commentGenerator>
+            <!--是否取消生成实体类字段注释，自动生成的注释没有任何意义，直接取消-->
+            <property name="suppressAllComments" value="true"/>
+            <!--是否取消生成日期注释-->
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库的相关配置 -->
+        <jdbcConnection
+                driverClass="com.mysql.jdbc.Driver"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/db_data"
+                userId="root"
+                password="root"/>
+
+
+        <javaTypeResolver>
+            <property name="nullCatalogMeansCurrent" value="true" />
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 实体类生成的位置 -->
+        <javaModelGenerator
+                targetPackage="com.springboot.boot.modules.admin.entity"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- *Mapper.xml 文件的位置  sqlMapGenerator-->
+        <sqlMapGenerator
+                targetPackage="mybatis/mapper"
+                targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- Mapper 接口文件的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.springboot.boot.modules.admin.mapper"
+                             targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 配置表名，即哪些表需要生成 -->
+        <!--        <table tableName="mp_curthu" />-->
+        <!--        <table tableName="mp_attachment_memo" />-->
+        <!--        <table tableName="mp_attachment_comment_reply" />-->
+        <!--        <table tableName="mp_attachment_comment" />-->
+<!--                <table tableName="mp_user_exam" />-->
+        <!--        <table tableName="mp_user_authentication" />-->
+        <!--        <table tableName="mp_unit" />-->
+        <!--        <table tableName="mp_sign_up" />-->
+        <!--        <table tableName="mp_questionnaire" />-->
+        <!--        <table tableName="mp_question_bank" />-->
+        <!--        <table tableName="mp_option" />-->
+        <!--        <table tableName="mp_examination_rule" />-->
+<!--                <table tableName="mp_examination" />-->
+<!--        <table tableName="mp_exam_achievement" />-->
+        <!--        <table tableName="mp_error_question" />-->
+        <!--        <table tableName="mp_department" />-->
+
+
+        <table tableName="testoo" />
+    </context>
+</generatorConfiguration>
+

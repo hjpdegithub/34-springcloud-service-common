@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpExaminationBusinessMapper">
+    <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpExamination">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="examination_type" jdbcType="INTEGER" property="examinationType"/>
+        <result column="range_type" jdbcType="INTEGER" property="rangeType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="department_id" jdbcType="BIGINT" property="departmentId"/>
+        <result column="subject" jdbcType="VARCHAR" property="subject"/>
+        <result column="frequency_count" jdbcType="INTEGER" property="frequencyCount"/>
+        <result column="paper" jdbcType="INTEGER" property="paper"/>
+        <result column="passing_mark" jdbcType="INTEGER" property="passingMark"/>
+        <result column="time_lengh" jdbcType="TIMESTAMP" property="timeLengh"/>
+        <result column="up_time" jdbcType="TIMESTAMP" property="upTime"/>
+        <result column="crate_user" jdbcType="BIGINT" property="crateUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_user" jdbcType="BIGINT" property="updateUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="dele_flag" jdbcType="INTEGER" property="deleFlag"/>
+        <result column="single_choice_num" jdbcType="INTEGER" property="singleChoiceNum"/>
+        <result column="multiple_choice_num" jdbcType="INTEGER" property="multipleChoiceNum"/>
+        <result column="judge_num" jdbcType="INTEGER" property="judgeNum"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, examination_type, range_type, name, start_time, end_time, unit_id, department_id, 
+    subject, frequency_count, paper, passing_mark, time_lengh, up_time, crate_user, create_time, 
+    update_user, update_time, dele_flag, single_choice_num, multiple_choice_num, judge_num
+  </sql>
+    <select id="selectByDto" parameterType="com.springboot.boot.modules.admin.dto.examination.ExaminationSearchDto"
+            resultType="com.springboot.boot.modules.admin.vo.examination.ExaminationVo">
+        select me.id as id,me.examination_type as examinationType , me.range_type as rangeType ,
+        me.name as name, me.start_time as startTime , me.end_time as endTime, me.unit_id as unitId, me.department_id as
+        departmentId,me.up_type as upType,
+        md.name as departmentName,mu.name as unitName
+        from mp_examination me
+        left join mp_department md on me.department_id = md.id
+        left join mp_unit mu on me.unit_id = mu.id
+        where me.dele_flag = 0
+        <if test="name !=null and name != ''">
+            and me.name like CONCAT('%', #{name},'%')
+        </if>
+        <if test="unitId !=null and unitId != ''">
+            and me.unit_id =#{unitId}
+        </if>
+        <if test="departmentId !=null and departmentId != ''">
+            and me.department_id =#{departmentId}
+        </if>
+        <if test="examinationType !=null and examinationType != ''">
+            and me.examination_type =#{examinationType}
+        </if>
+        <if test="rangeType !=null and rangeType != ''">
+            and me.range_type =#{rangeType}
+        </if>
+    </select>
+
+
+    <select id="searchNoPage"
+            parameterType="com.springboot.boot.modules.admin.dto.examination.ExaminationSearchNoPageDto"
+            resultType="com.springboot.boot.modules.admin.vo.examination.ExaminationVo">
+        select me.id as id,me.examination_type as examinationType , me.range_type as rangeType ,
+        me.name as name, me.start_time as startTime , me.end_time as endTime, me.unit_id as unitId, me.department_id as
+        departmentId,me.up_type as upType
+        from mp_examination me
+        where me.dele_flag = 0
+        <if test="name !=null and name != ''">
+            and me.name like CONCAT('%', #{name},'%')
+        </if>
+        <if test="unitId !=null and unitId != ''">
+            and me.unit_id ={unitId}
+        </if>
+        <if test="departmentId !=null and departmentId != ''">
+            and me.department_id =#{departmentId}
+        </if>
+        <if test="examinationType !=null and examinationType != ''">
+            and me.examination_type =#{examinationType}
+        </if>
+        <if test="rangeType !=null and rangeType != ''">
+            and me.range_type =#{rangeType}
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.CurriculumMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpCurriculum">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="curriculum_name" jdbcType="VARCHAR" property="curriculumName" />
+    <result column="gen_first_classify_id" jdbcType="BIGINT" property="genFirstClassifyId" />
+    <result column="gen_second_classify_id" jdbcType="BIGINT" property="genSecondClassifyId" />
+    <result column="study_time" jdbcType="TIMESTAMP" property="studyTime" />
+    <result column="class_hour" jdbcType="INTEGER" property="classHour" />
+    <result column="class_format" jdbcType="INTEGER" property="classFormat" />
+    <result column="author_name" jdbcType="VARCHAR" property="authorName" />
+    <result column="apply_type" jdbcType="INTEGER" property="applyType" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="customized_type" jdbcType="INTEGER" property="customizedType" />
+    <result column="cust_first_classify_id" jdbcType="BIGINT" property="custFirstClassifyId" />
+    <result column="cust_second_classify_id" jdbcType="BIGINT" property="custSecondClassifyId" />
+    <result column="open_class_type" jdbcType="INTEGER" property="openClassType" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="BIGINT" property="updateUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, curriculum_name, gen_first_classify_id, gen_second_classify_id, study_time, class_hour, 
+    class_format, author_name, apply_type, num, customized_type, cust_first_classify_id, 
+    cust_second_classify_id, open_class_type, create_user, create_time, update_user, 
+    update_time, dele_flag
+  </sql>
+  <select id="selectAll" parameterType="com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto"
+          resultType="com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo">
+    select id, curriculum_name, gen_first_classify_id, gen_second_classify_id, study_time, class_hour,
+    class_format, author_name, apply_type, num, customized_type, cust_first_classify_id,
+    cust_second_classify_id, open_class_type, create_user, create_time, update_user,
+    update_time, dele_flag from mp_curriculum
+    where 1 = 1
+    <if test="curriculumName !=null and curriculumName != ''">
+      and curriculum_name  like CONCAT('%', #{curriculumName},'%')
+    </if>
+    <if test="classFormat !=null and classFormat != ''">
+      and class_format =#{classFormat}
+    </if>
+    and dele_flag = 0
+  </select>
+
+</mapper>
