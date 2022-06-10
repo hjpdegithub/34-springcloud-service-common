@@ -10,6 +10,7 @@ package com.springboot.boot.utils;
 public enum ApiCode {
 
 	/**
+	 *
 	 * 操作成功
 	 **/
 	SUCCESS(200, "操作成功"),
