@@ -12,6 +12,7 @@ import com.springboot.boot.modules.admin.entity.MpOption;
 import com.springboot.boot.modules.admin.entity.MpOptionExample;
 import com.springboot.boot.modules.admin.entity.MpQuestionBank;
 import com.springboot.boot.modules.admin.entity.MpQuestionBankExample;
+import com.springboot.boot.modules.admin.mapper.MpQuestionBank2Mapper;
 import com.springboot.boot.modules.admin.mapper.MpQuestionBankBusinessMapper;
 import com.springboot.boot.modules.admin.mapper.MpQuestionBankMapper;
 import com.springboot.boot.modules.admin.service.OptionService;
@@ -47,6 +48,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     private MpQuestionBankBusinessMapper questionBankBusinessMapper;
+
+    @Resource
+    private  MpQuestionBank2Mapper  mpQuestionBank2Mapper;
 
     /**
      * 题库的新增以及修改
@@ -147,7 +151,11 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public QuestionSearchVo searchById(Long id) {
+
+        //根据题目id查询试卷信息
+        Integer   examinationType =  mpQuestionBank2Mapper.examinationTypeSearch(id);
         QuestionSearchVo vo = new QuestionSearchVo();
+        vo.setExaminationType(examinationType);
         MpQuestionBankExample mpOptionExample = new MpQuestionBankExample();
         MpQuestionBankExample.Criteria criteria = mpOptionExample.createCriteria();
         criteria.andIdEqualTo(id);
