@@ -50,7 +50,7 @@ public class QuestionServiceImpl implements QuestionService {
     private MpQuestionBankBusinessMapper questionBankBusinessMapper;
 
     @Resource
-    private  MpQuestionBank2Mapper  mpQuestionBank2Mapper;
+    private MpQuestionBank2Mapper mpQuestionBank2Mapper;
 
     /**
      * 题库的新增以及修改
@@ -65,15 +65,19 @@ public class QuestionServiceImpl implements QuestionService {
         questionBank.setUpdateUser(dto.getUserId());
         questionBank.setUpdateTime(new Date());
         questionBank.setDeleFlag(CommonEnum.USED.getCode());
+
+
         //处理正确答案
         List<String> rightAnswer = dto.getRightAnswer();
-        StringBuffer stringBuffer = new StringBuffer();
-        rightAnswer.stream().forEach(s -> {
-            stringBuffer.append(s.toUpperCase()).
-                    append(",");
-        });
-        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-        questionBank.setRightAnswer(stringBuffer.toString());
+        if (null != rightAnswer && rightAnswer.size() > 0) {
+            StringBuffer stringBuffer = new StringBuffer();
+            rightAnswer.stream().forEach(s -> {
+                stringBuffer.append(s.toUpperCase()).
+                        append(",");
+            });
+            stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+            questionBank.setRightAnswer(stringBuffer.toString());
+        }
         //判断该接口新增还是修改
         if (null != dto.getId()) {
             //修改
@@ -168,8 +172,7 @@ public class QuestionServiceImpl implements QuestionService {
             List<MpOption> mpOptions = optionService.selectByQuestionId(questionBank.getId());
             vo.setOptions(mpOptions);
             return vo;
-        }
-        else{
+        } else {
             return null;
         }
     }
