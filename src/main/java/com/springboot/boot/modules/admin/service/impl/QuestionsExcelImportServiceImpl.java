@@ -72,8 +72,8 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
 
         //既存数量
         for (
-              MpQuestionBank oldQuestionBank : mpQuestionBankList ) {
-            if (oldQuestionBank.getType() != null && oldQuestionBank.getType().toString().equals("1")){
+                MpQuestionBank oldQuestionBank : mpQuestionBankList) {
+            if (oldQuestionBank.getType() != null && oldQuestionBank.getType().toString().equals("1")) {
                 singleChoiceNumTmp++;
             }
             if (oldQuestionBank.getType() != null && oldQuestionBank.getType().toString().equals("2")) {
@@ -118,6 +118,7 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
         if (judgeNumInt != judgeNumTmp) {
             return "判断题数量与试卷设定的数量不一致";
         }
+
         List<MpQuestionBankVo> originalList = new ArrayList<MpQuestionBankVo>();
 
         MpQuestionBankVo catagory = new MpQuestionBankVo();
@@ -136,10 +137,18 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
                 logger.info("执行批量入库");
                 for (MpQuestionBankVo e : originalList) {
                     i++;
-                    if ("".equals(e.getType()) || e.getType() == null ||
-                            "".equals(e.getRightAnswer()) || e.getRightAnswer() == null ||
-                            "".equals(e.getChoice()) || e.getChoice() == null) {
-                        throw new RuntimeException();
+                    if (mpExamination.getExaminationType() == 1) {
+                        if ("".equals(e.getType()) || e.getType() == null ||
+                                "".equals(e.getRightAnswer()) || e.getRightAnswer() == null ||
+                                "".equals(e.getChoice()) || e.getChoice() == null) {
+                            throw new RuntimeException();
+                        }
+                    }
+                    if (mpExamination.getExaminationType() == 2) {
+                        if ("".equals(e.getType()) || e.getType() == null ||
+                                "".equals(e.getChoice()) || e.getChoice() == null) {
+                            throw new RuntimeException();
+                        }
                     }
                     MpQuestionBank mpQuestionBank = new MpQuestionBank();
                     BeanCopy.copy(e, mpQuestionBank);
@@ -161,19 +170,24 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
                         if (choices.length > 2) {
                             throw new RuntimeException();
                         }
-                        if (e.getRightAnswer().contains(",")) {
-                            throw new RuntimeException();
+                        if (null != e.getRightAnswer()) {
+                            if (e.getRightAnswer().contains(",")) {
+                                throw new RuntimeException();
+                            }
                         }
                     }
-
                     if (e.getType().toString().equals("3")) {
-                        if (e.getRightAnswer().contains(",")) {
-                            throw new RuntimeException();
+                        if (null != e.getRightAnswer()) {
+                            if (e.getRightAnswer().contains(",")) {
+                                throw new RuntimeException();
+                            }
                         }
                     }
                     if (e.getType().toString().equals("1")) {
-                        if (e.getRightAnswer().length() > 1 || e.getRightAnswer().contains(",")) {
-                            throw new RuntimeException();
+                        if (null != e.getRightAnswer()) {
+                            if (e.getRightAnswer().length() > 1 || e.getRightAnswer().contains(",")) {
+                                throw new RuntimeException();
+                            }
                         }
                     }
                     List<String> choiceList = Arrays.asList(choices);
