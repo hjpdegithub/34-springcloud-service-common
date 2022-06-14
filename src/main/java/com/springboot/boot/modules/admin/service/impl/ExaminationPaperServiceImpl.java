@@ -371,6 +371,24 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         return mpExaminations;
     }
 
+
+    public List<MpExamination> whereSelectExam2(Long id) throws BusinessException {
+        //通过id查询试卷信息
+        MpExaminationExample examinationExample = new MpExaminationExample();
+        MpExaminationExample.Criteria criteria = examinationExample.createCriteria();
+        criteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        criteria.andIdEqualTo(id);
+        criteria.andExaminationTypeEqualTo(CommonEnum.WENJUAN.getCode());
+        criteria.andRangeTypeEqualTo(CommonEnum.DATA_EXAM.getCode());
+        criteria.andUpTypeEqualTo(CommonEnum.UP.getCode());
+        List<MpExamination> mpExaminations = examinationMapper.selectByExample(examinationExample);
+        if (mpExaminations.isEmpty()) {
+            throw new BusinessException("试卷信息为空！");
+        }
+        return mpExaminations;
+    }
+
+
     /**
      * app试卷详情
      *
@@ -502,6 +520,76 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         bankPracticeVo.setAppTypesVos(appTypesVos);
         return ApiResult.success(bankPracticeVo);
     }
+
+
+    /**
+     * 问卷查看
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public ApiResult questionnaireQuery(Long id) {
+        //题库练习报文
+        AppQuestionBankPracticeVo bankPracticeVo = new AppQuestionBankPracticeVo();
+        //1.查询试卷信息 ，通过考试类型和展示范围查询
+        List<MpExamination> mpExaminations = whereSelectExam2(id);
+        //2.set试卷到报文里
+        bankPracticeVo.setId(mpExaminations.get(0).getId());
+        bankPracticeVo.setName(mpExaminations.get(0).getName());
+        //3.获取该试卷下所有的题库
+        QuestionBankAddAndUpdateDto dto = new QuestionBankAddAndUpdateDto();
+        dto.setExaminationId(mpExaminations.get(0).getId());
+        List<MpQuestionBank> mpQuestionBanks = questionService.selectByExIdAndType(dto);
+        log.info("试卷下题库================{}", JSONObject.toJSON(mpQuestionBanks));
+        //4.通过type进行分组
+        //分组
+        Map<Integer, List<MpQuestionBank>> groupBySex = mpQuestionBanks.stream().collect(Collectors.groupingBy(MpQuestionBank::getType));
+        //遍历分组
+        List<AppTypesVo> appTypesVos = new ArrayList<>();
+        for (Map.Entry<Integer, List<MpQuestionBank>> entryUser : groupBySex.entrySet()) {
+            AppTypesVo appTypesVo = new AppTypesVo();
+            Integer type = entryUser.getKey();//type值
+            appTypesVo.setType(type);
+            //开始放=========================================题库
+            List<MpQuestionBank> entryUserList = entryUser.getValue();
+            List<AppQuestionVo> appQuestionVos = new ArrayList<>();
+            entryUserList.forEach(e -> {
+                AppQuestionVo vo = new AppQuestionVo();
+                vo.setExaminationId(e.getExaminationId());
+                vo.setId(e.getId());
+                vo.setName(e.getName());
+                List<String> strings = null;
+                if (e.getRightAnswer() != null) {
+                    strings = Arrays.asList(e.getRightAnswer().toUpperCase().split(","));
+                    Collections.sort(strings);
+                    vo.setRightAnswer(strings);
+                }
+                //找选项===============================开始
+                List<AppOptionVo> appOptionVos = new ArrayList<>();
+                List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
+                mpOptions.forEach(i -> {
+                    AppOptionVo optionVo = new AppOptionVo();
+                    optionVo.setId(i.getId());
+                    optionVo.setOpt(i.getOpt().toUpperCase());
+                    optionVo.setOptionName(i.getOptionName());
+                    optionVo.setQuestionId(i.getQuestionId());
+                    appOptionVos.add(optionVo);
+                });
+                //排序
+                appOptionVos.sort(Comparator.comparing(AppOptionVo::getOpt));
+                vo.setAppOptionVos(appOptionVos);
+                appQuestionVos.add(vo);
+            });
+            appTypesVo.setAppQuestionVos(appQuestionVos);
+            appTypesVos.add(appTypesVo);
+        }
+        //排序
+        appTypesVos.sort(Comparator.comparing(AppTypesVo::getType));
+        bankPracticeVo.setAppTypesVos(appTypesVos);
+        return ApiResult.success(bankPracticeVo);
+    }
+
 
     public static void main(String[] args) {
 //        List<String> list1 = new ArrayList<>();

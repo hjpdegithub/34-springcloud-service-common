@@ -66,6 +66,17 @@ public class AppExaminationPaperControoller {
         return result;
     }
 
+
+    @ApiOperation(value = "查看问卷", notes="查看问卷")
+    @GetMapping(value="/questionnaireQuery")
+    public ApiResult questionnaireQuery(@RequestParam Long id){
+        log.info("查看问卷========={}", JSONObject.toJSON(id));
+        ApiResult result = paperService.questionnaireQuery(id);
+        return result;
+    }
+
+
+
     @ApiOperation(value = "题库练习交卷", notes="题库练习交卷")
     @PostMapping(value="/questionBankPracticeSubmit")
     public ApiResult questionBankPracticeSubmit(@RequestBody QuestionBankPracticeSBDto dto){

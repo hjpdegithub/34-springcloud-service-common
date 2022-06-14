@@ -77,6 +77,16 @@ public interface ExaminationPaperService {
     ApiResult questionBankPractice(Long id);
 
     /**
+     * 题库练习
+     * @param id
+     * @return
+     */
+    ApiResult questionnaireQuery(Long id);
+
+
+
+
+    /**
      * 练习交卷
      * @param dto
      * @return
