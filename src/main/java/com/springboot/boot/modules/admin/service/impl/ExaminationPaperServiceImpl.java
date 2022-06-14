@@ -100,18 +100,19 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             }
             //判断判断题是否为空
             if (null != dto.getJudgeRule()) {
-                if (null == dto.getSingleRule().getId()
-                        || null == dto.getMultipleRule().getId()
-                        || null == dto.getJudgeRule().getId()) {
-                    throw new BusinessException("单选或多选或判断，规则id不能为空！");
+                if (examination.getExaminationType() == 1) {
+                    if (null == dto.getSingleRule().getId()
+                            || null == dto.getMultipleRule().getId()
+                            || null == dto.getJudgeRule().getId()) {
+                        throw new BusinessException("单选或多选或判断，规则id不能为空！");
+                    }
+                    //单选
+                    service.updateExanRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, dto.getId(), dto.getSingleRule().getId());
+                    //多选
+                    service.updateExanRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, dto.getId(), dto.getMultipleRule().getId());
+                    //判断
+                    service.updateExanRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, dto.getId(), dto.getJudgeRule().getId());
                 }
-                //单选
-                service.updateExanRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, dto.getId(), dto.getSingleRule().getId());
-                //多选
-                service.updateExanRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, dto.getId(), dto.getMultipleRule().getId());
-                //判断
-                service.updateExanRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, dto.getId(), dto.getJudgeRule().getId());
-
             } else {
                 if (null == dto.getSingleRule().getId()
                         || null == dto.getMultipleRule().getId()
