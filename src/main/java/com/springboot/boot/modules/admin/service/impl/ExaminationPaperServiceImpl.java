@@ -98,18 +98,33 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             if (i <= CommonEnum.UPDATE_ERROR.getCode()) {
                 throw new BusinessException("试卷编辑错误！");
             }
-            if (null == dto.getSingleRule().getId()
-                    && null == dto.getMultipleRule().getId()
-                    && null == dto.getJudgeRule().getId()) {
-                throw new BusinessException("单选或多选或判断，规则id不能为空！");
-            }
-            //单选
-            service.updateExanRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, dto.getId(), dto.getSingleRule().getId());
-            //多选
-            service.updateExanRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, dto.getId(), dto.getMultipleRule().getId());
-            //判断
-            service.updateExanRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, dto.getId(), dto.getJudgeRule().getId());
+            //判断判断题是否为空
+            if (null != dto.getJudgeRule()) {
+                if (null == dto.getSingleRule().getId()
+                        || null == dto.getMultipleRule().getId()
+                        || null == dto.getJudgeRule().getId()) {
+                    throw new BusinessException("单选或多选或判断，规则id不能为空！");
+                }
+                //单选
+                service.updateExanRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, dto.getId(), dto.getSingleRule().getId());
+                //多选
+                service.updateExanRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, dto.getId(), dto.getMultipleRule().getId());
+                //判断
+                service.updateExanRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, dto.getId(), dto.getJudgeRule().getId());
 
+            } else {
+                if (null == dto.getSingleRule().getId()
+                        || null == dto.getMultipleRule().getId()
+                ) {
+                    throw new BusinessException("单选或多选，规则id不能为空！");
+                }
+                //单选
+                service.updateExanRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, dto.getId(), dto.getSingleRule().getId());
+                //多选
+                service.updateExanRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, dto.getId(), dto.getMultipleRule().getId());
+                //判断
+                //service.updateExanRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, dto.getId(), dto.getJudgeRule().getId());
+            }
         } else {
             long id = SnowFlakeUtils.getFlowIdInstance().nextId();
             examination.setCrateUser(dto.getUserId());
@@ -122,11 +137,16 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             }
             //考试规则的新增
             //单选
-            service.addExamRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, id);
+            if (null != dto.getSingleRule()) {
+                service.addExamRule(dto.getSingleRule(), TypeEnum.SINGLE.getCode(), dto, id);
+            }
             //多选
-            service.addExamRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, id);
+            if (null != dto.getMultipleRule()) {
+                service.addExamRule(dto.getMultipleRule(), TypeEnum.MULTIPLE.getCode(), dto, id);
+            }
             //判断
-            service.addExamRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, id);
+            if (null != dto.getJudgeRule())
+                service.addExamRule(dto.getJudgeRule(), TypeEnum.JUDGE.getCode(), dto, id);
         }
         return ApiResult.success();
     }
@@ -202,7 +222,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             MpQuestionBankExample.Criteria criteria = questionBankExample.createCriteria();
             criteria.andExaminationIdEqualTo(dto.getId());
             List<MpQuestionBank> questionBanks = questionBankMapper.selectByExample(questionBankExample);
-            questionBanks.forEach(e->{
+            questionBanks.forEach(e -> {
                 MpQuestionBank questionBank = new MpQuestionBank();
                 questionBank.setId(e.getId());
                 questionBank.setDeleFlag(CommonEnum.DELETE.getCode());
@@ -229,7 +249,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             MpQuestionBankExample.Criteria criteria = questionBankExample.createCriteria();
             criteria.andExaminationIdIn(ids);
             List<MpQuestionBank> questionBanks = questionBankMapper.selectByExample(questionBankExample);
-            questionBanks.forEach(e->{
+            questionBanks.forEach(e -> {
                 MpQuestionBank questionBank = new MpQuestionBank();
                 questionBank.setId(e.getId());
                 questionBank.setDeleFlag(CommonEnum.DELETE.getCode());
@@ -309,7 +329,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         MpExamination examination = mpExaminations.get(0);
         //通过试卷id和类型查询题库集合
         List<MpQuestionBank> mpOptions = questionService.selectByExIdAndType(dto);
-        if (null == dto.getId()){
+        if (null == dto.getId()) {
             switch (dto.getType()) {
                 //单选
                 case 1:
@@ -663,6 +683,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
 
     /**
      * 试卷查看
+     *
      * @param userId
      * @param id
      * @param achievementId
@@ -681,12 +702,12 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         //3.获取该试卷下所有的题库
         List<MpUserExam> mpUserExams = selectUserExam(userId, id, achievementId);
 
-        log.info("试卷下题库================{}",JSONObject.toJSON(mpUserExams));
+        log.info("试卷下题库================{}", JSONObject.toJSON(mpUserExams));
         //4.通过type进行分组
         //分组
         Map<Integer, List<MpUserExam>> groupByType = mpUserExams.stream().collect(Collectors.groupingBy(MpUserExam::getType));
         //遍历分组
-        List<AppTypesVo> appTypesVos= new ArrayList<>();
+        List<AppTypesVo> appTypesVos = new ArrayList<>();
         for (Map.Entry<Integer, List<MpUserExam>> entryUser : groupByType.entrySet()) {
             AppTypesVo appTypesVo = new AppTypesVo();
             List<AppQuestionVo> appQuestionVos = new ArrayList<>();
@@ -698,15 +719,15 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             RandomNumVo randomNumVo = datiNum(value, type, mpExaminations.get(0));
             //存放每个题型的规则
             AppTypesVo.Sum sum = new AppTypesVo.Sum();
-            if (type == 1){
+            if (type == 1) {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
-            }else if(type == 2){
+            } else if (type == 2) {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
-            }else{
+            } else {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
@@ -714,20 +735,20 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             //需要随机去除单选多选判断提数
             //抽取的题数
             List<MpQuestionBank> questionBanks = randomNumVo.getMpQuestionBanks();
-            questionBanks.forEach(e->{
+            questionBanks.forEach(e -> {
                 AppQuestionVo vo = new AppQuestionVo();
                 vo.setExaminationId(e.getExaminationId());
                 vo.setId(e.getId());
                 vo.setName(e.getName());
                 vo.setRightAnswer(Arrays.asList(e.getRightAnswer().toUpperCase().split(",")));
-                value.forEach(i->{
-                    if (e.getId().intValue() == i.getQuestionId().intValue()){
+                value.forEach(i -> {
+                    if (e.getId().intValue() == i.getQuestionId().intValue()) {
                         //todo 这里昨天注释掉了等提交试卷后再看
                         vo.setUserOptionId(Arrays.asList(i.getOptionId().split(",")));
                         //找选项===============================开始
                         List<AppOptionVo> appOptionVos = new ArrayList<>();
                         List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
-                        mpOptions.forEach(f->{
+                        mpOptions.forEach(f -> {
                             AppOptionVo optionVo = new AppOptionVo();
                             optionVo.setId(f.getId());
                             optionVo.setOpt(f.getOpt().toUpperCase());
@@ -780,6 +801,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
 
     /**
      * 模拟在线考试
+     *
      * @param id 考试id
      * @return
      */
@@ -797,12 +819,12 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         QuestionBankAddAndUpdateDto dto = new QuestionBankAddAndUpdateDto();
         dto.setExaminationId(mpExaminations.get(0).getId());
         List<MpQuestionBank> mpQuestionBanks = questionService.selectByExIdAndType(dto);
-        log.info("试卷下题库================{}",JSONObject.toJSON(mpQuestionBanks));
+        log.info("试卷下题库================{}", JSONObject.toJSON(mpQuestionBanks));
         //4.通过type进行分组
         //分组
         Map<Integer, List<MpQuestionBank>> groupByType = mpQuestionBanks.stream().collect(Collectors.groupingBy(MpQuestionBank::getType));
         //遍历分组
-        List<AppTypesVo> appTypesVos= new ArrayList<>();
+        List<AppTypesVo> appTypesVos = new ArrayList<>();
         for (Map.Entry<Integer, List<MpQuestionBank>> entryUser : groupByType.entrySet()) {
             AppTypesVo appTypesVo = new AppTypesVo();
             List<AppQuestionVo> appQuestionVos = new ArrayList<>();
@@ -812,15 +834,15 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             //抽题
             RandomNumVo randomNumVo = randomNum(entryUserList, type, mpExaminations.get(0));
             AppTypesVo.Sum sum = new AppTypesVo.Sum();
-            if (type == 1){
+            if (type == 1) {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
-            }else if(type == 2){
+            } else if (type == 2) {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
-            }else{
+            } else {
                 sum.setNum(randomNumVo.getNum());
                 sum.setPoints(randomNumVo.getPontins());
                 sum.setSum(randomNumVo.getTotalPotins());
@@ -828,7 +850,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
             //需要随机去除单选多选判断提数
             //抽取的题数
             List<MpQuestionBank> questionBanks = randomNumVo.getMpQuestionBanks();
-            questionBanks.forEach(e->{
+            questionBanks.forEach(e -> {
                 AppQuestionVo vo = new AppQuestionVo();
                 vo.setExaminationId(e.getExaminationId());
                 vo.setId(e.getId());
@@ -837,7 +859,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
                 //找选项===============================开始
                 List<AppOptionVo> appOptionVos = new ArrayList<>();
                 List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
-                mpOptions.forEach(i->{
+                mpOptions.forEach(i -> {
                     AppOptionVo optionVo = new AppOptionVo();
                     optionVo.setId(i.getId());
                     optionVo.setOpt(i.getOpt().toUpperCase());
@@ -876,14 +898,14 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public ApiResult submitSimulation(SubmitSlimylationDto dto) {
-        if (dto.getQuaestVos().isEmpty()){
+        if (dto.getQuaestVos().isEmpty()) {
             throw new BusinessException("没有进行答题");
         }
         //当是考试的时候判断考试次数
         MpExamination examination = examinationMapper.selectByPrimaryKey(dto.getExamId());
         //查看考试次数
         int count = userExamService.selectExamByCount(dto.getExamId(), dto.getUserId());
-        if (dto.getExamType().intValue() ==2 && examination.getFrequencyCount() <= count) {
+        if (dto.getExamType().intValue() == 2 && examination.getFrequencyCount() <= count) {
             return ApiResult.error(500, "考试次数以上限无法参加考试");
         }
         //计算考试分数
@@ -1086,9 +1108,9 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         Integer jud = jfraction * judgeCount.get();
         Integer sum = paper - (sigele + multple + jud);
         chengjiVo.setSum(sum);
-        chengjiVo.setSigele(sfraction*rSsinglesCount.get());
-        chengjiVo.setMultple(mfraction*rMultCount.get());
-        chengjiVo.setJud(jfraction*rJudgeCount.get());
+        chengjiVo.setSigele(sfraction * rSsinglesCount.get());
+        chengjiVo.setMultple(mfraction * rMultCount.get());
+        chengjiVo.setJud(jfraction * rJudgeCount.get());
         if (examination.getPassingMark() <= sum) {
             chengjiVo.setIfWhere(CommonEnum.IF_WHERE.getCode());
         } else {
