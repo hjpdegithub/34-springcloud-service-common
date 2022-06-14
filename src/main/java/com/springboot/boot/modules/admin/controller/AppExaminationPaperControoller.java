@@ -43,8 +43,9 @@ public class AppExaminationPaperControoller {
         log.info("考试详情接口========={}userId{}", JSONObject.toJSON(id),userId);
         ApiResult result = paperService.detail(id,userId);
         return result;
-
     }
+
+
 
     @ApiOperation(value = "点击报名或取消报名接口", notes="点击报名或取消报名接口")
     @PostMapping(value="/chlickSignUp")

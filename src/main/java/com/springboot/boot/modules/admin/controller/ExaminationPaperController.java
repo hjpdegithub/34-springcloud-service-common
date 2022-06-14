@@ -88,7 +88,7 @@ public class ExaminationPaperController {
         ) {
             m = dto.getMultipleRule().getSubjectNum() * dto.getMultipleRule().getFraction();
         }
-        if(null!=dto.getPaper()) {
+        if (null != dto.getPaper()) {
             if (dto.getPaper() != (j + s + m)) {
                 return ApiResult.error("500", "试卷不等于题目总分数无法创建");
             }
@@ -141,7 +141,6 @@ public class ExaminationPaperController {
         return result;
     }
 
-
     @ApiOperation(value = "通过id查询试卷信息接口", notes = "通过id查询试卷信息接口")
     @PostMapping(value = "/selectExamById")
     public ApiResult selectExamById(@RequestParam("id") Long id) {
@@ -172,8 +171,10 @@ public class ExaminationPaperController {
             if (ms.size() != examination.getMultipleChoiceNum()) {
                 return ApiResult.error(500, "多选题数量不足或已超出无法上线");
             }
-            if (js.size() != examination.getJudgeNum()) {
-                return ApiResult.error(500, "判断题数量不足或已超出无法上线");
+            if (examination.getExaminationType() == 1) {
+                if (js.size() != examination.getJudgeNum()) {
+                    return ApiResult.error(500, "判断题数量不足或已超出无法上线");
+                }
             }
         }
         ApiResult result = paperService.SwitchUp(switchUpDto);
