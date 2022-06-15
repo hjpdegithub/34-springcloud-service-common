@@ -20,6 +20,7 @@ import com.springboot.boot.utils.BeanCopy;
 import com.springboot.boot.utils.DataUtil;
 import com.springboot.boot.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -307,6 +308,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                     .andQuestionIdEqualTo(questionId);
             List<MpOption> mpOptionList = mpOptionMapper.selectByExample(exa);
             List<AppOptionCountVo> appOptionVoList  = new ArrayList<>();
+
+            List<PersentVo>  persentlist   = new ArrayList<>();
             for(MpOption mpOption:    mpOptionList){
                 AppOptionCountVo appOptionVo = new AppOptionCountVo();
                 BeanCopy.copy(mpOption, appOptionVo);
@@ -317,9 +320,14 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
                 appOptionVo.setChoiceCount(count);
                 appOptionVo.setPerCent(DataUtil.myPercent(count,totalCount));
                 appOptionVoList.add(appOptionVo);
+                PersentVo   persentVo = new PersentVo();
+                persentVo.setName(appOptionVo.getOpt());
+                persentVo.setValue(appOptionVo.getPerCent());
+                persentlist.add(persentVo);
 
             }
             vo.setAppOptionVos(appOptionVoList);
+            vo.setPersentlist(persentlist);
 
         }
         return ApiResult.success(appQuestionVoList)  ;

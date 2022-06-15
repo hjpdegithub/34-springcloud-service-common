@@ -42,6 +42,9 @@ public class AppQuestionCountVo {
     @ApiModelProperty("本题填写总人次")
     private Long questionChoicedCountTotal;
 
+    @ApiModelProperty("百分比列表")
+    private List<PersentVo>  persentlist;
+
 
 
 }
