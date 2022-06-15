@@ -1,6 +1,7 @@
 package com.springboot.boot.modules.admin.service;
 
 
+import com.springboot.boot.modules.admin.dto.examination.SubmitSlimylationDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllPageDto;
 import com.springboot.boot.modules.admin.vo.test.MpExaminationVo;
@@ -16,6 +17,29 @@ public interface QuestionnaireService {
 
 
     List<MpExaminationVo> questionnaireListWithPage(CommonAllPageDto dto);
+
+
+
+    /**
+     * 问卷类提交
+     * @param dto
+     * @return
+     */
+    ApiResult submitSimulation(SubmitSlimylationDto dto);
+
+
+    /**
+     * 问卷类统计
+     * @param dto
+     * @return
+     */
+    ApiResult questionnaireStatistics(CommonAllDto dto);
+
+
+
+
+
+
 
 
 }
