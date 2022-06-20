@@ -3,7 +3,9 @@
 <mapper namespace="com.springboot.boot.modules.admin.mapper.CurriEliteMapper">
 
     <select id="selectAll" resultType="com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo">
-     select * from mp_curriculum   order by  create_time desc limit   0,12;
+     select * from mp_curriculum
+      where dele_flag='0'
+      order by    create_time desc limit   0,12;
   </select>
 
     <select id="curSecondDetailSelectById"
