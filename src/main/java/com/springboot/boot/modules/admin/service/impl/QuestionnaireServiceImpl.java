@@ -4,20 +4,29 @@ import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.common.enums.ExaTypEnum;
 import com.springboot.boot.common.enums.RangeTypeEnum;
 import com.springboot.boot.common.enums.UpTypeEnum;
+import com.springboot.boot.common.exc.BusinessException;
+import com.springboot.boot.modules.admin.dto.examination.SubmitSlimylationDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllPageDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
 import com.springboot.boot.modules.admin.service.QuestionnaireService;
+import com.springboot.boot.modules.admin.vo.question.*;
 import com.springboot.boot.modules.admin.vo.test.MpExaminationVo;
 import com.springboot.boot.modules.admin.vo.test.MpOptionVo;
 import com.springboot.boot.modules.admin.vo.test.MpQuestionBankVo;
+import com.springboot.boot.utils.ApiResult;
 import com.springboot.boot.utils.BeanCopy;
+import com.springboot.boot.utils.DataUtil;
+import com.springboot.boot.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -226,47 +235,105 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return null;
     }
 
+
+    /**
+     * 问卷类
+     *
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ApiResult submitSimulation(SubmitSlimylationDto dto) {
+        if (dto.getQuaestVos().isEmpty()) {
+            throw new BusinessException("没有进行答题");
+        }
+
+        int result = 0;
+        //获取前端传过来的题库信息和 选项信息
+        List<SubmitSlimylationDto.QuaestVo> quaestVos = dto.getQuaestVos();
+        //将考试信息存入到考试表中
+        for (SubmitSlimylationDto.QuaestVo vo : quaestVos) {
+            MpQuestionnaire mpQuestionnaire = new MpQuestionnaire();
+            mpQuestionnaire.setQuestjuanId(dto.getExamId());
+            mpQuestionnaire.setCreateTime(new Date());
+            mpQuestionnaire.setDeleFlag(CommonEnum.USED.getCode());
+            mpQuestionnaire.setQuestionId(vo.getId());
+            List<Long> optionIds = vo.getOptionId();
+            for (Long optId : optionIds) {
+                mpQuestionnaire.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+                mpQuestionnaire.setOptionId(optId);
+                result = mpQuestionnaireMapper.insertSelective(mpQuestionnaire);
+            }
+            if (result <= CommonEnum.ADD_ERROR.getCode()) {
+                throw new BusinessException("试卷新增失败");
+            }
+
+        }
+
+        return ApiResult.success("问卷提交成功");
+
+    }
+
+
+    /**
+     * 问卷类统计
+     *
+     * @param dto
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ApiResult questionnaireStatistics(CommonAllDto dto) {
+        Long id = dto.getId();
+        MpQuestionBankExample example = new MpQuestionBankExample();
+        example.createCriteria()
+                .andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                .andExaminationIdEqualTo(id);
+        List<MpQuestionBank> mpQuestionBankList =
+                mpQuestionBankMapper.selectByExample(example);
+        List<AppQuestionCountVo> appQuestionVoList = new ArrayList<>();
+        for (MpQuestionBank mpQuestionBank : mpQuestionBankList) {
+            AppQuestionCountVo vo = new AppQuestionCountVo();
+            BeanCopy.copy(mpQuestionBank, vo);
+            Long questionId = vo.getId();
+            appQuestionVoList.add(vo);
+            MpQuestionnaireExample example1 = new MpQuestionnaireExample();
+            example1.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                    .andQuestionIdEqualTo(vo.getId());
+            long totalCount =   mpQuestionnaireMapper.countByExample(example1);
+            vo.setQuestionChoicedCountTotal(totalCount);
+            MpOptionExample exa = new MpOptionExample();
+            exa.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                    .andQuestionIdEqualTo(questionId);
+            List<MpOption> mpOptionList = mpOptionMapper.selectByExample(exa);
+            List<AppOptionCountVo> appOptionVoList  = new ArrayList<>();
+
+            List<PersentVo>  persentlist   = new ArrayList<>();
+            for(MpOption mpOption:    mpOptionList){
+                AppOptionCountVo appOptionVo = new AppOptionCountVo();
+                BeanCopy.copy(mpOption, appOptionVo);
+                MpQuestionnaireExample example2 = new MpQuestionnaireExample();
+                example2.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                        .andOptionIdEqualTo(appOptionVo.getId());
+                long count =   mpQuestionnaireMapper.countByExample(example2);
+                appOptionVo.setChoiceCount(count);
+                appOptionVo.setPerCent(DataUtil.myPercent(count,totalCount));
+                appOptionVoList.add(appOptionVo);
+                PersentVo   persentVo = new PersentVo();
+                persentVo.setName(appOptionVo.getOpt());
+                persentVo.setValue(appOptionVo.getPerCent());
+                persentlist.add(persentVo);
+
+            }
+            vo.setAppOptionVos(appOptionVoList);
+            vo.setPersentlist(persentlist);
+
+        }
+        return ApiResult.success(appQuestionVoList)  ;
+    }
+
+
 }
-
-//    @Override
-//    public List<MpQuestionnaireVo> questionnaireList() {
-//        MpQuestionnaireExample example = new MpQuestionnaireExample();
-//        example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
-//        List<MpQuestionnaire>
-//                mpQuestionnaireList
-//                = mpQuestionnaireMapper.selectByExample(example);
-//        List<MpQuestionnaireVo> mpQuestionnaireVoList
-//                = new ArrayList<>();
-//        MpQuestionnaireVo mpQuestionnaireVo = new MpQuestionnaireVo();
-//        for (MpQuestionnaire mpQuestionnaire : mpQuestionnaireList) {
-//            BeanCopy.copy(mpQuestionnaire, mpQuestionnaireVo);
-//            mpQuestionnaireVoList.add(mpQuestionnaireVo);
-//        }
-//        return mpQuestionnaireVoList;
-//    }
-
-
-//
-//    public List<MpQuestionnaireOptionVo> questionnaireDetail(CommonAllDto dto) {
-//        List<MpQuestionnaireOptionVo> retList = new ArrayList<>();
-//        List<MpQuestionnaireOptionVo> mpQuestionnaireOptionVoList = mpQuestionnaireOptionVoMapper.questionnaireDetail(dto.getId());
-//        if (null != mpQuestionnaireOptionVoList && mpQuestionnaireOptionVoList.size() > 0) {
-//            MpQuestionnaireOptionVo mpQuestionnaireOptionVo = mpQuestionnaireOptionVoList.get(0);
-//            MpOptionExample example1 = new MpOptionExample();
-//            example1.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andIdEqualTo(mpQuestionnaireOptionVo.getId());
-//            List<MpOption> mpOptionList = mpOptionMapper.selectByExample(example1);
-//            List<MpOptionVo> mpOptionList1 = new ArrayList<>();
-//            MpOptionVo mpOptionVo = new MpOptionVo();
-//            for (MpOption mpOption : mpOptionList) {
-//                BeanCopy.copy(mpOption, mpOptionVo);
-//                mpOptionList1.add(mpOptionVo);
-//            }
-//            mpQuestionnaireOptionVo.setMpOptionVoList(mpOptionList1);
-//            retList.add(mpQuestionnaireOptionVo);
-//            return retList;
-//        } else {
-//            return null;
-//        }
-//    }
 
 

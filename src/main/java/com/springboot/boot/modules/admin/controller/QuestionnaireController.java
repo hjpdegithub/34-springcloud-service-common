@@ -1,6 +1,7 @@
 package com.springboot.boot.modules.admin.controller;
 
 
+import com.springboot.boot.modules.admin.dto.examination.SubmitSlimylationDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllDto;
 import com.springboot.boot.modules.admin.dto.file.CommonAllPageDto;
 import com.springboot.boot.modules.admin.service.QuestionnaireService;
@@ -8,10 +9,7 @@ import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/mp/Questionnaire")
@@ -35,19 +33,21 @@ public class QuestionnaireController {
         return ApiResult.success(questionnaireService.questionnaireListWithPage(dto));
     }
 
+    @PostMapping(value="/submitSimulation")
+    public ApiResult submitSimulation(@RequestBody SubmitSlimylationDto dto){
 
+        log.info("问卷交卷========={}", dto);
+        ApiResult result = questionnaireService.submitSimulation(dto);
+        return result;
+    }
 
-//    @PostMapping(value = "/questionnaireListWithOutOption")
-//    public ApiResult questionnaireList(
-//    ) {
-//        return ApiResult.success(questionnaireService.questionnaireList());
-//    }
+    @PostMapping(value="/questionnaireStatistics")
+    public ApiResult questionnaireStatistics(@RequestBody CommonAllDto dto){
 
-    //
-//    @PostMapping(value = "/questionnaireDetail")
-//    public ApiResult questionnaireDetail(@RequestBody CommonAllDto dto) {
-//        return ApiResult.success(questionnaireService.questionnaireDetail(dto));
-//    }
+        log.info("问卷统计分析========={}", dto);
+        ApiResult result = questionnaireService.questionnaireStatistics(dto);
+        return result;
+    }
 
 
 
