@@ -198,7 +198,7 @@ public class HttpAPIController {
      * @author Mario
      * @date 2019/7/23 9:16
      */
-    /*public HttpResultDTO doPostWithParams(String url, Map<String, Object> params) throws Exception {
+    public HttpResultDTO doPostWithParams(String url, Map<String, Object> params) throws Exception {
         // 声明httpPost请求
         HttpPost httpPost = new HttpPost(url);
         // 加入配置信息
@@ -219,7 +219,7 @@ public class HttpAPIController {
         // 返回响应代码与内容
         return new HttpResultDTO(response.getStatusLine().getStatusCode(), EntityUtils.toString(
                 response.getEntity(), "UTF-8"));
-    }*/
+    }
 
     /**
      * @description POST---含请求头
