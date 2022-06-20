@@ -17,10 +17,11 @@
         from
         mp_examination a ,
         (
-        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from  mp_exam_achievement  f
+        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from
+        (select * from   mp_exam_achievement i where i.type ='2' )f
         inner join
         (SELECT   max( exam_achievement)  as exam_achievement  ,
-        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' group by exam_id, user_id )g
+        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' and type='2' group by exam_id, user_id )g
         on  f.user_id =g.user_id
         and  f.exam_id =g.exam_id
         and f.exam_achievement =g.exam_achievement
@@ -29,7 +30,6 @@
         b,
         mp_user_authentication c,
         mp_exam_achievement d
-
         where d.exam_id = a.id
         and b.user_id =d.user_id
         and b.exam_id =d.exam_id
@@ -38,6 +38,7 @@
         and c.dele_flag = '0'
         and a.dele_flag = '0'
         and d.dele_flag= '0'
+        and d.type ='2'
 
         <if test="dto.userId != null and dto.userId != ''">
             and b.user_id = #{dto.userId}
@@ -85,10 +86,11 @@
         from
         mp_examination a ,
         (
-        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from  mp_exam_achievement  f
+        SELECT  max(f.create_time)  as create_time ,  f.exam_id , f.user_id from
+        (select * from   mp_exam_achievement i where i.type ='2' )f
         inner join
         (SELECT   max( exam_achievement)  as exam_achievement  ,
-        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' group by exam_id, user_id )g
+        user_id,exam_id  from            mp_exam_achievement where dele_flag = '0' and type='2' group by exam_id, user_id )g
         on  f.user_id =g.user_id
         and  f.exam_id =g.exam_id
         and f.exam_achievement =g.exam_achievement
@@ -97,7 +99,6 @@
         b,
         mp_user_authentication c,
         mp_exam_achievement d
-
         where d.exam_id = a.id
         and b.user_id =d.user_id
         and b.exam_id =d.exam_id
@@ -106,6 +107,7 @@
         and c.dele_flag = '0'
         and a.dele_flag = '0'
         and d.dele_flag= '0'
+        and d.type ='2'
 
         <if test="dto.userId != null and dto.userId != ''">
             and b.user_id = #{dto.userId}
