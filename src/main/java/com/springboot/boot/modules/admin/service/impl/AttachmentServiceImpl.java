@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -60,10 +62,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Transactional(rollbackFor = Exception.class)
     public ApiResult attachmentDeal(@RequestParam("file")
                                             MultipartFile uploadFile) {
-
-
         MpAttachmentInfo mpAttachmentInfo = new MpAttachmentInfo();
-
         try {
 //            BusinessAttachmentInfo businessAttachmentInfo = BeanCopy.copy(attachmentInfo, new BusinessAttachmentInfo());
             SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
@@ -153,6 +152,120 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     }
 
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ApiResult attachmentDealQuestionTemplate(@RequestParam("file")
+                                                            MultipartFile uploadFile,
+                                                    Integer type
+    ) {
+        //将之前上传的模板设定为失效
+        MpBusinessAttachmentInfoExample example = new MpBusinessAttachmentInfoExample();
+
+        String mark = null;
+        if (null != type && type == 1) {
+            mark = "tikumoban";
+        } else if (null != type && type == 2) {
+            mark = "wenjuanmoban";
+        } else {
+            return ApiResult.error("请选择试卷类型");
+        }
+        example.createCriteria().andBusinessEqualTo(mark)
+                .andDelFlagEqualTo(CommonEnum.USED.getCode());
+        List<MpBusinessAttachmentInfo> mpBusinessAttachmentInfoList =
+                businessAttachmentInfoMapper.selectByExample(example);
+        for (MpBusinessAttachmentInfo
+                info :
+                mpBusinessAttachmentInfoList) {
+
+            info.setDelFlag(CommonEnum.DELETE.getCode());
+            MpAttachmentInfo mpAttachmentInfo = mpAttachmentInfoMapper.selectByPrimaryKey(info.getAttachmentId());
+            mpAttachmentInfo.setDelFlag(CommonEnum.DELETE.getCode());
+            mpAttachmentInfoMapper.updateByPrimaryKey(mpAttachmentInfo);
+            businessAttachmentInfoMapper.updateByPrimaryKey(info);
+        }
+        MpAttachmentInfo mpAttachmentInfo = new MpAttachmentInfo();
+        SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
+        mpAttachmentInfo.setId(snowFlakeUtil.nextId());
+        String fileName = System.currentTimeMillis() + uploadFile.getOriginalFilename();
+        mpAttachmentInfo.setFileName(fileName);
+        mpAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
+        mpAttachmentInfo.setCreateDate(new Date());
+        mpAttachmentInfo.setUpdateDate(new Date());
+        MpBusinessAttachmentInfo mpBusinessAttachmentInfo
+                = new MpBusinessAttachmentInfo();
+        // 业务表关联文件ID
+        mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
+        mpBusinessAttachmentInfo.setAttachmentId(mpAttachmentInfo.getId());
+        mpBusinessAttachmentInfo.setBusiness(mark);
+        mpBusinessAttachmentInfo.setBusinessId(snowFlakeUtil.nextId());
+        mpBusinessAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
+        mpBusinessAttachmentInfo.setCreateTime(new Date());
+        mpBusinessAttachmentInfo.setUpdateTime(null);
+        mpBusinessAttachmentInfo.setDelFlag(0);
+        mpBusinessAttachmentInfo.setCreateUser(null);
+        businessAttachmentInfoMapper.insert(mpBusinessAttachmentInfo);
+        //云服务上传
+        File newFile = null;
+        try {
+            if (null != uploadFile) {
+                String filename = uploadFile.getOriginalFilename();
+                if (!"".equals(filename.trim())) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateStr = format.format(new Date());
+                    //创建文件路径
+                    String fileKeyname = "/" + (dateStr + "/" + UUID.randomUUID().toString().replace("-", "") + "-" + filename);
+                    newFile = new File(fileKeyname);
+                    FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), newFile);
+                }
+            }
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ApiResult.error(ApiCode.FAIL.getCode(), e.getMessage());
+        }
+
+        Map<String, String> OSSMap = aliyunOSSUtil.picOSS(newFile);
+        newFile.getAbsoluteFile();
+        newFile.getAbsolutePath();
+        newFile.delete();
+        mpAttachmentInfo.setFileUrl(OSSMap.get("url"));
+        mpAttachmentInfo.setFilePath(OSSMap.get("fileKey"));
+        mpAttachmentInfoMapper.insert(mpAttachmentInfo);
+        return ApiResult.success(mpAttachmentInfo);
+
+    }
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ApiResult questionTemplatedowndLoad(HttpServletResponse response, Integer type) {
+
+        String mark = null;
+        if (null != type && type == 1) {
+            mark = "tikumoban";
+        }
+        else if (null != type && type == 2) {
+            mark = "wenjuanmoban";
+        } else {
+        return ApiResult.error("请选择试卷类型");
+    }
+        //查询出有效的业务文件表的题库模板数据
+        MpBusinessAttachmentInfoExample example = new MpBusinessAttachmentInfoExample();
+        example.createCriteria().andDelFlagEqualTo(CommonEnum.USED.getCode())
+                .andBusinessEqualTo(mark);
+        List<MpBusinessAttachmentInfo> mpBusinessAttachmentInfoList
+                = businessAttachmentInfoMapper.selectByExample(example);
+
+        if (null != mpBusinessAttachmentInfoList && mpBusinessAttachmentInfoList.size() > 0) {
+            MpBusinessAttachmentInfo info = mpBusinessAttachmentInfoList.get(0);
+
+            MpAttachmentInfo mpAttachmentInfo = mpAttachmentInfoMapper.selectByPrimaryKey(info.getAttachmentId());
+            String fileName = mpAttachmentInfo.getFileName();
+            String filePath = mpAttachmentInfo.getFilePath();
+
+            return ApiResult.success(aliyunOSSUtil.uploadByStream(response, filePath, fileName));
+        }
+        return ApiResult.success(null);
+
+    }
 
     @Override
     public ApiResult addBusinessFile(Long id,String business,Long businessId) {
@@ -320,7 +433,6 @@ public class AttachmentServiceImpl implements AttachmentService {
 //        return ApiResult.success();
 //
 //    }
-
 
 
 }

@@ -6,11 +6,24 @@ import com.springboot.boot.utils.ApiResult;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface AttachmentService {
 
 
- ApiResult attachmentDeal( @RequestParam("file")
-         MultipartFile file);
+    ApiResult attachmentDeal(@RequestParam("file")
+                                     MultipartFile file);
+
+    ApiResult attachmentDealQuestionTemplate(@RequestParam("file")
+                                                     MultipartFile file, Integer type
+
+    );
+
+
+    ApiResult questionTemplatedowndLoad(HttpServletResponse response
+
+            , Integer type
+    );
 
 
   ApiResult attachmentFileSelect( CommonDto commonDto);
