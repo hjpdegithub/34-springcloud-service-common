@@ -71,4 +71,15 @@ public class CurriculumVo {
     private  String  fileUrl;
     private  Long  readCount;
 
+    //版本2.0新增字段===================
+
+    private Integer propertyType;
+
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long authFirstClassifyId;
+
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long authSencondClassifyId;
+
+
 }

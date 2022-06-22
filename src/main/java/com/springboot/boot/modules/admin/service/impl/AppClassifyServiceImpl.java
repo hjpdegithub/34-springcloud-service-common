@@ -47,7 +47,7 @@ public class AppClassifyServiceImpl implements AppClassifyService {
     public List<SearchStudyVo> searchStudy() {
         List<SearchStudyVo> list = new ArrayList<>();
         //查询一级分类信息
-        List<MpFirstClassify> firstClassifies = classifyService.searchFristClassify();
+        List<MpFirstClassify> firstClassifies = classifyService.searchFristClassifyNoAuth();
         firstClassifies.forEach(e->{
             //查询二级分类信息
             List<MpSecondClassify> secondClassifies = classifyService.searchByClassifyId(e.getId());

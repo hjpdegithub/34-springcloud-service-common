@@ -18,7 +18,7 @@ import java.util.List;
 public class ClassifyAddOrUpdateDto {
     @ApiModelProperty("一级主键id")
     private  Long id;
-    @ApiModelProperty("分类类型 1为普通分类2位定制分类")
+    @ApiModelProperty("分类类型 1为普通分类2位定制分类3认证分类")
     private Integer classifyType;
     @ApiModelProperty("一级分类名称")
     private String firstClassifyName;

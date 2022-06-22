@@ -61,7 +61,7 @@ public class ClassifyController {
         return ApiResult.success(allVo);
     }
 
-    @ApiOperation(value = "查看所有分类信息", notes="该接口包括一二级分类信息")
+    @ApiOperation(value = "查看所有分类信息2.0认证版本通用", notes="该接口包括一二级分类信息")
     @GetMapping(value="/searchClassifyAll")
     public ApiResult searchClassifyAll(@RequestParam("classifyType")  Integer classifyType){
         log.info("查看所有分类信息==========请求参数输出========"+classifyType);
@@ -100,6 +100,4 @@ public class ClassifyController {
         ApiResult result = classifyService.deleteById(dto);
         return ApiResult.success(result);
     }
-
-
 }

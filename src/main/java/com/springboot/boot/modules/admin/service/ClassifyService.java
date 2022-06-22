@@ -89,4 +89,6 @@ public interface ClassifyService {
      * @return
      */
     List<MpSecondClassify> searchSecondClassifyAll();
+
+    List<MpFirstClassify> searchFristClassifyNoAuth();
 }

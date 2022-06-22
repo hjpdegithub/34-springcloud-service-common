@@ -37,7 +37,10 @@ public enum CommonEnum {
     NO_UP(0,"下线"),
 
     IF_WHERE(1,"合格"),
-    NOT_IF_WHERE(2,"不合格")
+    NOT_IF_WHERE(2,"不合格"),
+
+    AUTH(2,"认证"),
+    NOT_AUTH(1,"普通")
     ;
 
 

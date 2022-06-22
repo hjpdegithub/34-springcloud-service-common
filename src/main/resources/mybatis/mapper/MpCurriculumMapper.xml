@@ -21,6 +21,9 @@
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
+    <result column="property_type" jdbcType="INTEGER" property="propertyType" />
+    <result column="auth_first_classify_id" jdbcType="BIGINT" property="authFirstClassifyId" />
+    <result column="auth_sencond_classify_id" jdbcType="BIGINT" property="authSencondClassifyId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -84,7 +87,7 @@
     id, curriculum_name, gen_first_classify_id, gen_second_classify_id, study_time, class_hour, 
     class_format, author_name, apply_type, num, customized_type, cust_first_classify_id, 
     cust_second_classify_id, open_class_type, create_user, create_time, update_user, 
-    update_time, dele_flag
+    update_time, dele_flag, property_type, auth_first_classify_id, auth_sencond_classify_id
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpCurriculumExample" resultMap="BaseResultMap">
     select
@@ -123,14 +126,16 @@
       num, customized_type, cust_first_classify_id, 
       cust_second_classify_id, open_class_type, create_user, 
       create_time, update_user, update_time, 
-      dele_flag)
+      dele_flag, property_type, auth_first_classify_id, 
+      auth_sencond_classify_id)
     values (#{id,jdbcType=BIGINT}, #{curriculumName,jdbcType=VARCHAR}, #{genFirstClassifyId,jdbcType=BIGINT}, 
       #{genSecondClassifyId,jdbcType=BIGINT}, #{studyTime,jdbcType=TIMESTAMP}, #{classHour,jdbcType=INTEGER}, 
       #{classFormat,jdbcType=INTEGER}, #{authorName,jdbcType=VARCHAR}, #{applyType,jdbcType=INTEGER}, 
       #{num,jdbcType=INTEGER}, #{customizedType,jdbcType=INTEGER}, #{custFirstClassifyId,jdbcType=BIGINT}, 
       #{custSecondClassifyId,jdbcType=BIGINT}, #{openClassType,jdbcType=INTEGER}, #{createUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleFlag,jdbcType=INTEGER})
+      #{deleFlag,jdbcType=INTEGER}, #{propertyType,jdbcType=INTEGER}, #{authFirstClassifyId,jdbcType=BIGINT}, 
+      #{authSencondClassifyId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpCurriculum">
     insert into mp_curriculum
@@ -192,6 +197,15 @@
       <if test="deleFlag != null">
         dele_flag,
       </if>
+      <if test="propertyType != null">
+        property_type,
+      </if>
+      <if test="authFirstClassifyId != null">
+        auth_first_classify_id,
+      </if>
+      <if test="authSencondClassifyId != null">
+        auth_sencond_classify_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -250,6 +264,15 @@
       </if>
       <if test="deleFlag != null">
         #{deleFlag,jdbcType=INTEGER},
+      </if>
+      <if test="propertyType != null">
+        #{propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="authFirstClassifyId != null">
+        #{authFirstClassifyId,jdbcType=BIGINT},
+      </if>
+      <if test="authSencondClassifyId != null">
+        #{authSencondClassifyId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -319,6 +342,15 @@
       <if test="record.deleFlag != null">
         dele_flag = #{record.deleFlag,jdbcType=INTEGER},
       </if>
+      <if test="record.propertyType != null">
+        property_type = #{record.propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="record.authFirstClassifyId != null">
+        auth_first_classify_id = #{record.authFirstClassifyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.authSencondClassifyId != null">
+        auth_sencond_classify_id = #{record.authSencondClassifyId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -344,7 +376,10 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      dele_flag = #{record.deleFlag,jdbcType=INTEGER}
+      dele_flag = #{record.deleFlag,jdbcType=INTEGER},
+      property_type = #{record.propertyType,jdbcType=INTEGER},
+      auth_first_classify_id = #{record.authFirstClassifyId,jdbcType=BIGINT},
+      auth_sencond_classify_id = #{record.authSencondClassifyId,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -406,6 +441,15 @@
       <if test="deleFlag != null">
         dele_flag = #{deleFlag,jdbcType=INTEGER},
       </if>
+      <if test="propertyType != null">
+        property_type = #{propertyType,jdbcType=INTEGER},
+      </if>
+      <if test="authFirstClassifyId != null">
+        auth_first_classify_id = #{authFirstClassifyId,jdbcType=BIGINT},
+      </if>
+      <if test="authSencondClassifyId != null">
+        auth_sencond_classify_id = #{authSencondClassifyId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -428,7 +472,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      dele_flag = #{deleFlag,jdbcType=INTEGER}
+      dele_flag = #{deleFlag,jdbcType=INTEGER},
+      property_type = #{propertyType,jdbcType=INTEGER},
+      auth_first_classify_id = #{authFirstClassifyId,jdbcType=BIGINT},
+      auth_sencond_classify_id = #{authSencondClassifyId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -91,7 +91,7 @@
     select id, curriculum_name, gen_first_classify_id, gen_second_classify_id, study_time, class_hour,
     class_format, author_name, apply_type, num, customized_type, cust_first_classify_id,
     cust_second_classify_id, open_class_type, create_user, create_time, update_user,
-    update_time, dele_flag from mp_curriculum
+    update_time, dele_flag,property_type,auth_first_classify_id,auth_sencond_classify_id from mp_curriculum
     where 1 = 1
     <if test="curriculumName !=null and curriculumName != ''">
       and curriculum_name  like CONCAT('%', #{curriculumName},'%')

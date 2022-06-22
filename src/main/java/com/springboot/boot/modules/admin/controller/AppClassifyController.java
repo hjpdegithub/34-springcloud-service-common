@@ -32,6 +32,10 @@ public class AppClassifyController {
     @Autowired
     private AppClassifyService appClassifyService;
 
+    /**
+     * 自助列表2.0版本加入认证筛选条件
+     * @return
+     */
     @ApiOperation(value = "自助学习列表", notes="自助学习列表")
     @GetMapping(value="/searchStudy")
     public ApiResult searchStudy(){

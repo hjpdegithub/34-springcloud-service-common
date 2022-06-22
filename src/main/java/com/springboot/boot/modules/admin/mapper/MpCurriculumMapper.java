@@ -1,15 +1,10 @@
 package com.springboot.boot.modules.admin.mapper;
 
-import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.MpCurriculum;
 import com.springboot.boot.modules.admin.entity.MpCurriculumExample;
 import java.util.List;
-
-import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-@Mapper
 public interface MpCurriculumMapper {
     long countByExample(MpCurriculumExample example);
 
@@ -32,5 +27,4 @@ public interface MpCurriculumMapper {
     int updateByPrimaryKeySelective(MpCurriculum record);
 
     int updateByPrimaryKey(MpCurriculum record);
-
 }

@@ -114,29 +114,39 @@ public class CurriculumServiceImpl implements CurriculumService {
         List<CurriculumVo> mpCurricula = curriculumMapper.selectAll(dto);
         log.info("课程查询输出报文===================={}",mpCurricula);
         mpCurricula.forEach(e->{
-            if (null != e.getCustFirstClassifyId()){
-                MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getCustFirstClassifyId());
-                MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getCustSecondClassifyId());
+            //2.0新增认证分类===========================================
+            if (e.getPropertyType().intValue() == CommonEnum.AUTH.getCode()){
+                MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getAuthFirstClassifyId());
+                MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getAuthSencondClassifyId());
                 if (null != mpFirstClassify){
-                    e.setCFirstClassifyName(mpFirstClassify.getFirstClassifyName());
+                    e.setFirstClassifyName(mpFirstClassify.getFirstClassifyName());
                 }
                 if (null != secondClassify){
-                    e.setCSecondClassifyName(secondClassify.getSecondClassifyName());
+                    e.setSecondClassifyName(secondClassify.getSecondClassifyName());
+                }
+            }else{
+                if (null != e.getCustFirstClassifyId()){
+                    MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getCustFirstClassifyId());
+                    MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getCustSecondClassifyId());
+                    if (null != mpFirstClassify){
+                        e.setCFirstClassifyName(mpFirstClassify.getFirstClassifyName());
+                    }
+                    if (null != secondClassify){
+                        e.setCSecondClassifyName(secondClassify.getSecondClassifyName());
+                    }
+
+                }
+
+                MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getGenFirstClassifyId());
+                MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getGenSecondClassifyId());
+                if (null != mpFirstClassify){
+                    e.setFirstClassifyName(mpFirstClassify.getFirstClassifyName());
+                }
+                if (null != secondClassify){
+                    e.setSecondClassifyName(secondClassify.getSecondClassifyName());
                 }
 
             }
-
-            MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getGenFirstClassifyId());
-            MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getGenSecondClassifyId());
-            if (null != mpFirstClassify){
-                e.setFirstClassifyName(mpFirstClassify.getFirstClassifyName());
-            }
-            if (null != secondClassify){
-                e.setSecondClassifyName(secondClassify.getSecondClassifyName());
-            }
-
-
-
         });
         PageInfo<CurriculumVo> pageInfo = new PageInfo<>(mpCurricula);
         return pageInfo;

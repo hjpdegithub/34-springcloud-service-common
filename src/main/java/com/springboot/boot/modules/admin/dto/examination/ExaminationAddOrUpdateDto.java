@@ -19,7 +19,7 @@ public class ExaminationAddOrUpdateDto {
     @ApiModelProperty("主键id")
     private Long id;
 
-    @ApiModelProperty("试卷类型：1考试类2问卷类")
+    @ApiModelProperty("试卷类型：1考试类2问卷类3认证类")
     private Integer examinationType;
 
     @ApiModelProperty("展示范围：1数据中台门户考试2能力开放平台活动")

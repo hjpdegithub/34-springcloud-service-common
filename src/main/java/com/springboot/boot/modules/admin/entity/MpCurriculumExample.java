@@ -1264,6 +1264,186 @@ public class MpCurriculumExample {
             addCriterion("dele_flag not between", value1, value2, "deleFlag");
             return (Criteria) this;
         }
+
+        public Criteria andPropertyTypeIsNull() {
+            addCriterion("property_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeIsNotNull() {
+            addCriterion("property_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeEqualTo(Integer value) {
+            addCriterion("property_type =", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeNotEqualTo(Integer value) {
+            addCriterion("property_type <>", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeGreaterThan(Integer value) {
+            addCriterion("property_type >", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("property_type >=", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeLessThan(Integer value) {
+            addCriterion("property_type <", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("property_type <=", value, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeIn(List<Integer> values) {
+            addCriterion("property_type in", values, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeNotIn(List<Integer> values) {
+            addCriterion("property_type not in", values, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeBetween(Integer value1, Integer value2) {
+            addCriterion("property_type between", value1, value2, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPropertyTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("property_type not between", value1, value2, "propertyType");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdIsNull() {
+            addCriterion("auth_first_classify_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdIsNotNull() {
+            addCriterion("auth_first_classify_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdEqualTo(Long value) {
+            addCriterion("auth_first_classify_id =", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdNotEqualTo(Long value) {
+            addCriterion("auth_first_classify_id <>", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdGreaterThan(Long value) {
+            addCriterion("auth_first_classify_id >", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("auth_first_classify_id >=", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdLessThan(Long value) {
+            addCriterion("auth_first_classify_id <", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdLessThanOrEqualTo(Long value) {
+            addCriterion("auth_first_classify_id <=", value, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdIn(List<Long> values) {
+            addCriterion("auth_first_classify_id in", values, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdNotIn(List<Long> values) {
+            addCriterion("auth_first_classify_id not in", values, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdBetween(Long value1, Long value2) {
+            addCriterion("auth_first_classify_id between", value1, value2, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFirstClassifyIdNotBetween(Long value1, Long value2) {
+            addCriterion("auth_first_classify_id not between", value1, value2, "authFirstClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdIsNull() {
+            addCriterion("auth_sencond_classify_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdIsNotNull() {
+            addCriterion("auth_sencond_classify_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdEqualTo(Long value) {
+            addCriterion("auth_sencond_classify_id =", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdNotEqualTo(Long value) {
+            addCriterion("auth_sencond_classify_id <>", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdGreaterThan(Long value) {
+            addCriterion("auth_sencond_classify_id >", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("auth_sencond_classify_id >=", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdLessThan(Long value) {
+            addCriterion("auth_sencond_classify_id <", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdLessThanOrEqualTo(Long value) {
+            addCriterion("auth_sencond_classify_id <=", value, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdIn(List<Long> values) {
+            addCriterion("auth_sencond_classify_id in", values, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdNotIn(List<Long> values) {
+            addCriterion("auth_sencond_classify_id not in", values, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdBetween(Long value1, Long value2) {
+            addCriterion("auth_sencond_classify_id between", value1, value2, "authSencondClassifyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthSencondClassifyIdNotBetween(Long value1, Long value2) {
+            addCriterion("auth_sencond_classify_id not between", value1, value2, "authSencondClassifyId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

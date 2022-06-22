@@ -1,6 +1,8 @@
 package com.springboot.boot.modules.admin.dto.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -66,6 +68,14 @@ public class CurriculumAddOrUpdateDto {
 
     @ApiModelProperty("附件id")
     private Long fileId;
+
+    //版本2.0加入字段======================
+    @ApiModelProperty("分类属性1不同2认证")
+    private Integer propertyType;
+    @ApiModelProperty("认证一级分类")
+    private Long authFirstClassifyId;
+    @ApiModelProperty("认证二级分类")
+    private Long authSencondClassifyId;
 
 
 

@@ -366,4 +366,35 @@ public class ClassifyServiceImpl implements ClassifyService {
         return secondClassifies;
     }
 
+    @Override
+    public List<MpFirstClassify> searchFristClassifyNoAuth() {
+        //查看一级分类所有相关信息
+        MpFirstClassifyExample firstClassifyExample = new MpFirstClassifyExample();
+        MpFirstClassifyExample.Criteria criteria1 = firstClassifyExample.createCriteria();
+        criteria1.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        //2.0版本加入认证条件
+        criteria1.andFirstClassifyTypeNotEqualTo(CommonEnum.AUTH.getCode());
+        List<MpFirstClassify> firstClassifies = firstClassifyMapper.selectByExample(firstClassifyExample);
+        if (firstClassifies.isEmpty()){
+            throw new BusinessException("一级分类信息为空,无法展示分类信息");
+        }
+        //判断一级分类下是否有二级分类没有删除一级分类
+        firstClassifies.forEach(e->{
+            MpSecondClassifyExample mpSecondClassifyExample = new MpSecondClassifyExample();
+            MpSecondClassifyExample.Criteria criteria = mpSecondClassifyExample.createCriteria();
+            criteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+            criteria.andFirstClassifyIdEqualTo(e.getId());
+            List<MpSecondClassify> secondClassifies = secondClassifyMapper.selectByExample(mpSecondClassifyExample);
+            if (secondClassifies.isEmpty()){
+                MpFirstClassify mpFirstClassify = new MpFirstClassify();
+                mpFirstClassify.setId(e.getId());
+                mpFirstClassify.setDeleFlag(CommonEnum.DELETE.getCode());
+                mpFirstClassify.setUpdateTime(new Date());
+                firstClassifyMapper.updateByPrimaryKeySelective(mpFirstClassify);
+            }
+        });
+        log.info("一级分类相关信息输出返回报文：--{}", JSONObject.toJSON(firstClassifies));
+        return firstClassifies;
+    }
+
 }

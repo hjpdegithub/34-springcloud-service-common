@@ -52,6 +52,7 @@
         </javaClientGenerator>
 
         <!-- 配置表名，即哪些表需要生成 -->
+                <table tableName="mp_curriculum" />
         <!--        <table tableName="mp_curthu" />-->
         <!--        <table tableName="mp_attachment_memo" />-->
         <!--        <table tableName="mp_attachment_comment_reply" />-->

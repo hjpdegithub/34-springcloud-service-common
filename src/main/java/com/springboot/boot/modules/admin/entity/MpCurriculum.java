@@ -5,13 +5,15 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
 
-public class MpCurriculum  {
+public class MpCurriculum {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long id;
 
     private String curriculumName;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long genFirstClassifyId;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long genSecondClassifyId;
 
@@ -28,22 +30,34 @@ public class MpCurriculum  {
     private Integer num;
 
     private Integer customizedType;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long custFirstClassifyId;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long custSecondClassifyId;
 
     private Integer openClassType;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long createUser;
 
     private Date createTime;
+
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long updateUser;
 
     private Date updateTime;
 
     private Integer deleFlag;
+
+    private Integer propertyType;
+
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long authFirstClassifyId;
+
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long authSencondClassifyId;
 
     public Long getId() {
         return id;
@@ -195,5 +209,29 @@ public class MpCurriculum  {
 
     public void setDeleFlag(Integer deleFlag) {
         this.deleFlag = deleFlag;
+    }
+
+    public Integer getPropertyType() {
+        return propertyType;
+    }
+
+    public void setPropertyType(Integer propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public Long getAuthFirstClassifyId() {
+        return authFirstClassifyId;
+    }
+
+    public void setAuthFirstClassifyId(Long authFirstClassifyId) {
+        this.authFirstClassifyId = authFirstClassifyId;
+    }
+
+    public Long getAuthSencondClassifyId() {
+        return authSencondClassifyId;
+    }
+
+    public void setAuthSencondClassifyId(Long authSencondClassifyId) {
+        this.authSencondClassifyId = authSencondClassifyId;
     }
 }
