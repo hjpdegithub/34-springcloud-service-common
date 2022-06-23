@@ -1,0 +1,160 @@
+#侯建鹏的本地环境
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/mi_pl_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+
+  # 测试环境
+  #spring:
+  #  datasource:
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jjdbc:mysql://e52kva4b30qgsz8vcdru-rw4rm.maxscale.rds.ops.sgepri.sgcc.com.cn:3306/mp?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+  #    username: admin_user
+  #    password: Abc123!@#
+
+
+  #生产环境
+  #spring:
+  #  datasource:
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jdbc:mysql://rm-9ur799905q5nc0140rw.mysql.rds.ops.sgmc.sgcc.com.cn:3306/mp?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false
+  #    username: rdsuser
+  #    password: nengliKF@2021
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+      enabled: true
+      file-size-threshold: 0
+
+  profiles:
+    active: db
+  application:
+    name: spring-boot
+  redis:
+    database: 1
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 1000
+        max-wait: 1000
+        max-idle: 10
+        min-idle: 0
+    timeout: 2000
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+      # 应用服务 WEB 访问端口
+server:
+  port: 8080
+  servlet:
+    context-path: /
+#    multipart:
+#      max-file-size: 100MB
+#      max-request-size: 1000MB
+#      enabled: true
+#      file-size-threshold: 0
+traffic-da:
+  redis:
+    cache:
+      enable: true
+      timeout: 6
+#是否激活 swagger true or false
+swagger:
+  enable: true
+# http配置服务
+http:
+  # 最大连接数
+  maxTotal: 100
+  # 并发数
+  defaultMaxPerRoute: 20
+  # 创建连接的最长时间
+  connectTimeout: 1000
+  # 从连接池中获取到连接的最长时间
+  connectionRequestTimeout: 500
+  # 数据传输的最长时间
+  socketTimeout: 10000
+  # 提交请求前测试连接是否可用
+  staleConnectionCheckEnabled: true
+att:
+  upload:
+    docBase: D:\项目\电网
+    path:
+  hostname:
+  port:
+  username:
+  password:
+
+#侯本地环境
+oos:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  keyid: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
+  keysecret: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
+  bucketname: test220321bucket # bucket名称
+  filehost: mq    #bucket下文件夹的路径
+#测试环境
+#oos:
+#  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
+#  keyid:    h0hTOLSF2M0rYMMW # 填写刚刚生成的AccessKey
+#  keysecret: 9vkIDqKrHngBI475PsYbqjrBpVYcrW  # 填写刚刚生成的Accesssecret
+#  bucketname: oss-nrxt-szh-dev-001 # bucket名称
+#  filehost: mq    #bucket下文件夹的路径
+#生产环境
+#oos:
+#  endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
+#  keyid:    dB9c2A1CrDVVkBqM # 填写刚刚生成的AccessKey
+#  keysecret: 7dio40l2jIJJYF27n1NtvrBw70df96  # 填写刚刚生成的Accesssecret
+#  bucketname: szhnlkfpt-oss-prod # bucket名称
+#  filehost: mq    #bucket下文件夹的路径
+
+
+  # 侯本地环境
+  #oosFilePath: D:/show/
+  #实验环境
+  #oosFilePath :/mnt/file/
+  #生产环境
+  oosFilePath : /nas/file/
+  # 本地环境的返回url
+  #oosFileShowPathPrex : http://localhost:8080/showresource/
+  # 生产测试url
+  oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
+  # 侯本地
+  #localShowPath : file:D:\\show\\
+  # 测试环境环境
+  #localShowPath: file:/mnt/file/
+  # 生产环境
+  localShowPath : file:/nas/file/
+
+# mybatis-plus相关配置
+mybatis-plus:
+  # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  # 以下配置均有默认值,可以不设置
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: false
+    banner: false
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    #    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+

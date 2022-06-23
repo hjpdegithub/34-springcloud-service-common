@@ -7,11 +7,13 @@ import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
+import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
 import com.springboot.boot.modules.admin.service.AttachmentService;
 import com.springboot.boot.modules.admin.service.AuthManageService;
 
+import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
 import com.springboot.boot.utils.ApiCode;
 import com.springboot.boot.utils.ApiResult;
@@ -44,6 +46,9 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     @Resource
     private MpAuthMapper mpAuthMapper;
+
+    @Resource
+    private MpAuthHMapper mpAuthHMapper;
 
     @Resource
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
@@ -132,8 +137,24 @@ public class AuthServiceManageImpl implements AuthManageService {
      * @param dto
      * @return
      */
-    public   PageInfo<CurriculumVo> search(MpAuthDto dto){
-        return null;
+    @Override
+    public   PageInfo<MpAuthHVo> search(MpAuthDto dto){
+            if (dto.getPaging()) {
+                PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
+            }
+            List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
+            log.info("分页查询认证===================={}",dto);
 
-    }
+
+
+
+
+            PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
+            return pageInfo;
+        }
+
+
+
+
+
 }
