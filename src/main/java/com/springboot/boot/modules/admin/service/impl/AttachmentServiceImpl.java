@@ -64,48 +64,12 @@ public class AttachmentServiceImpl implements AttachmentService {
                                             MultipartFile uploadFile) {
         MpAttachmentInfo mpAttachmentInfo = new MpAttachmentInfo();
         try {
-//            BusinessAttachmentInfo businessAttachmentInfo = BeanCopy.copy(attachmentInfo, new BusinessAttachmentInfo());
             SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
-            //文件的ID主键
             mpAttachmentInfo.setId(snowFlakeUtil.nextId());
-            //文件附件的ID主键
-//            businessAttachmentInfo.setId(snowFlakeUtil.nextId());
-            //    String rootPath = CommonConstant.rootPath;
-
-//            String fileTypePath = attachmentInfoDto.getBusiness() + "/";
+            mpAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
             String fileName = System.currentTimeMillis() + uploadFile.getOriginalFilename();
-            //String fileFullPath = rootPath  + fileName;
-            //String fileShowPatten = CommonConstant.fileShowPatten;
-            //String fileIpAdress = CommonConstant.fileIpAdress;
-            //String fileUrl = fileIpAdress + fileShowPatten + fileName;
             mpAttachmentInfo.setFileName(fileName);
-            //attachmentInfo.setFileUrl(fileUrl);
             mpAttachmentInfo.setCreateDate(new Date());
-            mpAttachmentInfo.setUpdateDate(new Date());
-            // 业务表关联文件ID
-//           businessAttachmentInfo.setAttachmentId(attachmentInfo.getId());
-//            //设定文件的业务类型名称（例子:课程业务字符串)
-//            businessAttachmentInfo.setBusiness(attachmentInfoDto.getBusiness());
-//            //设定文件的业务ID（例子:192883:JAVA课程)
-//            businessAttachmentInfo.setBusinessId(attachmentInfoDto.getBusinessId());
-//            //相同业务的排序（比如JAVA课程的第一个文件）
-//            businessAttachmentInfo.setSort(attachmentInfoDto.getSort());
-//            businessAttachmentInfo.setCreateTime(new Date());
-//            businessAttachmentInfo.setUpdateTime(null);
-//            businessAttachmentInfo.setDelFlag(0);
-//            businessAttachmentInfo.setCreateUser(null);
-//            AttachmentInfoExample attachmentInfoExample = new AttachmentInfoExample();
-//            attachmentInfoExample.createCriteria().andFileNameEqualTo(fileName);
-//            List<AttachmentInfo> attachmentInfoList = attachmentInfoMapper.selectByExample(attachmentInfoExample);
-//            if (attachmentInfoList != null && attachmentInfoList.size() > 0) {
-//                return ApiResult.error(ApiCode.FAIL.getCode(), "该文件已经存在");
-//            }
-            //DTO设定
-//            FileDto fileDto = new FileDto();
-//            fileDto.setFileFullPath(fileFullPath);
-//            fileDto.setFileName(fileName);
-//            fileDto.setRootPath(rootPath);
-//            fileDto.setFileTypePath(fileTypePath);
             //文件格式校验
             Boolean checkNotPass = false;
             File newFile = null;
@@ -119,11 +83,6 @@ public class AttachmentServiceImpl implements AttachmentService {
                         String fileKeyname = "/" + (dateStr + "/" + UUID.randomUUID().toString().replace("-", "") + "-" + filename);
                         newFile = new File(fileKeyname);
                         FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), newFile);
-                        // FileOutputStream os = new FileOutputStream(newFile);
-                        //   os.write(uploadFile.getBytes());
-                        //    os.close();
-                        //  uploadFile.transferTo(newFile);
-                        //   newFile.getAbsolutePath();
                         checkNotPass = !aliyunOSSUtil.fileCheck(newFile);
                     }
                 }
@@ -135,15 +94,15 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
             //云服务上传
             Map<String, String> OSSMap = aliyunOSSUtil.picOSS(newFile);
+            if(OSSMap.size()==0){
+                throw  new RuntimeException();
+            }
             newFile.getAbsoluteFile();
             newFile.getAbsolutePath();
             newFile.delete();
-            // fileService.upload(file, fileDto);
             mpAttachmentInfo.setFileUrl(OSSMap.get("url"));
             mpAttachmentInfo.setFilePath(OSSMap.get("fileKey"));
-            //fileService.upload(file, fileDto);
             mpAttachmentInfoMapper.insert(mpAttachmentInfo);
-//            businessAttachmentInfoMapper.insert(businessAttachmentInfo);
         } catch (Exception e) {
             log.info(e.getMessage());
             return ApiResult.error(ApiCode.FAIL.getCode(), e.getMessage());
