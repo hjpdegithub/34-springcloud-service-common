@@ -52,12 +52,12 @@
         </javaClientGenerator>
 
         <!-- 配置表名，即哪些表需要生成 -->
-<!--                <table tableName="mp_curriculum" />-->
+        <!--                <table tableName="mp_curriculum" />-->
         <!--        <table tableName="mp_curthu" />-->
         <!--        <table tableName="mp_attachment_memo" />-->
         <!--        <table tableName="mp_attachment_comment_reply" />-->
         <!--        <table tableName="mp_attachment_comment" />-->
-<!--                <table tableName="mp_user_exam" />-->
+        <!--                <table tableName="mp_user_exam" />-->
         <!--        <table tableName="mp_user_authentication" />-->
         <!--        <table tableName="mp_unit" />-->
         <!--        <table tableName="mp_sign_up" />-->
@@ -65,21 +65,21 @@
         <!--        <table tableName="mp_question_bank" />-->
         <!--        <table tableName="mp_option" />-->
         <!--        <table tableName="mp_examination_rule" />-->
-<!--                <table tableName="mp_examination" />-->
-<!--        <table tableName="mp_exam_achievement" />-->
+        <!--                <table tableName="mp_examination" />-->
+        <!--        <table tableName="mp_exam_achievement" />-->
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
         <table tableName="mp_auth" />
-<!--        <table tableName="mp_auth_certificase" />-->
-<!--        <table tableName="mp_auth_direction" />-->
-<!--        <table tableName="mp_auth_domain" />-->
-<!--        <table tableName="mp_auth_user_sign_up" />-->
-<!--        <table tableName="mp_user_auth" />-->
-<!--        <table tableName="mp_user_auth_class" />-->
-<!--        <table tableName="mp_user_auth_class" />-->
+        <!--        <table tableName="mp_auth_certificase" />-->
+        <!--        <table tableName="mp_auth_direction" />-->
+        <!--        <table tableName="mp_auth_domain" />-->
+        <!--        <table tableName="mp_auth_user_sign_up" />-->
+        <!--        <table tableName="mp_user_auth" />-->
+        <!--        <table tableName="mp_user_auth_class" />-->
+        <!--        <table tableName="mp_user_auth_class" />-->
         <!--        <table tableName="mp_user_auth_exam" />-->
-                <table tableName="testoo" />
+        <table tableName="testoo" />
     </context>
 </generatorConfiguration>
 
