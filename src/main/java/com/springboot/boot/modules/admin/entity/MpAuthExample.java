@@ -1264,6 +1264,66 @@ public class MpAuthExample {
             addCriterion("dele_flag not between", value1, value2, "deleFlag");
             return (Criteria) this;
         }
+
+        public Criteria andUpTypeIsNull() {
+            addCriterion("up_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeIsNotNull() {
+            addCriterion("up_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeEqualTo(Integer value) {
+            addCriterion("up_type =", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeNotEqualTo(Integer value) {
+            addCriterion("up_type <>", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeGreaterThan(Integer value) {
+            addCriterion("up_type >", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("up_type >=", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeLessThan(Integer value) {
+            addCriterion("up_type <", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("up_type <=", value, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeIn(List<Integer> values) {
+            addCriterion("up_type in", values, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeNotIn(List<Integer> values) {
+            addCriterion("up_type not in", values, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeBetween(Integer value1, Integer value2) {
+            addCriterion("up_type between", value1, value2, "upType");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("up_type not between", value1, value2, "upType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
