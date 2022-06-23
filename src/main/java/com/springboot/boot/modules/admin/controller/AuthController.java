@@ -1,5 +1,6 @@
 package com.springboot.boot.modules.admin.controller;
 
+import com.springboot.boot.modules.admin.dto.AuthBaseDto;
 import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.vo.classify.app.SearchStudyVo;
 import com.springboot.boot.utils.ApiResult;
@@ -34,7 +35,18 @@ public class AuthController {
     @ApiOperation(value = "认证流程页面查看接口", notes="认证流程页面查看接口")
     @GetMapping(value="/authProcedure")
     public ApiResult authProcedure(@RequestParam("authId") Long authId,@RequestParam("userId") Long userId){
+        if (null == userId){
+            return ApiResult.error("请先登录！");
+        }
         ApiResult result = authService.authProcedure(authId,userId);
         return result;
     }
+
+    @ApiOperation(value = "立即预约报名接口", notes="立即预约报名接口")
+    @PostMapping(value="/authSignUp")
+    public ApiResult authSignUp(@RequestBody AuthBaseDto authBaseDto){
+        ApiResult result = authService.authSignUp(authBaseDto);
+        return result;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.springboot.boot.modules.admin.service.impl;
 
 import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.common.exc.BusinessException;
+import com.springboot.boot.modules.admin.dto.AuthBaseDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
 import com.springboot.boot.modules.admin.service.AuthService;
@@ -9,11 +10,14 @@ import com.springboot.boot.modules.admin.vo.auth.AuthProcedureVo;
 import com.springboot.boot.modules.admin.vo.auth.IfWhereVo;
 import com.springboot.boot.modules.admin.vo.curriculum.AuthClassVo;
 import com.springboot.boot.utils.ApiResult;
+import com.springboot.boot.utils.BeanCopy;
+import com.springboot.boot.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +44,10 @@ public class AuthServiceImpl implements AuthService {
     private MpAuthUserSignUpMapper authUserSignUpMapper;
     @Autowired
     private MpUserAuthExamMapper userAuthExamMapper;
+    @Autowired
+    private MpAuthCertificaseMapper certificaseMapper;
+    @Autowired
+    private MpAuthUserSignUpMapper signUpMapper;
 
     /**
      * 认证查看流程接口版本2.0
@@ -90,8 +98,41 @@ public class AuthServiceImpl implements AuthService {
         authClassVo.setExamId(mpExaminations.get(0).getId());
 
         //是否条件判断
+        IfWhereVo ifWhereVo = ifWhere(authId, userId, mpAuths);
+        BeanCopy.copy(ifWhereVo,authClassVo);
+        return ApiResult.success(authClassVo);
+    }
 
-        return null;
+    /**
+     * 立即预约
+     * @param authBaseDto
+     * @return
+     */
+    @Override
+    public ApiResult authSignUp(AuthBaseDto authBaseDto) {
+        //查看是否预约信息
+        MpAuthUserSignUpExample signUpExample = new MpAuthUserSignUpExample();
+        MpAuthUserSignUpExample.Criteria criteria = signUpExample.createCriteria();
+        criteria.andAuthIdEqualTo(authBaseDto.getAuthId());
+        criteria.andUserIdEqualTo(authBaseDto.getUserId());
+        List<MpAuthUserSignUp> mpAuthUserSignUps = signUpMapper.selectByExample(signUpExample);
+        if (mpAuthUserSignUps.size()>0){
+            throw new BusinessException("该用户已经预约报名");
+        }
+        MpAuthUserSignUp mpAuthUserSignUp = new MpAuthUserSignUp();
+        mpAuthUserSignUp.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+        mpAuthUserSignUp.setAuthId(authBaseDto.getAuthId());
+        mpAuthUserSignUp.setCreateTime(new Date());
+        mpAuthUserSignUp.setCreateUser(authBaseDto.getUserId());
+        mpAuthUserSignUp.setDeleFlag(CommonEnum.USED.getCode());
+        mpAuthUserSignUp.setUpdateTime(new Date());
+        mpAuthUserSignUp.setUpdateUser(authBaseDto.getUserId());
+        mpAuthUserSignUp.setUserId(authBaseDto.getUserId());
+        int i = signUpMapper.insertSelective(mpAuthUserSignUp);
+        if (i <= CommonEnum.ADD_ERROR.getCode()){
+            throw new BusinessException("报名新增失败");
+        }
+        return ApiResult.success();
     }
 
     /**
@@ -134,37 +175,31 @@ public class AuthServiceImpl implements AuthService {
         criteria.andUserIdEqualTo(userId);
         criteria.andAuthIdEqualTo(authId);
         criteria.andExamIdEqualTo(mpAuths.get(0).getExamId());
+        List<MpUserAuthExam> mpUserAuthExams = userAuthExamMapper.selectByExample(mpUserAuthExamExample);
+        //判断是否可以参加考试
+        //是否存在合格的数据
+        List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
+        //开始判断
+        if (mpUserAuthExams.size()>=frequencyCount.intValue()||userCommonList.size()>0){
+            ifWhereVo.setExamType(CommonEnum.NO.getCode());
+        }else{
+            ifWhereVo.setExamType(CommonEnum.YES.getCode());
+        }
+        //是否领取证书
+        MpAuthCertificaseExample certificaseExample = new MpAuthCertificaseExample();
+        MpAuthCertificaseExample.Criteria criteria1 = certificaseExample.createCriteria();
+        criteria1.andAuthIdEqualTo(authId);
+        criteria1.andUserIdEqualTo(userId);
+        List<MpAuthCertificase> mpAuthCertificases = certificaseMapper.selectByExample(certificaseExample);
+        if (mpAuthCertificases.size()>0){
+            ifWhereVo.setCertificaseType(CommonEnum.NO.getCode());
+        }else{
+            ifWhereVo.setCertificaseType(CommonEnum.YES.getCode());
+        }
         return ifWhereVo;
     }
 
-//    public static void main(String[] args) {
-//        List<Long> sjk = new ArrayList<>();
-//        sjk.add(11L);
-//        sjk.add(222L);
-//        sjk.add(31L);
-//        sjk.add(34L);
-//        sjk.add(224L);
-//        sjk.add(262L);
-//        sjk.add(212L);
-//        sjk.add(202L);
-//        sjk.add(292L);
-//        sjk.add(292L);
-//        sjk.add(223L);
-//        List<Long> nsjk = new ArrayList<>();
-//        nsjk.add(11L);
-//        nsjk.add(222L);
-//        nsjk.add(31L);
-//        nsjk.add(34L);
-//        nsjk.add(224L);
-//        nsjk.add(262L);
-//        nsjk.add(212L);
-//        nsjk.add(202L);
-//        nsjk.add(292L);
-//        nsjk.add(223L);
-//        boolean result = sjk.containsAll(nsjk) && nsjk.containsAll(sjk);
-//        System.out.println(result);
-//
-//    }
+
     /**
      * 查看用户认证课程相关信息
      * @param id 课程id
