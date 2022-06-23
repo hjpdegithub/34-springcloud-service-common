@@ -45,6 +45,8 @@ public class MpAuth {
 
     private Integer deleFlag;
 
+    private Integer upType;
+
     public Long getId() {
         return id;
     }
@@ -195,5 +197,13 @@ public class MpAuth {
 
     public void setDeleFlag(Integer deleFlag) {
         this.deleFlag = deleFlag;
+    }
+
+    public Integer getUpType() {
+        return upType;
+    }
+
+    public void setUpType(Integer upType) {
+        this.upType = upType;
     }
 }

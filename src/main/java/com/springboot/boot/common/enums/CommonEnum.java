@@ -40,7 +40,12 @@ public enum CommonEnum {
     NOT_IF_WHERE(2,"不合格"),
 
     AUTH(2,"认证"),
-    NOT_AUTH(1,"普通")
+    NOT_AUTH(1,"普通"),
+
+    FINISH(1,"完成"),
+    NOT_FINISH(2,"未完成"),
+    NO(0,"否"),
+    YES(1,"是")
     ;
 
 

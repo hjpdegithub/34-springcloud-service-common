@@ -52,7 +52,7 @@
         </javaClientGenerator>
 
         <!-- 配置表名，即哪些表需要生成 -->
-                <table tableName="mp_curriculum" />
+<!--                <table tableName="mp_curriculum" />-->
         <!--        <table tableName="mp_curthu" />-->
         <!--        <table tableName="mp_attachment_memo" />-->
         <!--        <table tableName="mp_attachment_comment_reply" />-->
@@ -70,8 +70,16 @@
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
-
-        <table tableName="testoo" />
+        <table tableName="mp_auth" />
+<!--        <table tableName="mp_auth_certificase" />-->
+<!--        <table tableName="mp_auth_direction" />-->
+<!--        <table tableName="mp_auth_domain" />-->
+<!--        <table tableName="mp_auth_user_sign_up" />-->
+<!--        <table tableName="mp_user_auth" />-->
+<!--        <table tableName="mp_user_auth_class" />-->
+<!--        <table tableName="mp_user_auth_class" />-->
+        <!--        <table tableName="mp_user_auth_exam" />-->
+                <table tableName="testoo" />
     </context>
 </generatorConfiguration>
 
