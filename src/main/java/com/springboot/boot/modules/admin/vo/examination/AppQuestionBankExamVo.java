@@ -35,6 +35,12 @@ public class AppQuestionBankExamVo {
     private Multiple multiple;
     private Judge judge;
 
+    //--------------------2.0
+    @ApiModelProperty("用户id")
+    private Long userId;
+    @ApiModelProperty("认证id")
+    private Long authId;
+
     @Data
     public static class Single {
         private Integer num;

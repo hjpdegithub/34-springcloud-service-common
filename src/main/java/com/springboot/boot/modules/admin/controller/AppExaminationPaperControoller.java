@@ -5,12 +5,15 @@ import com.springboot.boot.modules.admin.dto.QuestionBankPracticeSBDto;
 import com.springboot.boot.modules.admin.dto.examination.ExaminationAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.examination.SubmitSlimylationDto;
 import com.springboot.boot.modules.admin.dto.sign.ChilckSignUpDto;
+import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.service.ExaminationPaperService;
+import com.springboot.boot.modules.admin.vo.examination.AppQuestionBankExamVo;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CORBA.INTERNAL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,6 +36,8 @@ import java.util.Random;
 public class AppExaminationPaperControoller {
     @Resource
     private ExaminationPaperService paperService;
+    @Autowired
+    private AuthService authService;
 
     @ApiOperation(value = "考试详情接口", notes="考试详情接口")
     @GetMapping(value="/detail")
@@ -104,6 +109,21 @@ public class AppExaminationPaperControoller {
     public ApiResult selectSimulation(@RequestParam Long id){
         log.info("模拟考试========={}", id);
         ApiResult result = paperService.selectSimulation(id);
+        return result;
+    }
+
+    @ApiOperation(value = "认证考试", notes="认证考试")
+    @GetMapping(value="/selectSimulationByAuth")
+    public ApiResult selectSimulationByAuth(@RequestParam Long id,@RequestParam Long authId,@RequestParam Long userId){
+        log.info("模拟考试========={}", id);
+        Integer auth = authService.ifWhere(authId,userId);
+        if (auth.intValue() == 1){
+            return ApiResult.error("请先完成所有的课程学习！");
+        }
+        ApiResult result = paperService.selectSimulation(id);
+        AppQuestionBankExamVo data = (AppQuestionBankExamVo) result.getData();
+        data.setAuthId(authId);
+        data.setUserId(userId);
         return result;
     }
 

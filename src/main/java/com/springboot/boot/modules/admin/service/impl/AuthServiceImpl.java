@@ -292,6 +292,39 @@ public class AuthServiceImpl implements AuthService {
         return ApiResult.success(vo);
     }
 
+    @Override
+    public List<MpAuthUserSignUp> searchSignUp(Long authId,Long userId) {
+        MpAuthUserSignUpExample example = new MpAuthUserSignUpExample();
+        MpAuthUserSignUpExample.Criteria singUpCriteria = example.createCriteria();
+        singUpCriteria.andUserIdEqualTo(userId);
+        singUpCriteria.andAuthIdEqualTo(authId);
+        singUpCriteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        List<MpAuthUserSignUp> mpAuthUserSignUps = authUserSignUpMapper.selectByExample(example);
+        return mpAuthUserSignUps;
+    }
+
+    @Override
+    public Integer ifWhere(Long authId, Long userId) {
+        //查看认证信息
+        MpAuthExample authExample = new MpAuthExample();
+        MpAuthExample.Criteria ac = authExample.createCriteria();
+        ac.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        ac.andIdEqualTo(authId);
+        List<MpAuth> mpAuths = authMapper.selectByExample(authExample);
+        if (mpAuths.size() <= 0) {
+            throw new BusinessException("认证信息为空");
+        }
+        //用户完成的课程数据
+        List<MpUserAuthClass> mpUserAuthClasses = mpUserAuthClass(null, userId, authId);
+        List<Long> userIds = mpUserAuthClasses.stream().map(MpUserAuthClass::getCurriculumId).collect(Collectors.toList());
+        //认证列表的课程
+        List<MpCurriculum> mpCurriculumList = mpCurriculumList(mpAuths);
+        List<Long>ids = mpCurriculumList.stream().map(MpCurriculum::getId).collect(Collectors.toList());
+        boolean result = userIds.containsAll(ids) && ids.containsAll(userIds);
+        int studyResult = (result)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
+        return studyResult;
+    }
+
 
     /**
      * 计算试卷分数
