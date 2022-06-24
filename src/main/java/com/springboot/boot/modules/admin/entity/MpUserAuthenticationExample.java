@@ -804,6 +804,126 @@ public class MpUserAuthenticationExample {
             addCriterion("dele_flag not between", value1, value2, "deleFlag");
             return (Criteria) this;
         }
+
+        public Criteria andDepartmentIdIsNull() {
+            addCriterion("department_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdIsNotNull() {
+            addCriterion("department_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdEqualTo(Long value) {
+            addCriterion("department_id =", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdNotEqualTo(Long value) {
+            addCriterion("department_id <>", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdGreaterThan(Long value) {
+            addCriterion("department_id >", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("department_id >=", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdLessThan(Long value) {
+            addCriterion("department_id <", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdLessThanOrEqualTo(Long value) {
+            addCriterion("department_id <=", value, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdIn(List<Long> values) {
+            addCriterion("department_id in", values, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdNotIn(List<Long> values) {
+            addCriterion("department_id not in", values, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdBetween(Long value1, Long value2) {
+            addCriterion("department_id between", value1, value2, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDepartmentIdNotBetween(Long value1, Long value2) {
+            addCriterion("department_id not between", value1, value2, "departmentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdIsNull() {
+            addCriterion("unit_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdIsNotNull() {
+            addCriterion("unit_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdEqualTo(Long value) {
+            addCriterion("unit_id =", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdNotEqualTo(Long value) {
+            addCriterion("unit_id <>", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdGreaterThan(Long value) {
+            addCriterion("unit_id >", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("unit_id >=", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdLessThan(Long value) {
+            addCriterion("unit_id <", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdLessThanOrEqualTo(Long value) {
+            addCriterion("unit_id <=", value, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdIn(List<Long> values) {
+            addCriterion("unit_id in", values, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdNotIn(List<Long> values) {
+            addCriterion("unit_id not in", values, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdBetween(Long value1, Long value2) {
+            addCriterion("unit_id between", value1, value2, "unitId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUnitIdNotBetween(Long value1, Long value2) {
+            addCriterion("unit_id not between", value1, value2, "unitId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

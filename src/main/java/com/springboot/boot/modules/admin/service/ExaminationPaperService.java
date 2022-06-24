@@ -6,6 +6,7 @@ import com.springboot.boot.modules.admin.dto.QuestionBankPracticeSBDto;
 import com.springboot.boot.modules.admin.dto.examination.*;
 import com.springboot.boot.modules.admin.dto.sign.ChilckSignUpDto;
 import com.springboot.boot.modules.admin.entity.MpExamination;
+import com.springboot.boot.modules.admin.vo.ChengjiVo;
 import com.springboot.boot.modules.admin.vo.examination.ExaminationVo;
 import com.springboot.boot.utils.ApiResult;
 
@@ -82,7 +83,6 @@ public interface ExaminationPaperService {
      * @return
      */
     ApiResult questionnaireQuery(Long id);
-
 
 
 

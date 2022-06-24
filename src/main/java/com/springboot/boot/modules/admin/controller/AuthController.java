@@ -1,5 +1,7 @@
 package com.springboot.boot.modules.admin.controller;
 
+import com.springboot.boot.modules.admin.dto.Auth.ClassStudyFinishDto;
+import com.springboot.boot.modules.admin.dto.Auth.ExamStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.AuthBaseDto;
 import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.vo.classify.app.SearchStudyVo;
@@ -45,7 +47,40 @@ public class AuthController {
     @ApiOperation(value = "立即预约报名接口", notes="立即预约报名接口")
     @PostMapping(value="/authSignUp")
     public ApiResult authSignUp(@RequestBody AuthBaseDto authBaseDto){
+        if (null == authBaseDto.getUserId()){
+            return ApiResult.error("请先登录！");
+        }
         ApiResult result = authService.authSignUp(authBaseDto);
+        return result;
+    }
+
+    @ApiOperation(value = "开始学习详情页面", notes="开始学习详情页面")
+    @GetMapping(value="/startStudy")
+    public ApiResult startStudy(@RequestParam("authId") Long authId,@RequestParam("userId") Long userId){
+        if (null == userId){
+            return ApiResult.error("请先登录！");
+        }
+        ApiResult result = authService.startStudy(authId,userId);
+        return result;
+    }
+
+    @ApiOperation(value = "课程学习完成提交接口", notes="课程学习完成提交接口")
+    @PostMapping(value="/classStudyFinish")
+    public ApiResult classStudyFinish(@RequestBody ClassStudyFinishDto classStudyFinishDto){
+        if (null == classStudyFinishDto.getUserId()){
+            return ApiResult.error("请先登录！");
+        }
+        ApiResult result = authService.classStudyFinish(classStudyFinishDto);
+        return result;
+    }
+
+    @ApiOperation(value = "开始考试交卷接口", notes="开始考试交卷接口")
+    @PostMapping(value="/startExam")
+    public ApiResult startExam(@RequestBody ExamStudyFinishDto examStudyFinishDto){
+        if (null == examStudyFinishDto.getUserId()){
+            return ApiResult.error("请先登录！");
+        }
+        ApiResult result = authService.startExam(examStudyFinishDto);
         return result;
     }
 

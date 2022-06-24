@@ -58,7 +58,7 @@
         <!--        <table tableName="mp_attachment_comment_reply" />-->
         <!--        <table tableName="mp_attachment_comment" />-->
         <!--                <table tableName="mp_user_exam" />-->
-        <!--        <table tableName="mp_user_authentication" />-->
+<!--                <table tableName="mp_user_authentication" />-->
         <!--        <table tableName="mp_unit" />-->
         <!--        <table tableName="mp_sign_up" />-->
         <!--        <table tableName="mp_questionnaire" />-->
@@ -70,7 +70,7 @@
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
-        <table tableName="mp_auth" />
+<!--        <table tableName="mp_auth" />-->
         <!--        <table tableName="mp_auth_certificase" />-->
         <!--        <table tableName="mp_auth_direction" />-->
         <!--        <table tableName="mp_auth_domain" />-->

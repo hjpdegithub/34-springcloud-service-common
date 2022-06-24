@@ -44,6 +44,7 @@ public enum CommonEnum {
 
     FINISH(1,"完成"),
     NOT_FINISH(2,"未完成"),
+
     NO(0,"否"),
     YES(1,"是")
     ;
