@@ -3,6 +3,7 @@ package com.springboot.boot.modules.admin.controller;
 import com.springboot.boot.modules.admin.dto.Auth.ClassStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.Auth.ExamStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.AuthBaseDto;
+import com.springboot.boot.modules.admin.entity.MpAuthUserSignUp;
 import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.vo.classify.app.SearchStudyVo;
 import com.springboot.boot.utils.ApiResult;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +52,7 @@ public class AuthController {
         if (null == authBaseDto.getUserId()){
             return ApiResult.error("请先登录！");
         }
+
         ApiResult result = authService.authSignUp(authBaseDto);
         return result;
     }
@@ -59,6 +62,10 @@ public class AuthController {
     public ApiResult startStudy(@RequestParam("authId") Long authId,@RequestParam("userId") Long userId){
         if (null == userId){
             return ApiResult.error("请先登录！");
+        }
+        List<MpAuthUserSignUp> authUserSignUps = authService.searchSignUp(authId,userId);
+        if (CollectionUtils.isEmpty(authUserSignUps)){
+            return ApiResult.error("请先预约！");
         }
         ApiResult result = authService.startStudy(authId,userId);
         return result;

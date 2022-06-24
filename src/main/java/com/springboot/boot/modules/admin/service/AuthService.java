@@ -3,8 +3,11 @@ package com.springboot.boot.modules.admin.service;
 import com.springboot.boot.modules.admin.dto.Auth.ClassStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.Auth.ExamStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.AuthBaseDto;
+import com.springboot.boot.modules.admin.entity.MpAuthUserSignUp;
 import com.springboot.boot.utils.ApiResult;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 public interface AuthService {
     /**
@@ -41,4 +44,17 @@ public interface AuthService {
      * @return
      */
     ApiResult startExam(ExamStudyFinishDto examStudyFinishDto);
+
+    /**
+     * 查看用户报名预约
+     * @param
+     * @return
+     */
+    List<MpAuthUserSignUp> searchSignUp(Long authId,Long userId);
+
+    /**
+     * 查看是否完成课程
+     * @return
+     */
+    Integer ifWhere(Long authId, Long userId);
 }
