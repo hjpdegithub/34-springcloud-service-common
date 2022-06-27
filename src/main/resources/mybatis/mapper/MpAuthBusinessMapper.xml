@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpAuthBusinessMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpAuth">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="auth_descr" jdbcType="VARCHAR" property="authDescr" />
+    <result column="direction_id" jdbcType="BIGINT" property="directionId" />
+    <result column="domain_id" jdbcType="BIGINT" property="domainId" />
+    <result column="unit_id" jdbcType="BIGINT" property="unitId" />
+    <result column="auth_level" jdbcType="INTEGER" property="authLevel" />
+    <result column="exam_id" jdbcType="BIGINT" property="examId" />
+    <result column="department_id" jdbcType="BIGINT" property="departmentId" />
+    <result column="auth_first_classify_id" jdbcType="BIGINT" property="authFirstClassifyId" />
+    <result column="auth_sencond_classify_id" jdbcType="BIGINT" property="authSencondClassifyId" />
+    <result column="certificate_time" jdbcType="TIMESTAMP" property="certificateTime" />
+    <result column="certificate_type" jdbcType="INTEGER" property="certificateType" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="BIGINT" property="updateUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
+    <result column="up_type" jdbcType="INTEGER" property="upType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, auth_descr, direction_id, domain_id, unit_id, auth_level, exam_id, department_id, 
+    auth_first_classify_id, auth_sencond_classify_id, certificate_time, certificate_type, 
+    end_time, create_user, create_time, update_user, update_time, dele_flag, up_type
+  </sql>
+
+  <select id="authBanner" resultType="com.springboot.boot.modules.admin.vo.auth.AuthAndUserVo">
+    SELECT
+	a.id as id,
+	a.user_id as userId,
+	a.auth_id as authId,
+	b.name as userName,
+	c.name as name
+    FROM
+	mp_user_auth a
+	LEFT JOIN mp_user_authentication b ON a.user_id = b.id
+	left join mp_auth c on a.auth_id = c.id
+	where a.dele_flag = 0
+  </select>
+</mapper>

@@ -91,4 +91,12 @@ public class AuthController {
         return result;
     }
 
+
+    @ApiOperation(value = "认证动态接口", notes="认证动态接口")
+    @GetMapping(value="/authBanner")
+    public ApiResult startStudy(){
+        ApiResult result = authService.authBanner();
+        return result;
+    }
+
 }

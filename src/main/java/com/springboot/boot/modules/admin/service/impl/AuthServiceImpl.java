@@ -13,6 +13,7 @@ import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.service.OptionService;
 import com.springboot.boot.modules.admin.service.QuestionService;
 import com.springboot.boot.modules.admin.vo.ChengjiVo;
+import com.springboot.boot.modules.admin.vo.auth.AuthAndUserVo;
 import com.springboot.boot.modules.admin.vo.auth.AuthProcedureVo;
 import com.springboot.boot.modules.admin.vo.auth.IfWhereVo;
 import com.springboot.boot.modules.admin.vo.auth.StartStudyVo;
@@ -70,6 +71,8 @@ public class AuthServiceImpl implements AuthService {
     @Resource
     private OptionService optionService;
 
+    @Resource
+    private MpAuthBusinessMapper mpAuthBusinessMapper;
     /**
      * 认证查看流程接口版本2.0
      *
@@ -325,6 +328,55 @@ public class AuthServiceImpl implements AuthService {
         return studyResult;
     }
 
+//    public static void main(String[] args) {
+//        List<String> list = new ArrayList<>();
+//        list.add("1");
+//        list.add("2");
+//        list.add("3");
+//        list.add("4");
+//        list.add("5");
+//        list.add("6");
+//        list.add("7");
+//        List<List<String>> lists = groupList(list, 2);
+//        System.out.println("list:" + list.toString());
+//        System.out.println(lists);
+//    }
+
+
+    /**
+     * 认证轮播
+     * @return
+     */
+    @Override
+    public ApiResult authBanner() {
+        //查看认证轮播相关信息
+        List<AuthAndUserVo> userVo = mpAuthBusinessMapper.authBanner();
+        if (CollectionUtils.isEmpty(userVo)){
+            return ApiResult.success(userVo);
+        }
+        List<List<AuthAndUserVo>> lists = groupList(userVo, 3);
+        return ApiResult.success(lists);
+    }
+    /**
+     * 集合拆分
+     *
+     * @param list     原集合
+     * @param pageSize ⼦集合长度
+     * @param <T>
+     * @return
+     */
+    public static <T> List<List<T>> groupList(List<T> list, int pageSize) {
+        List<List<T>> listGroup = new ArrayList<List<T>>();
+        int listSize = list.size();
+        for (int i = 0; i < listSize; i += pageSize) {
+            if (i + pageSize > listSize) {
+                pageSize = listSize - i;
+            }
+            List<T> newList = list.subList(i, i + pageSize);
+            listGroup.add(newList);
+        }
+        return listGroup;
+    }
 
     /**
      * 计算试卷分数
