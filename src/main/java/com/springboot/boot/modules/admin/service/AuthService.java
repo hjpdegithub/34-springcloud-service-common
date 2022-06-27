@@ -57,4 +57,10 @@ public interface AuthService {
      * @return
      */
     Integer ifWhere(Long authId, Long userId);
+
+    /**
+     * 认证轮播
+     * @return
+     */
+    ApiResult authBanner();
 }

@@ -39,43 +39,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public ApiResult search() {
         MpDepartmentExample example = new MpDepartmentExample();
         List<MpDepartment> mpDepartments = departmentMapper.selectByExample(example);
-//        List<List<MpDepartment>> lists = groupList(mpDepartments, 3);
-//        System.out.println(JSONObject.toJSON(lists));
         return ApiResult.success(mpDepartments);
 
     }
-    /**
-     * 集合拆分
-     *
-     * @param list     原集合
-     * @param pageSize ⼦集合长度
-     * @param <T>
-     * @return
-     */
-    public static <T> List<List<T>> groupList(List<T> list, int pageSize) {
-        List<List<T>> listGroup = new ArrayList<List<T>>();
-        int listSize = list.size();
-        for (int i = 0; i < listSize; i += pageSize) {
-            if (i + pageSize > listSize) {
-                pageSize = listSize - i;
-            }
-            List<T> newList = list.subList(i, i + pageSize);
-            listGroup.add(newList);
-        }
-        return listGroup;
-    }
-//    public static void main(String[] args) {
-//        List<String> list = new ArrayList<>();
-//        list.add("1");
-//        list.add("2");
-//        list.add("3");
-//        list.add("4");
-//        list.add("5");
-//        list.add("6");
-//        list.add("7");
-//        List<List<String>> lists = groupList(list, 2);
-//        System.out.println("list:" + list.toString());
-//        System.out.println(lists);
-//    }
-
 }
