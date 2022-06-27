@@ -3,6 +3,7 @@ package com.springboot.boot.modules.admin.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
+import com.springboot.boot.modules.admin.dto.Auth.MpNameDto;
 import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDirectionAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyDelFirstDto;
@@ -52,11 +53,10 @@ public class AuthClassifyController {
     }
 
     @ApiOperation(value = "根据名称查询认证方向列表", notes="根据名称查询认证方向列表，如果名称为空则查询全部，包含认证领域列表")
-    @PostMapping(value="/searchByAuthdirectionName")
-    public ApiResult searchByAuthdirectionName(@RequestBody MpAuthDto dto){
+    @PostMapping(value="/searchName")
+    public ApiResult searchByAuthdirectionName(@RequestBody MpNameDto dto){
         log.info("分类的新增以及修改----------参数对象输出{}", JSONObject.toJSON(dto));
         //判断一级分类名称是否相同
-
         return ApiResult.success(authClassifyService.searchByAuthdirectionName(dto));
     }
 

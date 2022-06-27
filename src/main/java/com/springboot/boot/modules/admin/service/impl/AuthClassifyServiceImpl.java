@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
+import com.springboot.boot.modules.admin.dto.Auth.MpNameDto;
 import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDirectionAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDirectionDto;
 import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDomainDto;
@@ -19,8 +20,11 @@ import com.springboot.boot.modules.admin.service.AuthClassifyService;
 import com.springboot.boot.modules.admin.service.AuthService;
 import com.springboot.boot.modules.admin.service.ClassifyService;
 import com.springboot.boot.modules.admin.service.CurriculumService;
+import com.springboot.boot.modules.admin.vo.auth.MpAuthDomainVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.classify.ClassifyAllVo;
+import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.test.MpExamAchievementMultiVo;
 import com.springboot.boot.utils.ApiCode;
 import com.springboot.boot.utils.ApiResult;
 import com.springboot.boot.utils.BeanCopy;
@@ -177,36 +181,46 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
      * @return
      */
     @Override
-    public List<MpAuthDirection> searchByAuthdirectionName(MpAuthDto dto) {
-
-        String    authdirectionName = dto.getName();
-        MpAuthDirectionExample mpAuthDirectionExample = new MpAuthDirectionExample();
-        mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
-        if (null != authdirectionName) {
-            mpAuthDirectionExample.createCriteria().andNameEqualTo(authdirectionName);
+    public PageInfo<MpAuthHVo> searchByAuthdirectionName(MpNameDto dto) {
+        if (dto.getPaging()) {
+            PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
         }
-        List<MpAuthDirection> mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+        String authdirectionName = dto.getName();
+        List<MpAuthDirection> mpAuthDirections = null;
+        MpAuthDirectionExample mpAuthDirectionExample = null;
+        if (authdirectionName == null) {
+            mpAuthDirectionExample = new MpAuthDirectionExample();
+            mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+            mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+        }
+        if (null != authdirectionName) {
+            mpAuthDirectionExample = new MpAuthDirectionExample();
+            mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNameEqualTo(authdirectionName);
+
+            mpAuthDirections= mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+
+        }
 
         List<MpAuthHVo> mpAuthHVos = new ArrayList<>();
-        for(  MpAuthDirection e   : mpAuthDirections){
-            Long  eid  =e.getId();
-            MpAuthDomainExample ex  =  new MpAuthDomainExample();
+        for (MpAuthDirection e : mpAuthDirections) {
+            Long eid = e.getId();
+            MpAuthDomainExample ex = new MpAuthDomainExample();
             ex.createCriteria().andAuthDirectionIdEqualTo(eid).andDeleFlagEqualTo(CommonEnum.USED.getCode());
-            List<MpAuthDomain>   mpAuthDomainList = mpAuthDomainMapper.selectByExample(ex);
-            MpAuthHVo vo = new   MpAuthHVo();
+            List<MpAuthDomain> mpAuthDomainList = mpAuthDomainMapper.selectByExample(ex);
+
+            List<MpAuthDomainVo> mpAuthDomainVoList = new ArrayList<>();
+            for (MpAuthDomain e1 : mpAuthDomainList) {
+                MpAuthDomainVo vo1 = new MpAuthDomainVo();
+                BeanCopy.copy(e1, vo1);
+                mpAuthDomainVoList.add(vo1);
+            }
+            MpAuthHVo vo = new MpAuthHVo();
             BeanCopy.copy(e, vo);
+            vo.setMpAuthDomainVos(mpAuthDomainVoList);
             mpAuthHVos.add(vo);
-
-
         }
-
-
-
-
-
-
-        log.info("根据名称查看方向分类信息返回报文输出=================" + JSONObject.toJSONString(mpAuthDirections));
-        return mpAuthDirections;
+        PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
+        return pageInfo;
     }
 
 

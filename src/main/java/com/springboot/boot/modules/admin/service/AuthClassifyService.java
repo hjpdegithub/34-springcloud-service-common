@@ -3,6 +3,7 @@ package com.springboot.boot.modules.admin.service;
 
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
+import com.springboot.boot.modules.admin.dto.Auth.MpNameDto;
 import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDirectionAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyAddOrUpdateDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyDelFirstDto;
@@ -11,6 +12,7 @@ import com.springboot.boot.modules.admin.dto.classifyDto.ClassifySearchAllDto;
 import com.springboot.boot.modules.admin.entity.MpAuthDirection;
 import com.springboot.boot.modules.admin.entity.MpFirstClassify;
 import com.springboot.boot.modules.admin.entity.MpSecondClassify;
+import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.classify.ClassifyAllVo;
 import com.springboot.boot.utils.ApiResult;
 
@@ -28,7 +30,7 @@ public interface AuthClassifyService {
     /**
      * 根据一级分类名称查询一级分类信息接口
      */
-    List<MpAuthDirection> searchByAuthdirectionName(MpAuthDto dto);
+    PageInfo<MpAuthHVo>  searchByAuthdirectionName(MpNameDto dto);
     /**
      * 根据一级分类id查看二级分类信息
      */
