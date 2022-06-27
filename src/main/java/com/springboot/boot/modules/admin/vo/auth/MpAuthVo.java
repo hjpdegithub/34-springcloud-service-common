@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 @Data
-public class MpAuthDto  extends PageDto {
+public class MpAuthVo extends PageDto {
     private Long id;
 
     private String name;
@@ -53,6 +53,8 @@ public class MpAuthDto  extends PageDto {
     private Integer deleFlag;
 
     private Long userId;
+
+
 
 
 
