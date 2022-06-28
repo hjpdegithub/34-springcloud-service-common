@@ -3,7 +3,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/db_data?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/mi_pl_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root
 
@@ -94,12 +94,12 @@ att:
   password:
 
 #侯本地环境
-#oos:
-#  endpoint: oss-cn-beijing.aliyuncs.com
-#  keyid: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
-#  keysecret: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
-#  bucketname: test220321bucket # bucket名称
-#  filehost: mq    #bucket下文件夹的路径
+oos:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  keyid: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
+  keysecret: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
+  bucketname: test220321bucket # bucket名称
+  filehost: mq    #bucket下文件夹的路径
 #测试环境
 #oos:
 #  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
@@ -108,30 +108,32 @@ att:
 #  bucketname: oss-nrxt-szh-dev-001 # bucket名称
 #  filehost: mq    #bucket下文件夹的路径
 #生产环境
-oos:
-  endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
-  keyid:    dB9c2A1CrDVVkBqM # 填写刚刚生成的AccessKey
-  keysecret: 7dio40l2jIJJYF27n1NtvrBw70df96  # 填写刚刚生成的Accesssecret
-  bucketname: szhnlkfpt-oss-prod # bucket名称
-  filehost: mq    #bucket下文件夹的路径
+#oos:
+#  endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
+#  keyid:    dB9c2A1CrDVVkBqM # 填写刚刚生成的AccessKey
+#  keysecret: 7dio40l2jIJJYF27n1NtvrBw70df96  # 填写刚刚生成的Accesssecret
+#  bucketname: szhnlkfpt-oss-prod # bucket名称
+#  filehost: mq    #bucket下文件夹的路径
 
 
   # 侯本地环境
-  #oosFilePath: D:/show/
+  oosFilePath: D:/show/
   #实验环境
   #oosFilePath :/mnt/file/
   #生产环境
-  oosFilePath : /nas/file/
-  # 本地环境的返回url
-  #oosFileShowPathPrex : http://localhost:8080/showresource/
+  #oosFilePath : /nas/file/
+
+  # 本地和实验环境的返回url
+  oosFileShowPathPrex : http://localhost:8080/mp/showresource/
   # 生产测试url
-  oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
+  #oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
+
   # 侯本地
-  #localShowPath : file:D:\\show\\
+  localShowPath : file:D:\\show\\
   # 测试环境环境
   #localShowPath: file:/mnt/file/
   # 生产环境
-  localShowPath : file:/nas/file/
+  #localShowPath : file:/nas/file/
 
 # mybatis-plus相关配置
 mybatis-plus:

@@ -106,31 +106,41 @@ public class AliyunOSSUtil {
 
     public String ossToLocalToShow(HttpServletResponse response, String FileFullPath, String fileName) {
 
+
         String endpoint = constantProperties.getEndpoint();
         String accessKeyId = constantProperties.getKeyid();
         String accessKeySecret = constantProperties.getKeysecret();
         String bucketName = constantProperties.getBucketname();
-        ClientBuilderConfiguration config = new  ClientBuilderConfiguration();
+        String oosFilePath = constantProperties.getOosFilePath();
+        String oosFileShowPathPrex = constantProperties.getOosFileShowPathPrex();
+
+
+        ClientBuilderConfiguration config = new ClientBuilderConfiguration();
         config.setSupportCname(false);
 
-        String name = System.currentTimeMillis()+fileName;
         try {
-
-
-
-
-            String pathName = constantProperties.getOosFilePath()+name;
+            fileName = System.currentTimeMillis() + fileName;
+            String pathName = oosFilePath + fileName;
             // 创建OSSClient实例。
-            OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret,config);
+            OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret, config);
             // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
             ossClient.getObject(new GetObjectRequest(bucketName, FileFullPath), new File(pathName));
+            // 关闭OSSClient。
             ossClient.shutdown();
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return constantProperties.getOosFileShowPathPrex()+name ;
-
+        //正式环境
+        //   return oosFileShowPathPrex+fileName ;
+        //实验环境
+        InetAddress address = null;
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        String ipAdress=   address.getHostAddress();
+        return "http://" + ipAdress + ":8080" + "/showresource/" + fileName;
     }
 
     /**

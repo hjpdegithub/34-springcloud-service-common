@@ -182,17 +182,17 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
         Long id = dto.getId();
         List<MpAuthDirection> mpAuthDirections = null;
         MpAuthDirectionExample mpAuthDirectionExample = null;
-        if (authdirectionName == null) {
+        if (authdirectionName == null || "".equals("")) {
             mpAuthDirectionExample = new MpAuthDirectionExample();
             mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
             mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
         }
-        if (null != authdirectionName) {
+        if (null != authdirectionName && !"".equals("")) {
             mpAuthDirectionExample = new MpAuthDirectionExample();
             mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNameEqualTo(authdirectionName);
             mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
         }
-        if (null != id) {
+        if (null != id && !"".equals("")) {
             mpAuthDirectionExample = new MpAuthDirectionExample();
             mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andIdEqualTo(id);
         }
@@ -218,30 +218,46 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
         return pageInfo;
     }
 
+    /**
+     * 根据名称查看方向分类信息如果名称是空的话就查询所有的认证方向
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public List<MpAuthDirection> search() {
+        List<MpAuthDirection> mpAuthDirections = null;
+        MpAuthDirectionExample mpAuthDirectionExample = new MpAuthDirectionExample();
+        mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+
+        return mpAuthDirections;
+    }
 
     /**
      * 根据id删除认证方向以及认证方向下的领域
      */
 
     public Integer deleteByIds(MpNameIdsDto dto) {
-        MpAuthDirection mpAuthDirection = mpAuthDirectionMapper.selectByPrimaryKey(dto.getId());
-        mpAuthDirection.setUpdateUser(dto.getUserId());
-        mpAuthDirection.setUpdateTime(new Date());
-        mpAuthDirection.setDeleFlag(CommonEnum.DELETE.getCode());
-        mpAuthDirectionMapper.updateByPrimaryKeySelective(mpAuthDirection);
-        MpAuthDomainExample example = new MpAuthDomainExample();
-        example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode())
-                .andAuthDirectionIdEqualTo(mpAuthDirection.getId());
-
-
-
-        List<MpAuthDomain> mpAuthDomains = mpAuthDomainMapper.selectByExample(example);
-        for( MpAuthDomain e :   mpAuthDomains){
-            e.setDeleFlag(CommonEnum.DELETE.getCode());
-            mpAuthDomainMapper.updateByPrimaryKeySelective(e);
+        List<Long> ids = dto.getIds();
+        if (null != ids && ids.size() > 0) {
+            for (Long id : ids) {
+                MpAuthDirection mpAuthDirection = mpAuthDirectionMapper.selectByPrimaryKey(id);
+                mpAuthDirection.setUpdateUser(dto.getUserId());
+                mpAuthDirection.setUpdateTime(new Date());
+                mpAuthDirection.setDeleFlag(CommonEnum.DELETE.getCode());
+                mpAuthDirectionMapper.updateByPrimaryKeySelective(mpAuthDirection);
+                MpAuthDomainExample example = new MpAuthDomainExample();
+                example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                        .andAuthDirectionIdEqualTo(mpAuthDirection.getId());
+                List<MpAuthDomain> mpAuthDomains = mpAuthDomainMapper.selectByExample(example);
+                for (MpAuthDomain e : mpAuthDomains) {
+                    e.setDeleFlag(CommonEnum.DELETE.getCode());
+                    mpAuthDomainMapper.updateByPrimaryKeySelective(e);
+                }
+            }
         }
-         return  1;
+        return 1;
     }
-
 
 }

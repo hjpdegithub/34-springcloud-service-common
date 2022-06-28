@@ -8,6 +8,7 @@ import com.springboot.boot.modules.admin.dto.AuthClassify.MpAuthDirectionAddOrUp
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyDelFirstDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifyDelSecondDto;
 import com.springboot.boot.modules.admin.dto.classifyDto.ClassifySearchAllDto;
+import com.springboot.boot.modules.admin.entity.MpAuthDirection;
 import com.springboot.boot.modules.admin.entity.MpFirstClassify;
 import com.springboot.boot.modules.admin.entity.MpSecondClassify;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
@@ -33,6 +34,10 @@ public interface AuthClassifyService {
      */
     PageInfo<MpAuthHVo>  searchByAuthdirectionName(MpNameIdsDto dto);
 
+    /**
+     * 根据名称或者id查找认证方向列表
+     */
+    List<MpAuthDirection>  search();
 
 
 

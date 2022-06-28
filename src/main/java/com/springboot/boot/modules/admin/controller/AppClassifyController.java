@@ -27,11 +27,8 @@ import java.util.List;
 @Api(tags = "1.4", description = "前端分类展示【周京昊】")
 @CrossOrigin
 public class AppClassifyController {
-
-
     @Autowired
     private AppClassifyService appClassifyService;
-
     /**
      * 自助列表2.0版本加入认证筛选条件
      * @return

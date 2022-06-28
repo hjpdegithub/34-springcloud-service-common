@@ -15,10 +15,7 @@ import com.springboot.boot.modules.admin.service.AuthManageService;
 
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
-import com.springboot.boot.utils.ApiCode;
-import com.springboot.boot.utils.ApiResult;
-import com.springboot.boot.utils.BeanCopy;
-import com.springboot.boot.utils.SnowFlakeUtils;
+import com.springboot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,7 +85,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         mpBusinessAttachmentInfo.setAttachmentId(info.getId());
         mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
         //是修改
-        if (null != dto.getId()&&dto.getId()!=0&&!dto.getId().toString().equals("")) {
+        if (null != dto.getId() && dto.getId() != 0 && !dto.getId().toString().equals("")) {
             //以下处理以下业务1删除掉 图片业务表的该认证的关联数据 ，删除以前的图片为无效。
             MpBusinessAttachmentInfoExample mpBusinessAttachmentInfoExample =
                     new MpBusinessAttachmentInfoExample();
@@ -134,27 +131,46 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     /**
      * 分页查询认证
+     *
      * @param dto
      * @return
      */
     @Override
-    public   PageInfo<MpAuthHVo> search(MpAuthDto dto){
-            if (dto.getPaging()) {
-                PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
-            }
-            List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
-            log.info("分页查询认证===================={}",dto);
-
-
-
-
-
-            PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
-            return pageInfo;
+    public PageInfo<MpAuthHVo> search(MpAuthDto dto) {
+        if (dto.getPaging()) {
+            PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
         }
+        //java 取当天日期开始时点
+        Date startTime = dto.getEndTime();
+        if (null != startTime) {
+            Date dateStart = DateUtils.getDayStart(startTime);
+            Date dateEnd = DateUtils.getNextDay(startTime);
+            dto.setDateEnd(dateEnd);
+            dto.setDateStart(dateStart);
+        }
+        List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
+        log.info("分页查询认证===================={}", dto);
+        PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
+        return pageInfo;
+    }
+
+    /**
+     * 认证信息上下线
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+    public Integer onOffLine(MpAuthDto dto) {
 
 
 
+       return null;
+
+
+
+
+    }
 
 
 }

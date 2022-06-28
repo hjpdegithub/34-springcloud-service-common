@@ -1,6 +1,7 @@
 package com.springboot.boot.modules.admin.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
@@ -27,5 +28,15 @@ public interface AuthManageService {
      * @return
      */
     PageInfo<MpAuthHVo> search(MpAuthDto dto);
+
+
+    /**
+     * 认证信息上下线
+     * @param dto
+     * @return
+     */
+    Integer onOffLine(MpAuthDto dto);
+
+
 
 }

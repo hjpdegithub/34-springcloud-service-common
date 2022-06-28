@@ -8,7 +8,6 @@ import java.util.Date;
 public class MpAuthDirection {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long id;
-
     private String description;
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long createUser;
