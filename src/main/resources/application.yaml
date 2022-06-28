@@ -123,7 +123,7 @@ oos:
   #生产环境
   #oosFilePath : /nas/file/
 
-  # 本地和实验环境的返回url
+  # 侯本地和实验环境的返回url
   oosFileShowPathPrex : http://localhost:8080/mp/showresource/
   # 生产测试url
   #oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
