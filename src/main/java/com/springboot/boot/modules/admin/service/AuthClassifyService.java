@@ -32,12 +32,20 @@ public interface AuthClassifyService {
     /**
      * 根据名称或者id查找认证方向列表
      */
-    PageInfo<MpAuthHVo>  searchByAuthdirectionName(MpNameIdsDto dto);
+    MpAuthHVo  searchId(MpNameIdsDto dto);
+
 
     /**
      * 根据名称或者id查找认证方向列表
      */
-    List<MpAuthDirection>  search();
+    PageInfo<MpAuthHVo>  searchByAuthdirectionName(MpNameIdsDto dto);
+
+
+
+    /**
+     * 根据名称或者id查找认证方向列表
+     */
+    List<MpAuthHVo>  search();
 
 
 
