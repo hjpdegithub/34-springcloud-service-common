@@ -33,6 +33,7 @@ public class MpAuthDto  extends PageDto {
     private Integer upType;
     private Date  dateStart;
     private Date  dateEnd;
+    private  Long fileId;
 
 
 

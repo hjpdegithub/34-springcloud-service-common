@@ -7,6 +7,7 @@ import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
+import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
 import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
@@ -62,14 +63,8 @@ public class AuthServiceManageImpl implements AuthManageService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ApiResult addOrUpdate(MpAuthDto dto, MultipartFile file) {
+    public ApiResult addOrUpdate(MpAuthDto dto) {
 
-        ApiResult res = attachmentService.attachmentDeal(file);
-        if (res.getCode() == ApiCode.FAIL.getCode()) {
-            return ApiResult.error("认证信息上传文件失败");
-        }
-
-        MpAttachmentInfo info = (MpAttachmentInfo) res.getData();
         //新增文件信息
         //雪花
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
@@ -82,7 +77,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         mpBusinessAttachmentInfo.setCreateUser(dto.getUserId());
         mpBusinessAttachmentInfo.setCreateTime(new Date());
         mpBusinessAttachmentInfo.setBusiness("AuthInfo");
-        mpBusinessAttachmentInfo.setAttachmentId(info.getId());
+        mpBusinessAttachmentInfo.setAttachmentId(dto.getFileId());
         mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
         //是修改
         if (null != dto.getId() && dto.getId() != 0 && !dto.getId().toString().equals("")) {
@@ -162,13 +157,41 @@ public class AuthServiceManageImpl implements AuthManageService {
      */
     @Override
     public Integer onOffLine(MpAuthDto dto) {
+        MpAuth ent = mpAuthMapper.selectByPrimaryKey(dto.getId());
+        ent.setUpdateUser(dto.getUserId());
+        ent.setUpdateTime(new Date());
+        ent.setUpType(0);
+        int i = mpAuthMapper.updateByPrimaryKey(ent);
+        if (i <= CommonEnum.ADD_ERROR.getCode()) {
+            throw new BusinessException("新增认证信息失败！");
+        }
+        return i;
+    }
 
+    /**
+     * 认证信息批量删除
+     *
+     * @param dto
+     * @return
+     */
+    @Override
 
+    public Integer deleteBatch(MpNameIdsDto dto) {
 
-       return null;
-
-
-
+        List<Long> ids = dto.getIds();
+        int i = 0;
+        if (null != ids && ids.size() > 0) {
+            for (Long id : ids) {
+                MpAuth ent = mpAuthMapper.selectByPrimaryKey(id);
+                ent.setDeleFlag(CommonEnum.DELETE.getCode());
+                mpAuthMapper.updateByPrimaryKey(ent);
+                i++;
+            }
+            if (i != ids.size()) {
+                throw new BusinessException("认证批量删除失败！");
+            }
+        }
+        return 1;
 
     }
 
