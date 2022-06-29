@@ -191,6 +191,9 @@ public class AuthServiceManageImpl implements AuthManageService {
             for (Long id : ids) {
                 MpAuth ent = mpAuthMapper.selectByPrimaryKey(id);
                 ent.setDeleFlag(CommonEnum.DELETE.getCode());
+                ent.setUpdateUser(dto.getUserId());
+                ent.setUpdateTime(new Date());
+
                 mpAuthMapper.updateByPrimaryKey(ent);
                 i++;
             }

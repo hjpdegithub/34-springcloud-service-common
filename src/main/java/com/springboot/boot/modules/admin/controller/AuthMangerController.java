@@ -80,7 +80,7 @@ public class AuthMangerController {
         return ApiResult.success(authService.onOffLine(dto));
     }
 
-    //上下线
+
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/deleteBatch")
     public ApiResult deleteBatch(@RequestBody MpNameIdsDto dto
