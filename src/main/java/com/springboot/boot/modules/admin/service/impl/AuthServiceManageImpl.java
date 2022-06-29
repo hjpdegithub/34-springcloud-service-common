@@ -115,6 +115,8 @@ public class AuthServiceManageImpl implements AuthManageService {
             //是新增
             mpAuth.setId(snowFlakeUtil.nextId());
             mpAuth.setCreateUser(dto.getUserId());
+            mpAuth.setDeleFlag(CommonEnum.USED.getCode());
+            mpAuth.setUpType(CommonEnum.UP.getCode());
             mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
             mpBusinessAttachmentInfoMapper.insert(mpBusinessAttachmentInfo);
             mpAuth.setCreateTime(new Date());
