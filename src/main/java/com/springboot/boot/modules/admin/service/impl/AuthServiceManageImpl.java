@@ -66,26 +66,25 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult addOrUpdate(MpAuthDto dto) {
-
         //新增文件信息
         //雪花
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
         //====================创建认证实体==================-=====
         MpAuth mpAuth = new MpAuth();
-
         //数据赋值
         BeanCopy.copy(dto, mpAuth);
         MpBusinessAttachmentInfo mpBusinessAttachmentInfo
                 = new MpBusinessAttachmentInfo();
-        mpBusinessAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
+        mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
         mpBusinessAttachmentInfo.setCreateUser(dto.getUserId());
         mpBusinessAttachmentInfo.setCreateTime(new Date());
         mpBusinessAttachmentInfo.setBusiness("AuthInfo");
+        mpBusinessAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
         mpBusinessAttachmentInfo.setAttachmentId(dto.getFileId());
         mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
         //是修改
         if (null != dto.getId() && dto.getId() != 0 && !dto.getId().toString().equals("")) {
-            //以下处理以下业务1删除掉 图片业务表的该认证的关联数据 ，删除以前的图片为无效。
+            //以下处理以下业务1删除掉 图片业务表的该认证的关联数据 。
             MpBusinessAttachmentInfoExample mpBusinessAttachmentInfoExample =
                     new MpBusinessAttachmentInfoExample();
             mpBusinessAttachmentInfoExample.createCriteria().andDelFlagEqualTo(CommonEnum.USED.getCode())
@@ -98,31 +97,22 @@ public class AuthServiceManageImpl implements AuthManageService {
                     e.setUpdateUser(dto.getUserId());
                     e.setUpdateTime(new Date());
                     mpBusinessAttachmentInfoMapper.updateByPrimaryKeySelective(e);
-                    MpAttachmentInfo mpAttachmentInfo = mpAttachmentInfoMapper.selectByPrimaryKey(e.getAttachmentId());
-                    if (null != mpAttachmentInfo) {
-                        mpAttachmentInfo.setDelFlag(CommonEnum.DELETE.getCode());
-                        mpAttachmentInfo.setUpdateDate(new Date());
-                        mpAttachmentInfo.setUpdateUser(dto.getUserId());
-                        mpAttachmentInfoMapper.updateByPrimaryKeySelective(mpAttachmentInfo);
-
-                    }
                 }
             }
-            mpAuth.setUpdateTime(new Date());
-            mpAuth.setUpdateUser(dto.getUserId());
-            mpBusinessAttachmentInfo.setBusinessId(dto.getId());
+
             mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
-            int i = mpAuthMapper.updateByPrimaryKey(mpAuth);
+            int i = mpAuthMapper.updateByPrimaryKeySelective(mpAuth);
             if (i <= CommonEnum.UPDATE_ERROR.getCode()) {
                 throw new BusinessException("更新认证信息失败！");
             }
         } else {
             //是新增
             mpAuth.setId(snowFlakeUtil.nextId());
+            mpAuth.setUpType(0);
             mpAuth.setCreateUser(dto.getUserId());
             mpAuth.setDeleFlag(CommonEnum.USED.getCode());
             mpAuth.setUpType(CommonEnum.UP.getCode());
-            mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
+
             mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             mpAuth.setCreateTime(new Date());
             int i = mpAuthMapper.insertSelective(mpAuth);

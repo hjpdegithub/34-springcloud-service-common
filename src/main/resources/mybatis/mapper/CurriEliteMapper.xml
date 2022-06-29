@@ -5,6 +5,7 @@
     <select id="selectAll" resultType="com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo">
      select * from mp_curriculum
       where dele_flag='0'
+      and  property_type <![CDATA[<>]]>    '2'
       order by    create_time desc limit   0,12;
   </select>
 
