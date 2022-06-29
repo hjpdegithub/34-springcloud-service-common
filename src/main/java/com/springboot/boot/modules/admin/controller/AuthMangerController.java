@@ -71,6 +71,19 @@ public class AuthMangerController {
         return ApiResult.success(authService.search(dto));
     }
 
+
+
+
+    //列表查询
+    @ApiOperation(value = "认证信息详情查询", notes = "认证信息详情查询")
+    @PostMapping(value = "/searchById")
+    public ApiResult searchById(@RequestBody MpAuthDto dto
+    ) {
+        log.info("认证信息详情查询----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.searchById(dto));
+    }
+
+
     //上下线
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/onOffLine")

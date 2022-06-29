@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface MpAuthHMapper {
 
-    List<MpAuthHVo> selectAllMpAuths( @Param("dto") MpAuthDto dto);
+    List<MpAuthHVo> selectAllMpAuths(@Param("dto") MpAuthDto dto);
+
+    Long selectFileId(@Param("id") Long id);
 
 }

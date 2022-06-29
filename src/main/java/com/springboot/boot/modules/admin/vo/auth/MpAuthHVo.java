@@ -2,6 +2,7 @@ package com.springboot.boot.modules.admin.vo.auth;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.springboot.boot.modules.admin.entity.MpAttachmentInfo;
 import lombok.Data;
 
 import java.util.Date;
@@ -44,6 +45,8 @@ public class MpAuthHVo {
     private List<MpAuthDomainVo> MpAuthDomainVos;
     private String  unitName;
     private String  departMentName;
+    private MpAttachmentInfo fileInfo ;
+
 
 
 }

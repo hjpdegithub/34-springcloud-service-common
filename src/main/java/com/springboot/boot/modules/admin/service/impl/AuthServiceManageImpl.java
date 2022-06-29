@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthServiceManageImpl implements AuthManageService {
 
+    @Autowired
+    public AliyunOSSUtil aliyunOSSUtil;
 
     @Resource
     private MpAttachmentInfoMapper mpAttachmentInfoMapper;
@@ -154,6 +156,52 @@ public class AuthServiceManageImpl implements AuthManageService {
         log.info("分页查询认证===================={}", dto);
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
+    }
+
+
+    /**
+     * 认证详情查询
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+    public MpAuthHVo searchById(MpAuthDto dto) {
+
+        MpAuthHVo vo = null;
+        if (dto.getId() == null || dto.getId() == 0) {
+            return null;
+        }
+        List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
+        if (null != mpAuthHVos && mpAuthHVos.size() > 0) {
+            vo = mpAuthHVos.get(0);
+        } else {
+            return null;
+        }
+
+        //查询出对应的证书底板
+
+        Long id = mpAuthHMapper.selectFileId(dto.getId());
+        String fileName = null;
+        String fileUrl = null;
+        String filePath = null;
+        MpAttachmentInfo info1 = null;
+        if (null != id) {
+            //根据id找到文件信息
+            info1 = mpAttachmentInfoMapper.selectByPrimaryKey(id);
+
+            fileName = info1.getFileName();
+            fileUrl = info1.getFileUrl();
+            filePath = info1.getFilePath();
+        }
+
+        String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
+        info1.setFileUrl(fileUrl);
+        info1.setFilePath(filePath);
+        info1.setFileUrlLocal(fileUrlLocal);
+        info1.setFileName(fileName);
+        vo.setFileInfo(info1);
+        return vo;
     }
 
     /**
