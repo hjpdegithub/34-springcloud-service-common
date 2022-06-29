@@ -1,10 +1,12 @@
 package com.springboot.boot.modules.admin.dto.Auth;
 
 import com.springboot.boot.common.page.PageDto;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
 @Data
+@ApiModel("MpAuthDto 参数对象")
 public class MpAuthDto  extends PageDto {
     private Long id;
     private String name;
@@ -31,8 +33,8 @@ public class MpAuthDto  extends PageDto {
     private Integer deleFlag;
     private Long userId;
     private Integer upType;
-    private Date  dateStart;
-    private Date  dateEnd;
+    private Date  dateCStart;
+    private Date  dateCEnd;
     private  Long fileId;
 
 

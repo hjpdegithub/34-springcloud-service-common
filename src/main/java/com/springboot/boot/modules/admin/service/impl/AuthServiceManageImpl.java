@@ -70,6 +70,8 @@ public class AuthServiceManageImpl implements AuthManageService {
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
         //====================创建认证实体==================-=====
         MpAuth mpAuth = new MpAuth();
+
+        //数据赋值
         BeanCopy.copy(dto, mpAuth);
         MpBusinessAttachmentInfo mpBusinessAttachmentInfo
                 = new MpBusinessAttachmentInfo();
@@ -136,12 +138,12 @@ public class AuthServiceManageImpl implements AuthManageService {
             PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
         }
         //java 取当天日期开始时点
-        Date startTime = dto.getEndTime();
+        Date startTime = dto.getCertificateTime();
         if (null != startTime) {
             Date dateStart = DateUtils.getDayStart(startTime);
             Date dateEnd = DateUtils.getNextDay(startTime);
-            dto.setDateEnd(dateEnd);
-            dto.setDateStart(dateStart);
+            dto.setDateCEnd(dateEnd);
+            dto.setDateCStart(dateStart);
         }
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
         log.info("分页查询认证===================={}", dto);
@@ -160,10 +162,10 @@ public class AuthServiceManageImpl implements AuthManageService {
         MpAuth ent = mpAuthMapper.selectByPrimaryKey(dto.getId());
         ent.setUpdateUser(dto.getUserId());
         ent.setUpdateTime(new Date());
-        ent.setUpType(0);
+        ent.setUpType(dto.getUpType());
         int i = mpAuthMapper.updateByPrimaryKey(ent);
         if (i <= CommonEnum.ADD_ERROR.getCode()) {
-            throw new BusinessException("新增认证信息失败！");
+            throw new BusinessException("上下线切换失败！");
         }
         return i;
     }

@@ -14,25 +14,26 @@
         inner join mp_auth_domain d
         on d.auth_direction_id = a.id
 
-        <where>
-            <if test="name != null and name != ''">
-                a.name = #{name}
+        <trim prefix="where" prefixOverrides="and">
+            <if test="dto.name != null and dto.name != ''">
+                and a.name = #{dto.name}
             </if>
-            <if test="authFirstClassifyId != null and authFirstClassifyId != ''">
-                a.direction_id = #{authFirstClassifyId}
+            <if test="dto.directionId != null and dto.directionId != ''">
+                and a.direction_id = #{dto.directionId}
             </if>
-            <if test="authSencondClassifyId != null and authSencondClassifyId != ''">
-                a.domain_id = #{authSencondClassifyId}
+            <if test="dto.domainId != null and dto.domainId != ''">
+                and a.domain_id = #{dto.domainId}
             </if>
-            <if test="authLevel != null and authLevel != ''">
-                a.auth_level = #{authLevel}
+            <if test="dto.authLevel != null and dto.authLevel != ''">
+                and a.auth_level = #{dto.authLevel}
             </if>
-            <if test="endTime != null and endTime != ''">
-                and a.end_time >= #{dateStart}
-                and a.end_time <![CDATA[<]]>   #{dateEnd}
-            </if>
+            <if test="dto.certificateTime != null ">
+                and a.certificate_time >= #{dto.dateCStart}
+                and a.certificate_time <![CDATA[<]]>   #{dto.dateCEnd}
 
-        </where>
+
+            </if>
+        </trim>
     </select>
 
 </mapper>

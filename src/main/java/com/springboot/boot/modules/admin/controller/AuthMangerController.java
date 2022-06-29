@@ -51,43 +51,9 @@ public class AuthMangerController {
     @ApiOperation(value = "认证信息的新增以及修改", notes = "认证信息的新增以及修改")
     @PostMapping(value = "/addOrUpdate")
     public ApiResult addOrUpdate(
-//            @RequestParam(value = "id", required = false) Long id,
-//            @RequestParam(value = "name", required = false) String name,
-//            @RequestParam(value = "authDescr", required = false) String authDescr,
-//            @RequestParam(value = "directionId", required = false) Long directionId,
-//            @RequestParam(value = "domainId", required = false) Long domainId,
-//            @RequestParam(value = "unitId", required = false) Long unitId,
-//            @RequestParam(value = "authLevel", required = false) Integer authLevel,
-//            @RequestParam(value = "examId", required = false) Long examId,
-//            @RequestParam(value = "departmentId", required = false) Long departmentId,
-//            @RequestParam(value = "authFirstClassifyId", required = false) Long authFirstClassifyId,
-//            @RequestParam(value = "authSencondClassifyId", required = false) Long authSencondClassifyId,
-//            @RequestParam(value = "certificateTime", required = false) Long certificateTime,
-//            @RequestParam(value = "certificateType", required = false) Integer certificateType,
-//            @RequestParam(value = "endTime", required = false) Long endTime,
-//            @RequestParam(value = "userId", required = false) Long userId,
+
             @RequestBody  MpAuthDto dto
             ) {
-//
-//        MpAuthDto dto = new MpAuthDto();
-//        dto.setId(id);
-//        dto.setName(name);
-//        dto.setAuthDescr(authDescr);
-//        dto.setDirectionId(directionId);
-//        dto.setDomainId(domainId);
-//        dto.setUnitId(unitId);
-//        dto.setAuthLevel(authLevel);
-//        dto.setExamId(examId);
-//        dto.setDepartmentId(departmentId);
-//        dto.setAuthFirstClassifyId(authFirstClassifyId);
-//        dto.setAuthSencondClassifyId(authSencondClassifyId);
-//        dto.setCertificateTime(new Date(certificateTime));
-//        dto.setCertificateType(certificateType);
-//        dto.setEndTime(new Date(endTime));
-//        dto.setUserId(userId);
-//        dto.setCreateTime(new Date());
-//        dto.setFileId();
-
 
         log.info("认证信息的新增以及修改----------", JSONObject.toJSON(dto));
         //判断一级分类名称是否相同
