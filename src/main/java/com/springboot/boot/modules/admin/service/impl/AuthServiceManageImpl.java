@@ -93,20 +93,23 @@ public class AuthServiceManageImpl implements AuthManageService {
             if (null != mpBusinessAttachmentInfolist && mpBusinessAttachmentInfolist.size() > 0) {
                 for (MpBusinessAttachmentInfo e : mpBusinessAttachmentInfolist) {
                     e.setDelFlag(CommonEnum.DELETE.getCode());
-                    mpBusinessAttachmentInfoMapper.updateByPrimaryKey(e);
+                    e.setUpdateUser(dto.getUserId());
+                    e.setUpdateTime(new Date());
+                    mpBusinessAttachmentInfoMapper.updateByPrimaryKeySelective(e);
                     MpAttachmentInfo mpAttachmentInfo = mpAttachmentInfoMapper.selectByPrimaryKey(e.getAttachmentId());
                     if (null != mpAttachmentInfo) {
                         mpAttachmentInfo.setDelFlag(CommonEnum.DELETE.getCode());
                         mpAttachmentInfo.setUpdateDate(new Date());
                         mpAttachmentInfo.setUpdateUser(dto.getUserId());
-                        mpAttachmentInfoMapper.updateByPrimaryKey(mpAttachmentInfo);
+                        mpAttachmentInfoMapper.updateByPrimaryKeySelective(mpAttachmentInfo);
+
                     }
                 }
             }
             mpAuth.setUpdateTime(new Date());
             mpAuth.setUpdateUser(dto.getUserId());
             mpBusinessAttachmentInfo.setBusinessId(dto.getId());
-            mpBusinessAttachmentInfoMapper.insert(mpBusinessAttachmentInfo);
+            mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             int i = mpAuthMapper.updateByPrimaryKey(mpAuth);
             if (i <= CommonEnum.UPDATE_ERROR.getCode()) {
                 throw new BusinessException("更新认证信息失败！");
@@ -118,9 +121,9 @@ public class AuthServiceManageImpl implements AuthManageService {
             mpAuth.setDeleFlag(CommonEnum.USED.getCode());
             mpAuth.setUpType(CommonEnum.UP.getCode());
             mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
-            mpBusinessAttachmentInfoMapper.insert(mpBusinessAttachmentInfo);
+            mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             mpAuth.setCreateTime(new Date());
-            int i = mpAuthMapper.insert(mpAuth);
+            int i = mpAuthMapper.insertSelective(mpAuth);
             if (i <= CommonEnum.ADD_ERROR.getCode()) {
                 throw new BusinessException("新增认证信息失败！");
             }
