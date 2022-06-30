@@ -60,6 +60,15 @@ public class CurriculumController {
         return ApiResult.success(result);
     }
 
+
+    @ApiOperation(value = "通过id查询课程接口", notes="课程下的所有信息")
+    @GetMapping(value="/searchByIdTwo")
+    public ApiResult searchByIdTwo(@RequestParam Long id){
+        log.info("课程查询参数输出----------参数对象输出---{}",JSONObject.toJSON(id));
+        MpCurriculum result = curriculumService.searchById(id);
+        return ApiResult.success(result);
+    }
+
     @ApiOperation(value = "课程的删除", notes="课程的删除")
     @PostMapping(value="/delete")
     public ApiResult delete(@RequestBody ClassifyDelSecondDto dto){

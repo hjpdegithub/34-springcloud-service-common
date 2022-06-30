@@ -70,10 +70,6 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.search(dto));
     }
-
-
-
-
     //列表查询
     @ApiOperation(value = "认证信息详情查询", notes = "认证信息详情查询")
     @PostMapping(value = "/searchById")
@@ -82,6 +78,7 @@ public class AuthMangerController {
         log.info("认证信息详情查询----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.searchById(dto));
     }
+
 
 
     //上下线
