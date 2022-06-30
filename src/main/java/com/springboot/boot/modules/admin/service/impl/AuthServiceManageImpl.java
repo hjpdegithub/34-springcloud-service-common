@@ -66,6 +66,11 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult addOrUpdate(MpAuthDto dto) {
+       Long  fileid =  dto.getFileId();
+       if(fileid==null&&fileid==0){
+           throw new BusinessException("没有上传证书图样！");
+       }
+
         //新增文件信息
         //雪花
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
@@ -75,13 +80,14 @@ public class AuthServiceManageImpl implements AuthManageService {
         BeanCopy.copy(dto, mpAuth);
         MpBusinessAttachmentInfo mpBusinessAttachmentInfo
                 = new MpBusinessAttachmentInfo();
+        mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
         mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
         mpBusinessAttachmentInfo.setCreateUser(dto.getUserId());
         mpBusinessAttachmentInfo.setCreateTime(new Date());
         mpBusinessAttachmentInfo.setBusiness("AuthInfo");
         mpBusinessAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
         mpBusinessAttachmentInfo.setAttachmentId(dto.getFileId());
-        mpBusinessAttachmentInfo.setId(snowFlakeUtil.nextId());
+
         //是修改
         if (null != dto.getId() && dto.getId() != 0 && !dto.getId().toString().equals("")) {
             //以下处理以下业务1删除掉 图片业务表的该认证的关联数据 。
@@ -112,6 +118,7 @@ public class AuthServiceManageImpl implements AuthManageService {
             mpAuth.setCreateUser(dto.getUserId());
             mpAuth.setDeleFlag(CommonEnum.USED.getCode());
             mpAuth.setUpType(CommonEnum.UP.getCode());
+            mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
 
             mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             mpAuth.setCreateTime(new Date());
