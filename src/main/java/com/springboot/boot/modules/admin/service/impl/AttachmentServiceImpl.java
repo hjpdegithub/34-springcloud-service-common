@@ -274,13 +274,16 @@ public class AttachmentServiceImpl implements AttachmentService {
         if (null == mpCurriculum){
             return  ApiResult.error(500,"课程为空");
         }
-        //判断学习年限
-        String SystemDate = DateUtils.formatShortDate(new Date());
-        String studyDate = DateUtils.formatShortDate(mpCurriculum.getStudyTime());
+        if (null != mpCurriculum.getStudyTime()){
+            //判断学习年限
+            String SystemDate = DateUtils.formatShortDate(new Date());
+            String studyDate = DateUtils.formatShortDate(mpCurriculum.getStudyTime());
 
-        if (studyDate.compareTo(SystemDate)<0){
-            return ApiResult.error(ApiCode.FAIL.getCode(),"学习年限已过期！");
+            if (studyDate.compareTo(SystemDate)<0){
+                return ApiResult.error(ApiCode.FAIL.getCode(),"学习年限已过期！");
+            }
         }
+
         List<MpReading> mpReadings = readingService.selectByBusinessId(CommonDto);
 
         List<AttachmentInfoViewVo> attachmentInfoViewVo = attachmentInfoMapper.selectViewVoByPrimaryKey(CommonDto.getBusinessId());
