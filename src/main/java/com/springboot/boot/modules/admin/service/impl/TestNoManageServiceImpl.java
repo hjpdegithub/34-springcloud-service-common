@@ -2,6 +2,7 @@ package com.springboot.boot.modules.admin.service.impl;
 
 
 import com.springboot.boot.common.enums.CommonEnum;
+import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.test.MpUserAuthenticationDto;
 import com.springboot.boot.modules.admin.entity.MpUserAuthentication;
 import com.springboot.boot.modules.admin.entity.MpUserAuthenticationExample;
@@ -45,14 +46,13 @@ public class TestNoManageServiceImpl implements TestNoManageService {
 //
 
 
-
         //判断手机号是不是已经存在
         MpUserAuthenticationExample example0 = new MpUserAuthenticationExample();
 
         example0.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andPhoneEqualTo(dto.getPhone());
         long c1 = mpUserAuthenticationMapper.countByExample(example0);
 
-        if(c1>0){
+        if (c1 > 0) {
 
             return ApiResult.error("该手机号已经申请了考试编号，请输入手机号查询考试编号");
 
@@ -73,10 +73,9 @@ public class TestNoManageServiceImpl implements TestNoManageService {
             example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNumberEqualTo(retNumBer);
             long c = mpUserAuthenticationMapper.countByExample(example);
             if (c > 0) {
-                a=true;
-            }
-            else{
-                a=false;
+                a = true;
+            } else {
+                a = false;
             }
 
         } while (a);
@@ -85,12 +84,12 @@ public class TestNoManageServiceImpl implements TestNoManageService {
         record.setCreateTime(new Date());
         record.setDeleFlag(CommonEnum.USED.getCode());
         mpUserAuthenticationMapper.insert(record);
-        return  ApiResult.success(record);
+        return ApiResult.success(record);
     }
 
 
     @Override
-    public ApiResult    queryTestNoByPhoneNo(MpUserAuthenticationDto dto) {
+    public ApiResult queryTestNoByPhoneNo(MpUserAuthenticationDto dto) {
         //   json格式
         //  {
         //  "phone": "123",
@@ -101,7 +100,7 @@ public class TestNoManageServiceImpl implements TestNoManageService {
         List<MpUserAuthentication> mpUserAuthenticationList = mpUserAuthenticationMapper.selectByExample(example);
         if (mpUserAuthenticationList != null && mpUserAuthenticationList.size() != 0) {
 
-            return  ApiResult.success(mpUserAuthenticationList.get(0));
+            return ApiResult.success(mpUserAuthenticationList.get(0));
         } else {
             return null;
         }
@@ -123,6 +122,36 @@ public class TestNoManageServiceImpl implements TestNoManageService {
         } else {
             return null;
         }
+
+    }
+
+    @Override
+    public Integer TestNoVerifysEdit(MpUserAuthenticationDto dto) {
+
+        //先判断电话号码是不是重复
+        String phoneNubner = dto.getPhone();
+        if (null != phoneNubner && !"".equals(phoneNubner)) {
+
+            MpUserAuthenticationExample example = new MpUserAuthenticationExample();
+            example.createCriteria().andPhoneEqualTo(phoneNubner).andDeleFlagEqualTo(CommonEnum.USED.getCode())
+                    .andIdNotEqualTo(dto.getId())
+            ;
+            List<MpUserAuthentication> retList = mpUserAuthenticationMapper.selectByExample(example);
+
+            if (null != retList && retList.size() > 0) {
+
+                throw new BusinessException("输入的电话号码已经注册");
+            }
+        }
+        MpUserAuthentication record = new MpUserAuthentication();
+        BeanCopy.copy(dto, record);
+        record.setUpdateUser(dto.getUserId());
+        record.setUpdateTime(new Date());
+        int i = mpUserAuthenticationMapper.updateByPrimaryKeySelective(record);
+        if (i <= 0) {
+            throw new BusinessException("认证信息更新失败");
+        }
+        return i;
 
     }
 

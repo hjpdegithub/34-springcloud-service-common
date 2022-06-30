@@ -66,10 +66,10 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult addOrUpdate(MpAuthDto dto) {
-       Long  fileid =  dto.getFileId();
-       if(fileid==null&&fileid==0){
-           throw new BusinessException("没有上传证书图样！");
-       }
+        Long fileid = dto.getFileId();
+        if (fileid == null && fileid == 0) {
+            throw new BusinessException("没有上传证书图样！");
+        }
 
         //新增文件信息
         //雪花
@@ -175,30 +175,39 @@ public class AuthServiceManageImpl implements AuthManageService {
             return null;
         }
 
-        //查询出对应的证书底板
+        //获取证书详情
+        MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
 
-        Long id = mpAuthHMapper.selectFileId(dto.getId());
+
+
+        vo.setFileInfo(info);
+        return vo;
+    }
+
+
+    public MpAttachmentInfo getfileInfoByCerId(Long id) {
+        Long idt = mpAuthHMapper.selectFileId(id);
         String fileName = null;
         String fileUrl = null;
         String filePath = null;
         MpAttachmentInfo info1 = null;
-        if (null != id) {
-            //根据id找到文件信息
-            info1 = mpAttachmentInfoMapper.selectByPrimaryKey(id);
 
+        if (null != idt) {
+            //根据id找到文件信息
+            info1 = mpAttachmentInfoMapper.selectByPrimaryKey(idt);
             fileName = info1.getFileName();
             fileUrl = info1.getFileUrl();
             filePath = info1.getFilePath();
+            String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
+            info1.setFileUrl(fileUrl);
+            info1.setFilePath(filePath);
+            info1.setFileUrlLocal(fileUrlLocal);
+            info1.setFileName(fileName);
         }
+        return info1;
 
-        String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
-        info1.setFileUrl(fileUrl);
-        info1.setFilePath(filePath);
-        info1.setFileUrlLocal(fileUrlLocal);
-        info1.setFileName(fileName);
-        vo.setFileInfo(info1);
-        return vo;
     }
+
 
     /**
      * 认证信息上下线

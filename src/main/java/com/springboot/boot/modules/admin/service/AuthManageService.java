@@ -10,6 +10,9 @@ import com.springboot.boot.modules.admin.entity.MpAuth;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
 import com.springboot.boot.utils.ApiResult;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -54,6 +57,14 @@ public interface AuthManageService {
      * @return
      */
     Integer deleteBatch(MpNameIdsDto dto);
+
+
+
+
+
+
+
+
 
 
 }

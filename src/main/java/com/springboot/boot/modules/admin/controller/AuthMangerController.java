@@ -95,5 +95,14 @@ public class AuthMangerController {
         return ApiResult.success(authService.deleteBatch(dto));
     }
 
+    @ApiOperation(value = "证书领取", notes = "证书领取")
+    @PostMapping(value = "/certificateGet")
+    public ApiResult certificateGet(@RequestBody MpNameIdsDto dto
+    ) {
+        log.info("认证批量删除----------", JSONObject.toJSON(dto));
+        return ApiResult.success(null);
+    }
+
+
 
 }
