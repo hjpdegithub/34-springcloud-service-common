@@ -13,6 +13,10 @@ public class MpAttachmentInfo {
 
     private String fileUrl;
 
+
+
+    private String fileUrlLocal;
+
     private String filePath;
 
     private String description;
@@ -26,6 +30,14 @@ public class MpAttachmentInfo {
     private Long updateUser;
 
     private Date updateDate;
+
+    public String getFileUrlLocal() {
+        return fileUrlLocal;
+    }
+
+    public void setFileUrlLocal(String fileUrlLocal) {
+        this.fileUrlLocal = fileUrlLocal;
+    }
 
     public Long getId() {
         return id;

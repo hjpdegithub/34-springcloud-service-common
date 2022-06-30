@@ -108,7 +108,7 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
                         }
                     }
                 }
-                if (null != eoldIdList && eoldIdList.size() > 0) {
+                if (null != eoldList && eoldList.size() > 0) {
                     for (MpAuthDomain eold : eoldList) {
                         if (eold.getId() != null) {
                             eoldIdList.add(eold.getId());
@@ -129,18 +129,22 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
                 //需要新增
                 if (!eoldIdList.contains(en.getId())) {
                     ent.setId(snowFlakeUtil.nextId());
+                    ent.setAuthDirectionId(dto.getId());
+                    ent.setDeleFlag(CommonEnum.USED.getCode());
                     ent.setCreateTime(new Date());
                     ent.setCreateUser(dto.getId());
                     mpAuthDomainMapper.insertSelective(ent);
                 }
             }
             //需要逻辑删除
-            for (MpAuthDomain eo : eoldList) {
-                if (!enewIdList.contains(eo.getId())) {
-                    eo.setUpdateUser(dto.getUserId());
-                    eo.setUpdateTime(new Date());
-                    eo.setDeleFlag(CommonEnum.DELETE.getCode());
-                    mpAuthDomainMapper.updateByPrimaryKeySelective(eo);
+            if (null != eoldList && eoldList.size() > 0) {
+                for (MpAuthDomain eo : eoldList) {
+                    if (!enewIdList.contains(eo.getId())) {
+                        eo.setUpdateUser(dto.getUserId());
+                        eo.setUpdateTime(new Date());
+                        eo.setDeleFlag(CommonEnum.DELETE.getCode());
+                        mpAuthDomainMapper.updateByPrimaryKeySelective(eo);
+                    }
                 }
             }
             return ApiResult.success();
@@ -162,7 +166,6 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
                     mpAuthDomainMapper.insertSelective(ebt);
                 }
             }
-
             return ApiResult.success();
         }
     }
@@ -192,10 +195,89 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
             mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNameEqualTo(authdirectionName);
             mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
         }
-        if (null != id && !"".equals("")) {
+        if (null != id && !id.equals("")) {
             mpAuthDirectionExample = new MpAuthDirectionExample();
             mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andIdEqualTo(id);
+            mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+
         }
+        List<MpAuthHVo> mpAuthHVos = new ArrayList<>();
+
+        if (null != mpAuthDirections && mpAuthDirections.size() > 0) {
+
+            for (MpAuthDirection e : mpAuthDirections) {
+                Long eid = e.getId();
+                MpAuthDomainExample ex = new MpAuthDomainExample();
+                ex.createCriteria().andAuthDirectionIdEqualTo(eid).andDeleFlagEqualTo(CommonEnum.USED.getCode());
+                List<MpAuthDomain> mpAuthDomainList = mpAuthDomainMapper.selectByExample(ex);
+
+                List<MpAuthDomainVo> mpAuthDomainVoList = new ArrayList<>();
+                if (null != mpAuthDomainList && mpAuthDomainList.size() > 0) {
+                    for (MpAuthDomain e1 : mpAuthDomainList) {
+                        MpAuthDomainVo vo1 = new MpAuthDomainVo();
+                        BeanCopy.copy(e1, vo1);
+                        mpAuthDomainVoList.add(vo1);
+                    }
+                }
+                MpAuthHVo vo = new MpAuthHVo();
+                BeanCopy.copy(e, vo);
+                vo.setMpAuthDomainVos(mpAuthDomainVoList);
+                mpAuthHVos.add(vo);
+            }
+        }
+        PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
+        return pageInfo;
+    }
+
+
+    @Override
+    public MpAuthHVo searchId(MpNameIdsDto dto) {
+        MpAuthHVo vo = null;
+        Long id = dto.getId();
+        List<MpAuthDirection> mpAuthDirections = null;
+        MpAuthDirectionExample mpAuthDirectionExample = null;
+        if (null != id && !id.equals("")) {
+            mpAuthDirectionExample = new MpAuthDirectionExample();
+            mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andIdEqualTo(id);
+        } else {
+            return null;
+        }
+        mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
+        for (MpAuthDirection e : mpAuthDirections) {
+            Long eid = e.getId();
+            MpAuthDomainExample ex = new MpAuthDomainExample();
+            ex.createCriteria().andAuthDirectionIdEqualTo(eid).andDeleFlagEqualTo(CommonEnum.USED.getCode());
+            List<MpAuthDomain> mpAuthDomainList = mpAuthDomainMapper.selectByExample(ex);
+            List<MpAuthDomainVo> mpAuthDomainVoList = new ArrayList<>();
+
+            if (null != mpAuthDomainList && mpAuthDomainList.size() > 0) {
+                for (MpAuthDomain e1 : mpAuthDomainList) {
+                    MpAuthDomainVo vo1 = new MpAuthDomainVo();
+                    BeanCopy.copy(e1, vo1);
+                    mpAuthDomainVoList.add(vo1);
+                }
+            }
+            vo = new MpAuthHVo();
+            BeanCopy.copy(e, vo);
+            vo.setMpAuthDomainVos(mpAuthDomainVoList);
+
+        }
+        return vo;
+
+    }
+
+    /**
+     * 根据名称查看方向分类信息如果名称是空的话就查询所有的认证方向
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public List<MpAuthHVo> search() {
+        List<MpAuthDirection> mpAuthDirections = null;
+        MpAuthDirectionExample mpAuthDirectionExample = new MpAuthDirectionExample();
+        mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
         List<MpAuthHVo> mpAuthHVos = new ArrayList<>();
         for (MpAuthDirection e : mpAuthDirections) {
             Long eid = e.getId();
@@ -214,24 +296,8 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
             vo.setMpAuthDomainVos(mpAuthDomainVoList);
             mpAuthHVos.add(vo);
         }
-        PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
-        return pageInfo;
-    }
 
-    /**
-     * 根据名称查看方向分类信息如果名称是空的话就查询所有的认证方向
-     *
-     * @param
-     * @return
-     */
-    @Override
-    public List<MpAuthDirection> search() {
-        List<MpAuthDirection> mpAuthDirections = null;
-        MpAuthDirectionExample mpAuthDirectionExample = new MpAuthDirectionExample();
-        mpAuthDirectionExample.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
-        mpAuthDirections = mpAuthDirectionMapper.selectByExample(mpAuthDirectionExample);
-
-        return mpAuthDirections;
+        return mpAuthHVos;
     }
 
     /**

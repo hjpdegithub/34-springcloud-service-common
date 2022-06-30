@@ -12,4 +12,6 @@ public interface MpAuthHMapper {
 
     List<MpAuthHVo> selectAllMpAuths(@Param("dto") MpAuthDto dto);
 
+    Long selectFileId(@Param("id") Long id);
+
 }

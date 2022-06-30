@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
+import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
+import com.springboot.boot.modules.admin.entity.MpAuth;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
 import com.springboot.boot.utils.ApiResult;
@@ -18,7 +20,7 @@ public interface AuthManageService {
      * @param dto
      * @return
      */
-    ApiResult addOrUpdate(MpAuthDto dto,MultipartFile file);
+    ApiResult addOrUpdate(MpAuthDto dto);
 
 
 
@@ -30,6 +32,15 @@ public interface AuthManageService {
     PageInfo<MpAuthHVo> search(MpAuthDto dto);
 
 
+
+
+    /**
+     * 认证详情查询
+     * @param dto
+     * @return
+     */
+    MpAuthHVo searchById(MpAuthDto dto);
+
     /**
      * 认证信息上下线
      * @param dto
@@ -37,6 +48,12 @@ public interface AuthManageService {
      */
     Integer onOffLine(MpAuthDto dto);
 
+    /**
+     * 认证信息批量删除
+     * @param dto
+     * @return
+     */
+    Integer deleteBatch(MpNameIdsDto dto);
 
 
 }

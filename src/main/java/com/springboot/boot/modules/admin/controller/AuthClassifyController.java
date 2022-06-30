@@ -48,6 +48,17 @@ public class AuthClassifyController {
     }
 
 
+
+    @ApiOperation(value = "根据id查询认证方向不分页", notes="根据id查询认证方向不分页，包含认证领域列表")
+    @PostMapping(value="/searchId")
+    public ApiResult searchId(@RequestBody MpNameIdsDto dto){
+        log.info("分类的新增以及修改----------参数对象输出{}", JSONObject.toJSON(dto));
+        //判断一级分类名称是否相同
+        return ApiResult.success(authClassifyService.searchId(dto));
+    }
+
+
+
     @ApiOperation(value = "认证方向列表", notes="根据名称查询认证方向列表，如果名称为空则查询全部，包含认证领域列表")
     @PostMapping(value="/search")
     public ApiResult search(){
