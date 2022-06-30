@@ -60,8 +60,6 @@ public class AuthMangerController {
         ApiResult result = authService.addOrUpdate(dto);
         return result;
     }
-
-
     //列表查询
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/search")
