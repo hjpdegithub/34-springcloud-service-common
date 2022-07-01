@@ -34,16 +34,18 @@ public class AuthProcedureVo {
     @ApiModelProperty("考试次数")
     private Integer examCount;
 
-    @ApiModelProperty("是否报名0否1是")
-    private Integer signUpType;
-
-    @ApiModelProperty("是否学习0否1是")
-    private Integer studyType;
-
-    @ApiModelProperty("是否可以考试0否1是")
-    private Integer examType;
-
-    @ApiModelProperty("是否领取证书0否1是")
-    private Integer certificaseType;
+//    @ApiModelProperty("是否报名0否1是")
+//    private Integer signUpType;
+//
+//    @ApiModelProperty("是否学习0否1是")
+//    private Integer studyType;
+//
+//    @ApiModelProperty("是否可以考试0否1是")
+//    private Integer examType;
+//
+//    @ApiModelProperty("是否领取证书0否1是")
+//    private Integer certificaseType;
+    @ApiModelProperty("完成类型  0初始1学习2考试3证书4全部完成")
+    private Integer finishType;
 
 }

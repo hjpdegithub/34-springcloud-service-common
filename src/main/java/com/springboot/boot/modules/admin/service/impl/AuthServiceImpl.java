@@ -504,6 +504,8 @@ public class AuthServiceImpl implements AuthService {
      */
     public IfWhereVo ifWhere(Long authId, Long userId,List<MpAuth> mpAuths){
         IfWhereVo ifWhereVo = new IfWhereVo();
+        // 一开始  为初始状态--------------------------
+        ifWhereVo.setFinishType(0);
         //判断是否报名预约================================================
         MpAuthUserSignUpExample example = new MpAuthUserSignUpExample();
         MpAuthUserSignUpExample.Criteria singUpCriteria = example.createCriteria();
@@ -512,7 +514,9 @@ public class AuthServiceImpl implements AuthService {
         singUpCriteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
         List<MpAuthUserSignUp> mpAuthUserSignUps = authUserSignUpMapper.selectByExample(example);
         int singUpResult = (mpAuthUserSignUps.size()>0)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
-        ifWhereVo.setSignUpType(singUpResult);
+        if (singUpResult ==CommonEnum.NO.getCode()){
+            ifWhereVo.setFinishType(1);
+        }
         //判断是否完成了所有的课程学习=====================================================================
         //用户完成的课程数据
         List<MpUserAuthClass> mpUserAuthClasses = mpUserAuthClass(null, userId, authId);
@@ -522,7 +526,9 @@ public class AuthServiceImpl implements AuthService {
         List<Long>ids = mpCurriculumList.stream().map(MpCurriculum::getId).collect(Collectors.toList());
         boolean result = userIds.containsAll(ids) && ids.containsAll(userIds);
         int studyResult = (result)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
-        ifWhereVo.setStudyType(studyResult);
+        if (studyResult ==CommonEnum.NO.getCode()){
+            ifWhereVo.setFinishType(2);
+        }
         //判断是否可以考试=================================================================
         //查看试卷次数
         List<MpExamination> mpExaminations = mpExaminations(mpAuths);
@@ -540,11 +546,13 @@ public class AuthServiceImpl implements AuthService {
         //判断是否可以参加考试
         //是否存在合格的数据
         List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
-        //开始判断
-        if (mpUserAuthExams.size()>=frequencyCount.intValue()||userCommonList.size()>0){
-            ifWhereVo.setExamType(CommonEnum.NO.getCode());
+
+        if (userCommonList.size()>0){
+            ifWhereVo.setFinishType(3);
         }else{
-            ifWhereVo.setExamType(CommonEnum.YES.getCode());
+            if (mpUserAuthExams.size()>=frequencyCount.intValue()){
+                throw new BusinessException("次数已上线");
+            }
         }
         //是否领取证书
         MpAuthCertificaseExample certificaseExample = new MpAuthCertificaseExample();
@@ -553,9 +561,7 @@ public class AuthServiceImpl implements AuthService {
         criteria1.andUserIdEqualTo(userId);
         List<MpAuthCertificase> mpAuthCertificases = certificaseMapper.selectByExample(certificaseExample);
         if (mpAuthCertificases.size()>0){
-            ifWhereVo.setCertificaseType(CommonEnum.NO.getCode());
-        }else{
-            ifWhereVo.setCertificaseType(CommonEnum.YES.getCode());
+            ifWhereVo.setFinishType(4);
         }
         return ifWhereVo;
     }
