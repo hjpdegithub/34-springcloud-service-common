@@ -104,6 +104,13 @@ public class AuthMangerController {
         return ApiResult.success(authService.certificateGet(dto));
     }
 
+    @ApiOperation(value = "认证列表", notes = "认证列表")
+    @PostMapping(value = "/AuthListQuery")
+    public ApiResult AuthListQuery(@RequestBody MpNameIdsDto dto
+    ) {
+        log.info("认证列表----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.certificateGet(dto));
+    }
 
 
 }

@@ -267,7 +267,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
         MpUserAuthentication userInfo =
                 mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
-
         MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
         BeanCopy.copy(userInfo, vo);
         CertificateVo revo = new CertificateVo();
