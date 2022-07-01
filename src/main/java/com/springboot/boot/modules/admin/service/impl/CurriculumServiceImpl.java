@@ -23,6 +23,7 @@ import com.springboot.boot.utils.SnowFlakeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -113,9 +114,10 @@ public class CurriculumServiceImpl implements CurriculumService {
         }
         List<CurriculumVo> mpCurricula = curriculumMapper.selectAll(dto);
         log.info("课程查询输出报文===================={}",mpCurricula);
+        if(!CollectionUtils.isEmpty(mpCurricula)){
         mpCurricula.forEach(e->{
             //2.0新增认证分类===========================================
-            if (e.getPropertyType().intValue() == CommonEnum.AUTH.getCode()){
+            if (null!=e.getPropertyType()&&e.getPropertyType().intValue() == CommonEnum.AUTH.getCode()){
                 MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getAuthFirstClassifyId());
                 MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getAuthSencondClassifyId());
                 if (null != mpFirstClassify){
@@ -147,7 +149,7 @@ public class CurriculumServiceImpl implements CurriculumService {
                 }
 
             }
-        });
+        });}
         PageInfo<CurriculumVo> pageInfo = new PageInfo<>(mpCurricula);
         return pageInfo;
     }

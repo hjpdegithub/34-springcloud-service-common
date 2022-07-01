@@ -8,18 +8,30 @@ import java.util.Date;
 public class MpUserAuthenticationVo {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long id;
+
     private String name;
+
     private String unitName;
+
     private String departmentName;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
     private String phone;
+
     private Integer number;
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long createUser;
+
     private Date createTime;
+
     private Long updateUser;
+
     private Date updateTime;
+
     private Integer deleFlag;
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long departmentId;
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Long unitId;
 
     public Long getId() {
         return id;
@@ -107,5 +119,21 @@ public class MpUserAuthenticationVo {
 
     public void setDeleFlag(Integer deleFlag) {
         this.deleFlag = deleFlag;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
     }
 }

@@ -15,7 +15,7 @@ public interface TestNoManageService {
 
     MpUserAuthenticationVo TestNoVerifys(MpUserAuthenticationDto dto);
 
-
+    Integer TestNoVerifysEdit(MpUserAuthenticationDto dto);
 
 
 

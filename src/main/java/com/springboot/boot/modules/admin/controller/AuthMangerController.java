@@ -60,8 +60,6 @@ public class AuthMangerController {
         ApiResult result = authService.addOrUpdate(dto);
         return result;
     }
-
-
     //列表查询
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/search")
@@ -70,10 +68,6 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.search(dto));
     }
-
-
-
-
     //列表查询
     @ApiOperation(value = "认证信息详情查询", notes = "认证信息详情查询")
     @PostMapping(value = "/searchById")
@@ -83,7 +77,6 @@ public class AuthMangerController {
         return ApiResult.success(authService.searchById(dto));
     }
 
-
     //上下线
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/onOffLine")
@@ -92,8 +85,6 @@ public class AuthMangerController {
         log.info("认证信息上下线----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.onOffLine(dto));
     }
-
-
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/deleteBatch")
     public ApiResult deleteBatch(@RequestBody MpNameIdsDto dto
@@ -101,6 +92,14 @@ public class AuthMangerController {
         log.info("认证批量删除----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.deleteBatch(dto));
     }
+    @ApiOperation(value = "证书领取", notes = "证书领取")
+    @PostMapping(value = "/certificateGet")
+    public ApiResult certificateGet(@RequestBody MpNameIdsDto dto
+    ) {
+        log.info("证书领取----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.certificateGet(dto));
+    }
+
 
 
 }

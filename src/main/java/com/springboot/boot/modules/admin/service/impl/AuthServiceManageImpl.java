@@ -1,6 +1,5 @@
 package com.springboot.boot.modules.admin.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.common.enums.CommonEnum;
@@ -8,24 +7,21 @@ import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
-import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
-import com.springboot.boot.modules.admin.service.AttachmentService;
 import com.springboot.boot.modules.admin.service.AuthManageService;
 
+import com.springboot.boot.modules.admin.vo.auth.CertificateVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
-import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo;
 import com.springboot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName ClassifyServiceImpl
@@ -53,8 +49,8 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Resource
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
 
-    @Autowired
-    private AttachmentService attachmentService;
+    @Resource
+    private MpUserAuthenticationMapper mpUserAuthenticationMapper;
 
 
     /**
@@ -66,10 +62,10 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult addOrUpdate(MpAuthDto dto) {
-       Long  fileid =  dto.getFileId();
-       if(fileid==null&&fileid==0){
-           throw new BusinessException("没有上传证书图样！");
-       }
+        Long fileid = dto.getFileId();
+        if (fileid == null && fileid == 0) {
+            throw new BusinessException("没有上传证书图样！");
+        }
 
         //新增文件信息
         //雪花
@@ -163,7 +159,6 @@ public class AuthServiceManageImpl implements AuthManageService {
      */
     @Override
     public MpAuthHVo searchById(MpAuthDto dto) {
-
         MpAuthHVo vo = null;
         if (dto.getId() == null || dto.getId() == 0) {
             return null;
@@ -174,31 +169,34 @@ public class AuthServiceManageImpl implements AuthManageService {
         } else {
             return null;
         }
+        //获取证书详情
+        MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
+        vo.setFileInfo(info);
+        return vo;
+    }
 
-        //查询出对应的证书底板
 
-        Long id = mpAuthHMapper.selectFileId(dto.getId());
+    public MpAttachmentInfo getfileInfoByCerId(Long id) {
+        Long idt = mpAuthHMapper.selectFileId(id);
         String fileName = null;
         String fileUrl = null;
         String filePath = null;
         MpAttachmentInfo info1 = null;
-        if (null != id) {
+        if (null != idt) {
             //根据id找到文件信息
-            info1 = mpAttachmentInfoMapper.selectByPrimaryKey(id);
-
+            info1 = mpAttachmentInfoMapper.selectByPrimaryKey(idt);
             fileName = info1.getFileName();
             fileUrl = info1.getFileUrl();
             filePath = info1.getFilePath();
+            String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
+            info1.setFileUrl(fileUrl);
+            info1.setFilePath(filePath);
+            info1.setFileUrlLocal(fileUrlLocal);
+            info1.setFileName(fileName);
         }
-
-        String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
-        info1.setFileUrl(fileUrl);
-        info1.setFilePath(filePath);
-        info1.setFileUrlLocal(fileUrlLocal);
-        info1.setFileName(fileName);
-        vo.setFileInfo(info1);
-        return vo;
+        return info1;
     }
+
 
     /**
      * 认证信息上下线
@@ -228,7 +226,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
 
     public Integer deleteBatch(MpNameIdsDto dto) {
-
         List<Long> ids = dto.getIds();
         int i = 0;
         if (null != ids && ids.size() > 0) {
@@ -237,7 +234,6 @@ public class AuthServiceManageImpl implements AuthManageService {
                 ent.setDeleFlag(CommonEnum.DELETE.getCode());
                 ent.setUpdateUser(dto.getUserId());
                 ent.setUpdateTime(new Date());
-
                 mpAuthMapper.updateByPrimaryKey(ent);
                 i++;
             }
@@ -246,8 +242,28 @@ public class AuthServiceManageImpl implements AuthManageService {
             }
         }
         return 1;
-
     }
 
+
+    /**
+     * 证书信息
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+    public CertificateVo certificateGet(MpNameIdsDto dto) {
+        //获取证书信息
+        MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
+        MpUserAuthentication userInfo =
+                mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+        MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
+        BeanCopy.copy(userInfo, vo);
+        CertificateVo revo = new CertificateVo();
+        revo.setFileUrl(info.getFileUrl());
+        revo.setFileLocalUrl(info.getFileUrlLocal());
+        revo.setUserVo(vo);
+        return revo;
+    }
 
 }

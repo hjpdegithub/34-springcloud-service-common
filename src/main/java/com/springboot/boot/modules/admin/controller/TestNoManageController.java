@@ -45,4 +45,15 @@ public class TestNoManageController {
         return ApiResult.success(testNoManageService.TestNoVerifys(dto));
     }
 
+
+    @ApiOperation(value = "考试编号信息更新", notes = "考试编号信息更新")
+    @PostMapping(value = "/TestNoVerifysEdit")
+    public ApiResult TestNoVerifysEdit(@RequestBody MpUserAuthenticationDto dto) {
+        return ApiResult.success(testNoManageService.TestNoVerifys(dto));
+    }
+
+
+
+
+
 }
