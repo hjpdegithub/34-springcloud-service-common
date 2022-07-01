@@ -159,7 +159,6 @@ public class AuthServiceManageImpl implements AuthManageService {
      */
     @Override
     public MpAuthHVo searchById(MpAuthDto dto) {
-
         MpAuthHVo vo = null;
         if (dto.getId() == null || dto.getId() == 0) {
             return null;
@@ -170,11 +169,8 @@ public class AuthServiceManageImpl implements AuthManageService {
         } else {
             return null;
         }
-
         //获取证书详情
         MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
-
-
         vo.setFileInfo(info);
         return vo;
     }
@@ -186,7 +182,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         String fileUrl = null;
         String filePath = null;
         MpAttachmentInfo info1 = null;
-
         if (null != idt) {
             //根据id找到文件信息
             info1 = mpAttachmentInfoMapper.selectByPrimaryKey(idt);
@@ -200,7 +195,6 @@ public class AuthServiceManageImpl implements AuthManageService {
             info1.setFileName(fileName);
         }
         return info1;
-
     }
 
 
@@ -232,7 +226,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
 
     public Integer deleteBatch(MpNameIdsDto dto) {
-
         List<Long> ids = dto.getIds();
         int i = 0;
         if (null != ids && ids.size() > 0) {
@@ -241,7 +234,6 @@ public class AuthServiceManageImpl implements AuthManageService {
                 ent.setDeleFlag(CommonEnum.DELETE.getCode());
                 ent.setUpdateUser(dto.getUserId());
                 ent.setUpdateTime(new Date());
-
                 mpAuthMapper.updateByPrimaryKey(ent);
                 i++;
             }
@@ -250,7 +242,6 @@ public class AuthServiceManageImpl implements AuthManageService {
             }
         }
         return 1;
-
     }
 
 
@@ -261,7 +252,6 @@ public class AuthServiceManageImpl implements AuthManageService {
      * @return
      */
     @Override
-
     public CertificateVo certificateGet(MpNameIdsDto dto) {
         //获取证书信息
         MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
