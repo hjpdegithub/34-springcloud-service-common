@@ -274,8 +274,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setFileLocalUrl(info.getFileUrlLocal());
         revo.setUserVo(vo);
         return revo;
-
     }
-
 
 }
