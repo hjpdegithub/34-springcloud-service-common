@@ -14,6 +14,7 @@ public class MpNameIdsDto extends PageDto {
     private Long id;
     private List<Long> ids;
     private Long userId;
+    private Long cerUserId;
 
 
 }

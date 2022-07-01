@@ -7,6 +7,7 @@ import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
 import com.springboot.boot.modules.admin.entity.MpAuth;
+import com.springboot.boot.modules.admin.vo.auth.CertificateVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
 import com.springboot.boot.utils.ApiResult;
@@ -60,6 +61,13 @@ public interface AuthManageService {
 
 
 
+
+     /**
+     * 证书信息
+     * @param dto
+     * @return
+     */
+     CertificateVo certificateGet(MpNameIdsDto dto);
 
 
 

@@ -1,6 +1,5 @@
 package com.springboot.boot.modules.admin.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.common.enums.CommonEnum;
@@ -8,24 +7,21 @@ import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
-import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
-import com.springboot.boot.modules.admin.service.AttachmentService;
 import com.springboot.boot.modules.admin.service.AuthManageService;
 
+import com.springboot.boot.modules.admin.vo.auth.CertificateVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
-import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo;
 import com.springboot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName ClassifyServiceImpl
@@ -53,8 +49,8 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Resource
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
 
-    @Autowired
-    private AttachmentService attachmentService;
+    @Resource
+    private MpUserAuthenticationMapper mpUserAuthenticationMapper;
 
 
     /**
@@ -179,7 +175,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
 
 
-
         vo.setFileInfo(info);
         return vo;
     }
@@ -255,6 +250,31 @@ public class AuthServiceManageImpl implements AuthManageService {
             }
         }
         return 1;
+
+    }
+
+
+    /**
+     * 证书信息
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+
+    public CertificateVo certificateGet(MpNameIdsDto dto) {
+        //获取证书信息
+        MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
+        MpUserAuthentication userInfo =
+                mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+
+        MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
+        BeanCopy.copy(userInfo, vo);
+        CertificateVo revo = new CertificateVo();
+        revo.setFileUrl(info.getFileUrl());
+        revo.setFileLocalUrl(info.getFileUrlLocal());
+        revo.setUserVo(vo);
+        return revo;
 
     }
 

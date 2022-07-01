@@ -99,8 +99,9 @@ public class AuthMangerController {
     @PostMapping(value = "/certificateGet")
     public ApiResult certificateGet(@RequestBody MpNameIdsDto dto
     ) {
-        log.info("认证批量删除----------", JSONObject.toJSON(dto));
-        return ApiResult.success(null);
+
+        log.info("证书领取----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.certificateGet(dto));
     }
 
 
