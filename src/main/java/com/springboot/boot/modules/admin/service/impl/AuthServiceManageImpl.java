@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName ClassifyServiceImpl
@@ -33,25 +34,22 @@ import java.util.*;
 @Service
 @Slf4j
 public class AuthServiceManageImpl implements AuthManageService {
-
     @Autowired
     public AliyunOSSUtil aliyunOSSUtil;
-
     @Resource
-    private MpAttachmentInfoMapper mpAttachmentInfoMapper;
-
-    @Resource
-    private MpAuthMapper mpAuthMapper;
-
+    private MpExaminationMapper examinationMapper;
     @Resource
     private MpAuthHMapper mpAuthHMapper;
-
+    @Resource
+    private MpUserAuthExamMapper userAuthExamMapper;
+    @Resource
+    private MpAttachmentInfoMapper mpAttachmentInfoMapper;
+    @Resource
+    private MpAuthMapper mpAuthMapper;
     @Resource
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
-
     @Resource
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
-
 
     /**
      * 分类的新增以及修改
@@ -244,7 +242,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         return 1;
     }
 
-
     /**
      * 证书信息
      *
@@ -252,18 +249,103 @@ public class AuthServiceManageImpl implements AuthManageService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CertificateVo certificateGet(MpNameIdsDto dto) {
-        //获取证书信息
-        MpAttachmentInfo info = getfileInfoByCerId(dto.getId());
+        //认证id
+        Long id = dto.getId();
+
+        //证书所有者Id
+        Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
+
+        if (null == cerUserId) {
+            throw new BusinessException("userId或者认证者Id都是空");
+        }
+        //获取证书模板信息
+        MpAttachmentInfo info = getfileInfoByCerId(id);
+        //获取试卷id
+        MpAuth infoT = mpAuthMapper.selectByPrimaryKey(id);
+        //根据该证书id 没有找到书卷
+        if (null == infoT) {
+            throw new BusinessException("根据该证书id没有找到试卷");
+        }
+
+        Long examId = infoT.getExamId();
+        List<MpExamination> mpExaminations = mpExaminations(examId);
+        //考试规定次数
+        Integer testRuleCounts = null;
+        if (null != mpExaminations && mpExaminations.size() > 0) {
+            testRuleCounts = mpExaminations.get(0).getFrequencyCount();
+        } else {
+            throw new BusinessException("试卷不存在");
+        }
+        //查看用户考试信息
+        MpUserAuthExamExample mpUserAuthExamExample = new MpUserAuthExamExample();
+        MpUserAuthExamExample.Criteria criteria = mpUserAuthExamExample.createCriteria();
+        criteria.andUserIdEqualTo(cerUserId);
+        criteria.andAuthIdEqualTo(id);
+        criteria.andExamIdEqualTo(examId);
+        List<MpUserAuthExam> mpUserAuthExams = userAuthExamMapper.selectByExample(mpUserAuthExamExample);
+
+        Integer frequencyCount = mpExaminations.get(0).getFrequencyCount();
+
+        List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
+        //开始判断
+        if (mpUserAuthExams.size() >= frequencyCount.intValue() || userCommonList.size() > 0) {
+            //有合格的考试成绩
+        } else {
+            throw new BusinessException("该用户没有合格的考试成绩");
+        }
         MpUserAuthentication userInfo =
                 mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+        //获取认证信息
         MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
         BeanCopy.copy(userInfo, vo);
         CertificateVo revo = new CertificateVo();
         revo.setFileUrl(info.getFileUrl());
         revo.setFileLocalUrl(info.getFileUrlLocal());
         revo.setUserVo(vo);
+        //证书绑定
+        MpUserAuthentication ent = new MpUserAuthentication();
+        BeanCopy.copy(dto, ent);
+        SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
+        ent.setId(snowFlakeUtil.nextId());
+        ent.setCreateTime(new Date());
+        ent.setDeleFlag(CommonEnum.USED.getCode());
+        ent.setCreateUser(dto.getUserId() == null ? dto.getCerUserId() : dto.getUserId());
+        mpUserAuthenticationMapper.insertSelective(ent);
+        revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<MpUserAuthentication> certifiQuery(MpNameIdsDto dto) {
+        MpUserAuthenticationExample example = null;
+        if (dto.getPhone() != null && !"".equals(dto.getPhone())) {
+            example = new MpUserAuthenticationExample();
+            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andPhoneEqualTo(dto.getPhone());
+        } else {
+            example = new MpUserAuthenticationExample();
+            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        }
+        List<MpUserAuthentication> mpUserAuthenticationList = mpUserAuthenticationMapper.selectByExample(example);
+        return mpUserAuthenticationList;
+    }
+
+
+    /**
+     * 查看试卷次数函数
+     *
+     * @param
+     * @return
+     */
+    public List<MpExamination> mpExaminations(Long examId) {
+        MpExaminationExample examinationExample = new MpExaminationExample();
+        MpExaminationExample.Criteria exampleCriteria = examinationExample.createCriteria();
+        exampleCriteria.andIdEqualTo(examId);
+        exampleCriteria.andUpTypeEqualTo(CommonEnum.UP.getCode());
+        exampleCriteria.andExaminationTypeEqualTo(3);
+        List<MpExamination> mpExaminations = examinationMapper.selectByExample(examinationExample);
+        return mpExaminations;
+    }
 }

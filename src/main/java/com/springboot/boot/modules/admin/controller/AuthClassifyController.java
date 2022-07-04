@@ -26,10 +26,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class AuthClassifyController {
 
-
     @Autowired
     private AuthClassifyService  authClassifyService;
-
     @ApiOperation(value = "认证分类的新增以及修改", notes="该接口认证分类主键id判断新增不传，修改需要传入")
     @PostMapping(value="/addOrUpdate")
     public ApiResult addOrUpdate( @RequestBody MpAuthDirectionAddOrUpdateDto dto){
@@ -38,7 +36,6 @@ public class AuthClassifyController {
         ApiResult result = authClassifyService.addOrUpdate(dto);
         return result;
     }
-
     @ApiOperation(value = "根据名称查询认证方向列表分页", notes="根据名称查询认证方向列表，如果名称为空则查询全部，包含认证领域列表")
     @PostMapping(value="/searchByNameOrId")
     public ApiResult searchByAuthdirectionName(@RequestBody MpNameIdsDto dto){
@@ -46,9 +43,6 @@ public class AuthClassifyController {
         //判断一级分类名称是否相同
         return ApiResult.success(authClassifyService.searchByAuthdirectionName(dto));
     }
-
-
-
     @ApiOperation(value = "根据id查询认证方向不分页", notes="根据id查询认证方向不分页，包含认证领域列表")
     @PostMapping(value="/searchId")
     public ApiResult searchId(@RequestBody MpNameIdsDto dto){
@@ -56,9 +50,6 @@ public class AuthClassifyController {
         //判断一级分类名称是否相同
         return ApiResult.success(authClassifyService.searchId(dto));
     }
-
-
-
     @ApiOperation(value = "认证方向列表", notes="根据名称查询认证方向列表，如果名称为空则查询全部，包含认证领域列表")
     @PostMapping(value="/search")
     public ApiResult search(){
@@ -66,8 +57,6 @@ public class AuthClassifyController {
         //判断一级分类名称是否相同
         return ApiResult.success(authClassifyService.search());
     }
-
-
     @ApiOperation(value = "根据ids删除认证方向以及认证领域", notes="根据ids删除认证方向以及认证领域")
     @PostMapping(value="/deleteByIds")
     public ApiResult deleteByIds(@RequestBody MpNameIdsDto dto){
@@ -75,10 +64,4 @@ public class AuthClassifyController {
         //判断一级分类名称是否相同
         return ApiResult.success(authClassifyService.deleteByIds(dto));
     }
-
-
-
-
-
-
 }

@@ -11,16 +11,8 @@ import java.util.List;
 
 @Data
 public class CertificateVo {
-
-
-    private  String  fileUrl;
-
-    private  String  fileLocalUrl;
-
-
+    private String fileUrl;
+    private String fileLocalUrl;
+    private Integer certificateType;
     private MpUserAuthenticationVo userVo;
-
-
-
-
 }

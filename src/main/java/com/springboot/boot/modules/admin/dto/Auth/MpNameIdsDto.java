@@ -18,11 +18,18 @@ public class MpNameIdsDto extends PageDto {
     private List<Long> ids;
     @ApiModelProperty("用户id")
     private Long userId;
-
     @ApiModelProperty("证书所有者id")
     private Long cerUserId;
-
-
+    @ApiModelProperty("试卷id")
+    private Long examId;
+    @ApiModelProperty("单位名称")
+    private String unitName;
+    @ApiModelProperty("部门名称")
+    private String departmentName;
+    @ApiModelProperty("电话号码")
+    private String phone;
+    @ApiModelProperty("编号")
+    private Integer number;
 
 
 }

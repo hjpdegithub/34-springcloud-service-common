@@ -7,6 +7,8 @@ import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
 import com.springboot.boot.modules.admin.entity.MpAuth;
+import com.springboot.boot.modules.admin.entity.MpAuthCertificase;
+import com.springboot.boot.modules.admin.entity.MpUserAuthentication;
 import com.springboot.boot.modules.admin.vo.auth.CertificateVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 
 
 public interface AuthManageService {
@@ -70,6 +73,12 @@ public interface AuthManageService {
      CertificateVo certificateGet(MpNameIdsDto dto);
 
 
+    /**
+     * 证书查询
+     * @param dto
+     * @return
+     */
+      List<MpUserAuthentication> certifiQuery (MpNameIdsDto dto);
 
 
 
