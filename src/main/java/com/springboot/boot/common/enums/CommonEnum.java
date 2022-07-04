@@ -46,7 +46,13 @@ public enum CommonEnum {
     NOT_FINISH(2,"未完成"),
 
     NO(0,"否"),
-    YES(1,"是")
+    YES(1,"是"),
+    INIT_AUTH(0,"认证预约流程"),
+    STUDY_AUTH(1,"学习流程"),
+    EXAM_AUTH(2,"考试流程"),
+    SCER_AUTH(3,"证书流程"),
+    FINISH_AUTH(4,"全部完成"),
+    NO_FINISH_AUTH(5,"全部置灰"),
     ;
 
 

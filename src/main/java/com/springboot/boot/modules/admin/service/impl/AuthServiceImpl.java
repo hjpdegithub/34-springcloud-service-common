@@ -505,7 +505,7 @@ public class AuthServiceImpl implements AuthService {
     public IfWhereVo ifWhere(Long authId, Long userId,List<MpAuth> mpAuths){
         IfWhereVo ifWhereVo = new IfWhereVo();
         // 一开始  为初始状态--------------------------
-        ifWhereVo.setFinishType(0);
+        ifWhereVo.setFinishType(CommonEnum.INIT_AUTH.getCode());
         //判断是否报名预约================================================
         MpAuthUserSignUpExample example = new MpAuthUserSignUpExample();
         MpAuthUserSignUpExample.Criteria singUpCriteria = example.createCriteria();
@@ -515,7 +515,7 @@ public class AuthServiceImpl implements AuthService {
         List<MpAuthUserSignUp> mpAuthUserSignUps = authUserSignUpMapper.selectByExample(example);
         int singUpResult = (mpAuthUserSignUps.size()>0)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
         if (singUpResult ==CommonEnum.NO.getCode()){
-            ifWhereVo.setFinishType(1);
+            ifWhereVo.setFinishType(CommonEnum.STUDY_AUTH.getCode());
         }
         //判断是否完成了所有的课程学习=====================================================================
         //用户完成的课程数据
@@ -527,7 +527,7 @@ public class AuthServiceImpl implements AuthService {
         boolean result = userIds.containsAll(ids) && ids.containsAll(userIds);
         int studyResult = (result)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
         if (studyResult ==CommonEnum.NO.getCode()){
-            ifWhereVo.setFinishType(2);
+            ifWhereVo.setFinishType(CommonEnum.EXAM_AUTH.getCode());
         }
         //判断是否可以考试=================================================================
         //查看试卷次数
@@ -548,10 +548,10 @@ public class AuthServiceImpl implements AuthService {
         List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
 
         if (userCommonList.size()>0){
-            ifWhereVo.setFinishType(3);
+            ifWhereVo.setFinishType(CommonEnum.SCER_AUTH.getCode());
         }else{
             if (mpUserAuthExams.size()>=frequencyCount.intValue()){
-                throw new BusinessException("次数已上线");
+                ifWhereVo.setFinishType(CommonEnum.NO_FINISH_AUTH.getCode());
             }
         }
         //是否领取证书
@@ -561,7 +561,7 @@ public class AuthServiceImpl implements AuthService {
         criteria1.andUserIdEqualTo(userId);
         List<MpAuthCertificase> mpAuthCertificases = certificaseMapper.selectByExample(certificaseExample);
         if (mpAuthCertificases.size()>0){
-            ifWhereVo.setFinishType(4);
+            ifWhereVo.setFinishType(CommonEnum.FINISH_AUTH.getCode());
         }
         return ifWhereVo;
     }
