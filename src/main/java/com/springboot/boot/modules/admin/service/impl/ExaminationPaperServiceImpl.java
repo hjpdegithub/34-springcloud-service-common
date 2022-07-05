@@ -950,6 +950,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         //2.set试卷到报文里
         bankPracticeVo.setId(mpExaminations.get(0).getId());
         bankPracticeVo.setName(mpExaminations.get(0).getName());
+        bankPracticeVo.setTimeLengh(mpExaminations.get(0).getTimeLengh());
         //3.获取该试卷下所有的题库
         QuestionBankAddAndUpdateDto dto = new QuestionBankAddAndUpdateDto();
         dto.setExaminationId(mpExaminations.get(0).getId());

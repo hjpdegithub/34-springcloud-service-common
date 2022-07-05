@@ -40,6 +40,8 @@ public class AppQuestionBankExamVo {
     private Long userId;
     @ApiModelProperty("认证id")
     private Long authId;
+    @ApiModelProperty("考试时长")
+    private Integer timeLengh;
 
     @Data
     public static class Single {
