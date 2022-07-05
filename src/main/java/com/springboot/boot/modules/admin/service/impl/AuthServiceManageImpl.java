@@ -320,13 +320,20 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<MpUserAuthentication> certifiQuery(MpNameIdsDto dto) {
+
+        String key = dto.getKey();
+
+
         MpUserAuthenticationExample example = null;
-        if (dto.getPhone() != null && !"".equals(dto.getPhone())) {
-            example = new MpUserAuthenticationExample();
-            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andPhoneEqualTo(dto.getPhone());
-        } else {
+        if (key != null && !"".equals(key)) {
             example = new MpUserAuthenticationExample();
             example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        } else if ("1".equals(key)) {
+            example = new MpUserAuthenticationExample();
+            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andPhoneEqualTo(dto.getValue());
+        } else if ("2".equals(key)) {
+            example = new MpUserAuthenticationExample();
+            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNumberEqualTo(Integer.valueOf(dto.getValue()));
         }
         List<MpUserAuthentication> mpUserAuthenticationList = mpUserAuthenticationMapper.selectByExample(example);
         return mpUserAuthenticationList;

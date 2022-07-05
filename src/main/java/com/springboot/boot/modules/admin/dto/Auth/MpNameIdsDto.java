@@ -30,6 +30,11 @@ public class MpNameIdsDto extends PageDto {
     private String phone;
     @ApiModelProperty("编号")
     private Integer number;
+    @ApiModelProperty("值")
+    private String value;
+    @ApiModelProperty("键")
+    private String key;
+
 
 
 }
