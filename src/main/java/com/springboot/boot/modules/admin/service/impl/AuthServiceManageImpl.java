@@ -322,10 +322,8 @@ public class AuthServiceManageImpl implements AuthManageService {
     public List<MpUserAuthentication> certifiQuery(MpNameIdsDto dto) {
 
         String key = dto.getKey();
-
-
         MpUserAuthenticationExample example = null;
-        if (key != null && !"".equals(key)) {
+        if (key == null || "".equals(key)) {
             example = new MpUserAuthenticationExample();
             example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
         } else if ("1".equals(key)) {
@@ -334,7 +332,12 @@ public class AuthServiceManageImpl implements AuthManageService {
         } else if ("2".equals(key)) {
             example = new MpUserAuthenticationExample();
             example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andNumberEqualTo(Integer.valueOf(dto.getValue()));
+        }else {
+            example = new MpUserAuthenticationExample();
+            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
         }
+
+
         List<MpUserAuthentication> mpUserAuthenticationList = mpUserAuthenticationMapper.selectByExample(example);
         return mpUserAuthenticationList;
     }
