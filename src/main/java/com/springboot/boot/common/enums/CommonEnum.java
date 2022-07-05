@@ -20,6 +20,7 @@ public enum CommonEnum {
 
     EXAM(1,"考试类"),
     WENJUAN(2,"问卷类"),
+    AUTH_EXAM(3,"认证类"),
 
     DATA_EXAM(1,"数据中台门户考试"),
     DATA_ACTIVIT(2,"能力开放平台活动"),

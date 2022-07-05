@@ -141,4 +141,6 @@ public interface ExaminationPaperService {
     ApiResult searchExamById(Long userId, Long id, Long achievementId);
 
     ApiResult select();
+
+    List<MpExamination> selectByName(ExaminationAddOrUpdateDto dto);
 }

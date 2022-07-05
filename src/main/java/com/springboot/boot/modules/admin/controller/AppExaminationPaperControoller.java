@@ -116,10 +116,10 @@ public class AppExaminationPaperControoller {
     @GetMapping(value="/selectSimulationByAuth")
     public ApiResult selectSimulationByAuth(@RequestParam Long id,@RequestParam Long authId,@RequestParam Long userId){
         log.info("模拟考试========={}", id);
-        Integer auth = authService.ifWhere(authId,userId);
-        if (auth.intValue() == 1){
-            return ApiResult.error("请先完成所有的课程学习！");
-        }
+//        Integer auth = authService.ifWhere(authId,userId);
+//        if (auth.intValue() == 1){
+//            return ApiResult.error("请先完成所有的课程学习！");
+//        }
         ApiResult result = paperService.selectSimulation(id);
         AppQuestionBankExamVo data = (AppQuestionBankExamVo) result.getData();
         data.setAuthId(authId);

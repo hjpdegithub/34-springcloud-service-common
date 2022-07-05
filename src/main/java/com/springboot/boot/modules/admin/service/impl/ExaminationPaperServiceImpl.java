@@ -387,6 +387,21 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         }
         return mpExaminations;
     }
+    public List<MpExamination> whereSelectExamByAuth(Long id) throws BusinessException {
+        //通过id查询试卷信息
+        MpExaminationExample examinationExample = new MpExaminationExample();
+        MpExaminationExample.Criteria criteria = examinationExample.createCriteria();
+        criteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        criteria.andIdEqualTo(id);
+        criteria.andExaminationTypeEqualTo(CommonEnum.AUTH_EXAM.getCode());
+        criteria.andRangeTypeEqualTo(CommonEnum.DATA_EXAM.getCode());
+        criteria.andUpTypeEqualTo(CommonEnum.UP.getCode());
+        List<MpExamination> mpExaminations = examinationMapper.selectByExample(examinationExample);
+        if (mpExaminations.isEmpty()) {
+            throw new BusinessException("试卷信息为空！");
+        }
+        return mpExaminations;
+    }
 
 
     public List<MpExamination> whereSelectExam2(Long id) throws BusinessException {
@@ -894,6 +909,20 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         return ApiResult.success(mpExaminationList);
     }
 
+    @Override
+    public List<MpExamination> selectByName(ExaminationAddOrUpdateDto dto) {
+        MpExaminationExample examination = new MpExaminationExample();
+        MpExaminationExample.Criteria criteria = examination.createCriteria();
+        criteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        criteria.andRangeTypeEqualTo(CommonEnum.EXAM.getCode());
+        criteria.andNameEqualTo(dto.getName());
+        if (null != dto.getId() ){
+            criteria.andIdNotEqualTo(dto.getId());
+        }
+        List<MpExamination> mpExaminationList = examinationMapper.selectByExample(examination);
+        return mpExaminationList;
+    }
+
     public List<MpUserExam> selectUserExam(Long userId, Long id, Long achievementId) {
         MpUserExamExample examExample = new MpUserExamExample();
         MpUserExamExample.Criteria criteria = examExample.createCriteria();
@@ -917,7 +946,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         //题库练习报文
         AppQuestionBankExamVo bankPracticeVo = new AppQuestionBankExamVo();
         //1.查询试卷信息 ，通过考试类型和展示范围查询
-        List<MpExamination> mpExaminations = whereSelectExam(id);
+        List<MpExamination> mpExaminations = whereSelectExamByAuth(id);
         //2.set试卷到报文里
         bankPracticeVo.setId(mpExaminations.get(0).getId());
         bankPracticeVo.setName(mpExaminations.get(0).getName());

@@ -19,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -93,7 +94,15 @@ public class ExaminationPaperController {
                 return ApiResult.error("500", "试卷不等于题目总分数无法创建");
             }
         }
+
         log.info("试卷的新增以及修改========={}", JSONObject.toJSON(dto));
+        if (null == dto.getId()){
+            List<MpExamination> mpExamination = paperService.selectByName(dto);
+            if (!CollectionUtils.isEmpty(mpExamination)){
+                return ApiResult.error("试卷名称重复");
+            }
+        }
+
         ApiResult result = paperService.addOrUpdate(dto);
         return result;
     }
