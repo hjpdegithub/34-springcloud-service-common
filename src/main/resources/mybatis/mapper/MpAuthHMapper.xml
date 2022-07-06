@@ -55,5 +55,43 @@
            and c.id = #{id}
     </select>
 
+    <select id="certifiQuery" resultType="com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo">
+        select
+        a.name as name ,
+        a.phone as phone ,
+        c.name as authName,
+        c.auth_level as authLevel,
+        c.certificate_time as certificateTime,
+        d.name as directionName,
+        e.name as domainName
+        from
+        mp_user_authentication a
+        inner join
+        mp_auth_certificase b
+        on a.id = b.user_id
+        left join
+        mp_auth c
+        on c.id = b.auth_id
+        left join
+        mp_auth_direction d
+        on
+        c.direction_id = d.id
+        left join
+        mp_auth_domain e
+        on e.id = c.domain_id
+        where
+        b.dele_flag = '0'
+        <if test="dto.phone != null and dto.phone != ''">
+            and a.phone = #{dto.phone}
+        </if>
+        <if test="dto.number != null and dto.number != ''">
+            and a.number = #{dto.number}
+        </if>
+        <if test="dto.id != null and dto.id != ''">
+            and b.id = #{dto.id}
+        </if>
+
+    </select>
+
 
 </mapper>
