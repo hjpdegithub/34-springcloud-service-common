@@ -595,7 +595,7 @@ public class AuthServiceImpl implements AuthService {
     public List<MpCurriculum> mpCurriculumList(List<MpAuth> mpAuths ){
         MpCurriculumExample curriculumExample = new MpCurriculumExample();
         MpCurriculumExample.Criteria criteria = curriculumExample.createCriteria();
-        criteria.andPropertyTypeEqualTo(CommonEnum.AUTH.getCode());
+        criteria.andPropertyTypeEqualTo(CommonEnum.CURR_AUTH.getCode());
         criteria.andDeleFlagEqualTo(CommonEnum.USED.getCode());
         criteria.andAuthFirstClassifyIdEqualTo(mpAuths.get(0).getAuthFirstClassifyId());
         criteria.andAuthSencondClassifyIdEqualTo(mpAuths.get(0).getAuthSencondClassifyId());

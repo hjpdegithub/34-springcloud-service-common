@@ -117,7 +117,7 @@ public class CurriculumServiceImpl implements CurriculumService {
         if(!CollectionUtils.isEmpty(mpCurricula)){
         mpCurricula.forEach(e->{
             //2.0新增认证分类===========================================
-            if (null!=e.getPropertyType()&&e.getPropertyType().intValue() == CommonEnum.AUTH.getCode()){
+            if (null!=e.getPropertyType()&&e.getPropertyType().intValue() == CommonEnum.CURR_AUTH.getCode()){
                 MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(e.getAuthFirstClassifyId());
                 MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(e.getAuthSencondClassifyId());
                 if (null != mpFirstClassify){
