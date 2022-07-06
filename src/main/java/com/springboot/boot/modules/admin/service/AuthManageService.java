@@ -12,6 +12,7 @@ import com.springboot.boot.modules.admin.entity.MpUserAuthentication;
 import com.springboot.boot.modules.admin.vo.auth.CertificateVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,7 +79,7 @@ public interface AuthManageService {
      * @param dto
      * @return
      */
-      List<MpUserAuthentication> certifiQuery (MpNameIdsDto dto);
+    PageInfo<MpUserAuthenticationVo> certifiQuery (MpNameIdsDto dto);
 
 
 

@@ -16,6 +16,7 @@ import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo;
 import com.springboot.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +51,9 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
     @Resource
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
+
+
+
 
     /**
      * 分类的新增以及修改
@@ -319,17 +323,33 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<MpUserAuthentication> certifiQuery(MpNameIdsDto dto) {
-        MpUserAuthenticationExample example = null;
-        if (dto.getPhone() != null && !"".equals(dto.getPhone())) {
-            example = new MpUserAuthenticationExample();
-            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andPhoneEqualTo(dto.getPhone());
-        } else {
-            example = new MpUserAuthenticationExample();
-            example.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+    public PageInfo<MpUserAuthenticationVo> certifiQuery(MpNameIdsDto dto) {
+        if (dto.getPaging()) {
+            PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
         }
-        List<MpUserAuthentication> mpUserAuthenticationList = mpUserAuthenticationMapper.selectByExample(example);
-        return mpUserAuthenticationList;
+        String key = dto.getKey();
+        String value = dto.getValue();
+        if (null != key && !"".equals(key)) {
+            if (!StringUtil.isNumeric(value)) {
+                throw new BusinessException("编号或者手机号应该是数字");
+            }
+        }
+
+            if ("1".equals(key)) {
+                dto.setPhone(value);
+            } else if ("2".equals(key)) {
+                dto.setNumber(Integer.valueOf(dto.getValue()));
+            } else {
+                dto.setNumber(null);
+                dto.setPhone(null);
+            }
+
+        List<MpUserAuthenticationVo>
+                mpUserAuthenticationVoList =
+                mpAuthHMapper.certifiQuery(dto);
+
+        PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
+        return pageInfo;
     }
 
 
