@@ -333,7 +333,8 @@ public class AuthServiceManageImpl implements AuthManageService {
             if (!StringUtil.isNumeric(value)) {
                 throw new BusinessException("编号或者手机号应该是数字");
             }
-        } else {
+        }
+
             if ("1".equals(key)) {
                 dto.setPhone(value);
             } else if ("2".equals(key)) {
@@ -342,7 +343,7 @@ public class AuthServiceManageImpl implements AuthManageService {
                 dto.setNumber(null);
                 dto.setPhone(null);
             }
-        }
+
         List<MpUserAuthenticationVo>
                 mpUserAuthenticationVoList =
                 mpAuthHMapper.certifiQuery(dto);
