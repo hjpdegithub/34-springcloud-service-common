@@ -38,8 +38,6 @@
             <if test="dto.certificateTime != null ">
                 and a.certificate_time >= #{dto.dateCStart}
                 and a.certificate_time <![CDATA[<]]>   #{dto.dateCEnd}
-
-
             </if>
         </trim>
     </select>
