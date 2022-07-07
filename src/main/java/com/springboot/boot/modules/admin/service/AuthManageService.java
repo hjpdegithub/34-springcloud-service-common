@@ -39,6 +39,12 @@ public interface AuthManageService {
      */
     PageInfo<MpAuthHVo> search(MpAuthDto dto);
 
+    /**
+     * 分页查询认证
+     * @param dto
+     * @return
+     */
+    List<MpAuthHVo> myAuthSearch(MpAuthDto dto);
 
 
 

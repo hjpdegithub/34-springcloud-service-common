@@ -300,6 +300,42 @@ public class AuthClassifyServiceImpl implements AuthClassifyService {
         return mpAuthHVos;
     }
 
+
+
+    /**
+     * 查询认证领域
+     */
+    @Override
+    public List<MpAuthDomainVo> searchDomain(MpNameIdsDto dto) {
+
+          Long id = dto.getId();
+
+
+        MpAuthDomainExample ex  =null;
+
+        if(id==null){
+            ex = new MpAuthDomainExample();
+            ex.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode());
+
+        }
+        else{
+            ex = new MpAuthDomainExample();
+            ex.createCriteria().andDeleFlagEqualTo(CommonEnum.USED.getCode()).andAuthDirectionIdEqualTo(id);
+        }
+
+
+        List<MpAuthDomain> mpAuthDomains = mpAuthDomainMapper.selectByExample(ex);
+        List<MpAuthDomainVo> vos = new ArrayList<>();
+        for (MpAuthDomain ent : mpAuthDomains) {
+            MpAuthDomainVo vo = new MpAuthDomainVo();
+            BeanCopy.copy(ent, vo);
+            vos.add(vo);
+        }
+        return vos;
+
+    }
+
+
     /**
      * 根据id删除认证方向以及认证方向下的领域
      */

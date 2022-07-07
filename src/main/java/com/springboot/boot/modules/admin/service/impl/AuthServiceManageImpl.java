@@ -53,8 +53,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
 
 
-
-
     /**
      * 分类的新增以及修改
      *
@@ -152,6 +150,13 @@ public class AuthServiceManageImpl implements AuthManageService {
         return pageInfo;
     }
 
+    @Override
+    public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
+      List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuths(dto);
+      log.info("分页查询认证===================={}", dto);
+
+   return  null;
+    }
 
     /**
      * 认证详情查询
@@ -335,14 +340,14 @@ public class AuthServiceManageImpl implements AuthManageService {
             }
         }
 
-            if ("1".equals(key)) {
-                dto.setPhone(value);
-            } else if ("2".equals(key)) {
-                dto.setNumber(Integer.valueOf(dto.getValue()));
-            } else {
-                dto.setNumber(null);
-                dto.setPhone(null);
-            }
+        if ("1".equals(key)) {
+            dto.setPhone(value);
+        } else if ("2".equals(key)) {
+            dto.setNumber(Integer.valueOf(dto.getValue()));
+        } else {
+            dto.setNumber(null);
+            dto.setPhone(null);
+        }
 
         List<MpUserAuthenticationVo>
                 mpUserAuthenticationVoList =

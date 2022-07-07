@@ -57,6 +57,13 @@ public class AuthClassifyController {
         //判断一级分类名称是否相同
         return ApiResult.success(authClassifyService.search());
     }
+    @ApiOperation(value = "认证领域列表", notes="认证领域列表")
+    @PostMapping(value="/searchDomain")
+    public ApiResult searchDomain(@RequestBody MpNameIdsDto  dto){
+        log.info("认证方向列表查询----------参数对象输出{}");
+        //判断一级分类名称是否相同
+        return ApiResult.success(authClassifyService.searchDomain(dto));
+    }
     @ApiOperation(value = "根据ids删除认证方向以及认证领域", notes="根据ids删除认证方向以及认证领域")
     @PostMapping(value="/deleteByIds")
     public ApiResult deleteByIds(@RequestBody MpNameIdsDto dto){

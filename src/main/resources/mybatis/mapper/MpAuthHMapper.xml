@@ -19,9 +19,7 @@
         on e.id= a.direction_id
         <trim prefix="where" prefixOverrides="and">
             a.dele_flag ='0'
-            <if test="dto.name != null and dto.name != ''">
-                and a.name = #{dto.name}
-            </if>
+
             <if test="dto.id != null and dto.id != ''">
                 and a.id = #{dto.id}
             </if>
@@ -39,6 +37,10 @@
                 and a.certificate_time >= #{dto.dateCStart}
                 and a.certificate_time <![CDATA[<]]>   #{dto.dateCEnd}
             </if>
+            <if test="dto.name != null and dto.name != ''">
+                and a.name like CONCAT("%",#{dto.name},"%")
+            </if>
+
         </trim>
     </select>
 

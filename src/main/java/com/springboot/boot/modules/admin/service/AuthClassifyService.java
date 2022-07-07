@@ -11,6 +11,7 @@ import com.springboot.boot.modules.admin.dto.classifyDto.ClassifySearchAllDto;
 import com.springboot.boot.modules.admin.entity.MpAuthDirection;
 import com.springboot.boot.modules.admin.entity.MpFirstClassify;
 import com.springboot.boot.modules.admin.entity.MpSecondClassify;
+import com.springboot.boot.modules.admin.vo.auth.MpAuthDomainVo;
 import com.springboot.boot.modules.admin.vo.auth.MpAuthHVo;
 import com.springboot.boot.modules.admin.vo.classify.ClassifyAllVo;
 import com.springboot.boot.utils.ApiResult;
@@ -46,6 +47,13 @@ public interface AuthClassifyService {
      * 根据名称或者id查找认证方向列表
      */
     List<MpAuthHVo>  search();
+
+
+
+    /**
+     * 查询认证领域
+     */
+    List<MpAuthDomainVo>  searchDomain(MpNameIdsDto  dto);
 
 
 
