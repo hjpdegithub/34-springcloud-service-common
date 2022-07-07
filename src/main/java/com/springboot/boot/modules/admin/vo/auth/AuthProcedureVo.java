@@ -22,6 +22,10 @@ public class AuthProcedureVo {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     @ApiModelProperty("认证id")
     private Long id;
+    @ApiModelProperty("认证名称")
+    private String name;
+    @ApiModelProperty("描述")
+    private String authDescr;
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     @ApiModelProperty("用户id")
     private Long userId;
@@ -45,7 +49,7 @@ public class AuthProcedureVo {
 //
 //    @ApiModelProperty("是否领取证书0否1是")
 //    private Integer certificaseType;
-    @ApiModelProperty("完成类型  0初始1学习2考试3证书4全部完成")
+    @ApiModelProperty("完成类型  0初始1学习2考试3证书4全部完成5全部置灰")
     private Integer finishType;
 
 }

@@ -93,6 +93,8 @@ public class AuthServiceImpl implements AuthService {
         if (mpAuths.size() <= 0) {
             throw new BusinessException("认证信息为空");
         }
+        authClassVo.setName(mpAuths.get(0).getName());
+        authClassVo.setAuthDescr(mpAuths.get(0).getAuthDescr());
         //通过认证id分类id查询出认证的相关课程
         List<MpCurriculum> mpCurriculumList = mpCurriculumList(mpAuths);
         List<AuthClassVo> authClassVos = new ArrayList<>();
