@@ -19,7 +19,7 @@
         on e.id= a.direction_id
         <trim prefix="where" prefixOverrides="and">
             a.dele_flag ='0'
-
+            and a.up_type ='1'
             <if test="dto.id != null and dto.id != ''">
                 and a.id = #{dto.id}
             </if>
@@ -43,6 +43,36 @@
 
         </trim>
     </select>
+
+
+    <select id="selectMyMpAuths" resultType="com.springboot.boot.modules.admin.vo.auth.MpAuthHVo">
+        select a.* ,
+        b.name as unitName ,
+        c.name as departMentName,
+        d.name as domainName,
+        e.name as directionName
+        from mp_auth a
+        left join mp_unit b
+        on a.unit_id = b.id
+        left join mp_department c
+        on a.department_id = b.id
+        left join mp_auth_domain d
+        on d.id= a.domain_id
+        left join mp_auth_direction e
+        on e.id= a.direction_id
+        inner join mp_user_auth f
+        on f.auth_id = a.id
+        <trim prefix="where" prefixOverrides="and">
+            a.dele_flag ='0'
+            and f.dele_flag='0'
+            <if test="dto.userId != null and dto.userId != ''">
+                and f.user_id = #{dto.userId}
+            </if>
+            order by create_time desc
+
+        </trim>
+    </select>
+
 
     <select id="selectFileId" resultType="java.lang.Long">
         select a.id

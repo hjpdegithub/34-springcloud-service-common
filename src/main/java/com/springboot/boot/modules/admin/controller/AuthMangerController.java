@@ -75,15 +75,8 @@ public class AuthMangerController {
     public ApiResult myAuthSearch(@RequestBody MpAuthDto dto
     ) {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
-        return ApiResult.success(authService.search(dto));
+        return ApiResult.success(authService.myAuthSearch(dto));
     }
-
-
-
-
-
-
-
 
     //列表查询
     @ApiOperation(value = "认证信息详情查询", notes = "认证信息详情查询")
