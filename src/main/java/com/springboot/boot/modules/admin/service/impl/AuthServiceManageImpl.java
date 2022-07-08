@@ -150,6 +150,34 @@ public class AuthServiceManageImpl implements AuthManageService {
         return pageInfo;
     }
 
+
+    /**
+     * 分页查询认证前端
+     * @param dto
+     * @return
+     */
+  public   PageInfo<MpAuthHVo> searchForFront(MpAuthDto dto){
+
+        if (dto.getPaging()) {
+            PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
+        }
+        //java 取当天日期开始时点
+        Date startTime = dto.getCertificateTime();
+        if (null != startTime) {
+            Date dateStart = DateUtils.getDayStart(startTime);
+            Date dateEnd = DateUtils.getNextDay(startTime);
+            dto.setDateCEnd(dateEnd);
+            dto.setDateCStart(dateStart);
+        }
+        List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.searchForFront(dto);
+        log.info("分页查询认证===================={}", dto);
+        PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
+        return pageInfo;
+
+    }
+
+
+
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectMyMpAuths(dto);

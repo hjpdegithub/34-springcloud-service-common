@@ -3,6 +3,7 @@ package com.springboot.boot.common;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.springboot.boot.utils.ValueDesensitizeFilter;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +47,12 @@ public class WebConfig implements WebMvcConfigurer {
 		fastMediaTypes.add(MediaType.APPLICATION_JSON);
 		fastConverter.setSupportedMediaTypes(fastMediaTypes);
 		//3.在convert中添加配置信息
-		fastConverter.setFastJsonConfig(fastJsonConfig);
-		return new HttpMessageConverters(fastConverter);
+
+        fastJsonConfig.setSerializeFilters(new ValueDesensitizeFilter());//添加自己写的拦截器
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+		HttpMessageConverter<?> converter = fastConverter;
+
+		return new HttpMessageConverters(converter);
 	}
 
 	/**

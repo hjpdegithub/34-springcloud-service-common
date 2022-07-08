@@ -11,10 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.lang.annotation.ElementType;
-import java.util.Date;
 
 /**
  * @ClassName AppClassifyController
@@ -68,6 +64,19 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.search(dto));
     }
+
+
+
+    //列表查询
+    @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
+    @PostMapping(value = "/searchForFront")
+    public ApiResult searchForFront(@RequestBody MpAuthDto dto
+    ) {
+        log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.searchForFront(dto));
+    }
+
+
 
     //列表查询
     @ApiOperation(value = "我的认证信息列表", notes = "我的认证信息列表")

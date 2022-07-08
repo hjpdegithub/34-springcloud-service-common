@@ -102,7 +102,7 @@ public class TestNoManageServiceImpl implements TestNoManageService {
 
             return ApiResult.success(mpUserAuthenticationList.get(0));
         } else {
-            return null;
+            return ApiResult.error(500, "该手机号尚未注册。");
         }
     }
 
