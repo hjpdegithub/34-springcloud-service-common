@@ -286,6 +286,7 @@ public class AuthServiceImpl implements AuthService {
         mpUserAuthExam.setId(id);
         mpUserAuthExam.setIfWhether(chengji.getIfWhere());
         mpUserAuthExam.setUserId(examStudyFinishDto.getUserId());
+        mpUserAuthExam.setExamId(examStudyFinishDto.getExamId());
         int i = userAuthExamMapper.insertSelective(mpUserAuthExam);
         log.info("----------------------------------"+i);
         //将考试信息存入到认证考试表中
@@ -463,14 +464,14 @@ public class AuthServiceImpl implements AuthService {
                     //单选
                     case 1:
                         //开始判断
-                        singlesCount.getAndSet(rSsinglesCount.get() + 1);
+                        rSsinglesCount.getAndSet(rSsinglesCount.get() + 1);
                         break;
                     case 2:
                         //开始判断
-                        multCount.getAndSet(rMultCount.get() + 1);
+                        rMultCount.getAndSet(rMultCount.get() + 1);
                         break;
                     default:
-                        judgeCount.getAndSet(rJudgeCount.get() + 1);
+                        rJudgeCount.getAndSet(rJudgeCount.get() + 1);
                         break;
                 }
             }

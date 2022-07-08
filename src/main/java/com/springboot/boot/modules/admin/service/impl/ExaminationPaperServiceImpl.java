@@ -947,7 +947,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
         AppQuestionBankExamVo bankPracticeVo = new AppQuestionBankExamVo();
         //1.查询试卷信息 ，通过考试类型和展示范围查询
         List<MpExamination> mpExaminations = new ArrayList<>();
-        if (types == 0){
+        if (types.intValue() == 0){
              mpExaminations = whereSelectExam(id);
         }else{
             mpExaminations = whereSelectExamByAuth(id);
@@ -1226,14 +1226,14 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
                     //单选
                     case 1:
                         //开始判断
-                        singlesCount.getAndSet(rSsinglesCount.get() + 1);
+                        rSsinglesCount.getAndSet(rSsinglesCount.get() + 1);
                         break;
                     case 2:
                         //开始判断
-                        multCount.getAndSet(rMultCount.get() + 1);
+                        rMultCount.getAndSet(rMultCount.get() + 1);
                         break;
                     default:
-                        judgeCount.getAndSet(rJudgeCount.get() + 1);
+                        rJudgeCount.getAndSet(rJudgeCount.get() + 1);
                         break;
                 }
             }
