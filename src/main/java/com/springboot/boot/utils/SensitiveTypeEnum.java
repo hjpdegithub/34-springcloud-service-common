@@ -21,7 +21,7 @@ public enum SensitiveTypeEnum {
     /**
      * 手机号
      */
-    MOBILE_PHONE,
+    phone,
     /**
      * 地址
      */

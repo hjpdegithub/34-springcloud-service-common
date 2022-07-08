@@ -11,8 +11,8 @@ import java.lang.annotation.*;
 /**
  * 数据脱敏转换类
  */
-@Documented
-@Target({ElementType.TYPE, ElementType.METHOD})//只能写在类上
+
+@Target({ElementType.FIELD})//只能写在类上
 @Inherited//可以被子类继承
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Desensitized  {

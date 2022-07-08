@@ -19,6 +19,47 @@
         on e.id= a.direction_id
         <trim prefix="where" prefixOverrides="and">
             a.dele_flag ='0'
+            <if test="dto.id != null and dto.id != ''">
+                and a.id = #{dto.id}
+            </if>
+
+            <if test="dto.directionId != null and dto.directionId != ''">
+                and a.direction_id = #{dto.directionId}
+            </if>
+            <if test="dto.domainId != null and dto.domainId != ''">
+                and a.domain_id = #{dto.domainId}
+            </if>
+            <if test="dto.authLevel != null and dto.authLevel != ''">
+                and a.auth_level = #{dto.authLevel}
+            </if>
+            <if test="dto.certificateTime != null ">
+                and a.certificate_time >= #{dto.dateCStart}
+                and a.certificate_time <![CDATA[<]]>   #{dto.dateCEnd}
+            </if>
+            <if test="dto.name != null and dto.name != ''">
+                and a.name like CONCAT("%",#{dto.name},"%")
+            </if>
+
+        </trim>
+    </select>
+
+    <select id="searchForFront" resultType="com.springboot.boot.modules.admin.vo.auth.MpAuthHVo">
+        select a.* ,
+        b.name as unitName ,
+        c.name as departMentName,
+        d.name as domainName,
+        e.name as directionName
+        from mp_auth a
+        left join mp_unit b
+        on a.unit_id = b.id
+        left join mp_department c
+        on a.department_id = b.id
+        left join mp_auth_domain d
+        on d.id= a.domain_id
+        left join mp_auth_direction e
+        on e.id= a.direction_id
+        <trim prefix="where" prefixOverrides="and">
+            a.dele_flag ='0'
             and a.up_type ='1'
             <if test="dto.id != null and dto.id != ''">
                 and a.id = #{dto.id}
@@ -43,6 +84,7 @@
 
         </trim>
     </select>
+
 
 
     <select id="selectMyMpAuths" resultType="com.springboot.boot.modules.admin.vo.auth.MpAuthHVo">

@@ -3,6 +3,7 @@ package com.springboot.boot.modules.admin.controller;
 import com.springboot.boot.modules.admin.dto.test.MpUserAuthenticationDto;
 
 import com.springboot.boot.modules.admin.service.TestNoManageService;
+import com.springboot.boot.modules.admin.vo.test.MpUserAuthenticationVo;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,18 +43,20 @@ public class TestNoManageController {
     @ApiOperation(value = "验证", notes = "验证")
     @PostMapping(value = "/TestNoVerifys")
     public ApiResult TestNoVerifys(@RequestBody MpUserAuthenticationDto dto) {
-        return ApiResult.success(testNoManageService.TestNoVerifys(dto));
+
+        MpUserAuthenticationVo vo = testNoManageService.TestNoVerifys(dto);
+
+        if(null==vo){
+
+            return  ApiResult.error(500,"该编号不存在");
+
+        }
+
+        return ApiResult.success(vo);
     }
-
-
     @ApiOperation(value = "考试编号信息更新", notes = "考试编号信息更新")
     @PostMapping(value = "/TestNoVerifysEdit")
     public ApiResult TestNoVerifysEdit(@RequestBody MpUserAuthenticationDto dto) {
-        return ApiResult.success(testNoManageService.TestNoVerifys(dto));
+        return ApiResult.success(testNoManageService.TestNoVerifysEdit(dto));
     }
-
-
-
-
-
 }

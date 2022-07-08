@@ -2,6 +2,8 @@ package com.springboot.boot.modules.admin.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.springboot.boot.utils.Desensitized;
+import com.springboot.boot.utils.SensitiveTypeEnum;
 
 import java.util.Date;
 
@@ -15,6 +17,8 @@ public class MpUserAuthentication {
 
     private String departmentName;
 
+
+    @Desensitized(typ = SensitiveTypeEnum.phone)
     private String phone;
 
     private Integer number;
