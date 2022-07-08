@@ -108,7 +108,8 @@ public class AppExaminationPaperControoller {
     @GetMapping(value="/selectSimulation")
     public ApiResult selectSimulation(@RequestParam Long id){
         log.info("模拟考试========={}", id);
-        ApiResult result = paperService.selectSimulation(id);
+        Integer type = 0;
+        ApiResult result = paperService.selectSimulation(id,type);
         return result;
     }
 
@@ -116,11 +117,12 @@ public class AppExaminationPaperControoller {
     @GetMapping(value="/selectSimulationByAuth")
     public ApiResult selectSimulationByAuth(@RequestParam Long id,@RequestParam Long authId,@RequestParam Long userId){
         log.info("模拟考试========={}", id);
-//        Integer auth = authService.ifWhere(authId,userId);
-//        if (auth.intValue() == 1){
-//            return ApiResult.error("请先完成所有的课程学习！");
-//        }
-        ApiResult result = paperService.selectSimulation(id);
+        Integer auth = authService.ifWhere(authId,userId);
+        if (auth.intValue() == 1){
+            return ApiResult.error("请先完成所有的课程学习！");
+        }
+        Integer type = 1;
+        ApiResult result = paperService.selectSimulation(id,type);
         AppQuestionBankExamVo data = (AppQuestionBankExamVo) result.getData();
         data.setAuthId(authId);
         data.setUserId(userId);

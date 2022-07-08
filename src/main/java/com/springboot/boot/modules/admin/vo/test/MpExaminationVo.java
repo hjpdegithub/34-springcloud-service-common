@@ -36,5 +36,10 @@ public class MpExaminationVo {
     private Integer judgeNum;
     private Integer upType;
     List<MpQuestionBankVo> mpQuestionBankVoList ;
+    //2.0版本--------------
+    //1考试进行中2考试已结束3考试未开始
+    private Integer examTimeType;
+    //报名人数
+    private Integer signUpCount;
 
 }

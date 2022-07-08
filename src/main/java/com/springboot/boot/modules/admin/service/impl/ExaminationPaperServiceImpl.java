@@ -941,12 +941,18 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
      * @return
      */
     @Override
-    public ApiResult selectSimulation(Long id) {
+    public ApiResult selectSimulation(Long id,Integer types) {
         List<AppQuestionVo> examCount = new ArrayList<>();
         //题库练习报文
         AppQuestionBankExamVo bankPracticeVo = new AppQuestionBankExamVo();
         //1.查询试卷信息 ，通过考试类型和展示范围查询
-        List<MpExamination> mpExaminations = whereSelectExamByAuth(id);
+        List<MpExamination> mpExaminations = new ArrayList<>();
+        if (types == 0){
+             mpExaminations = whereSelectExam(id);
+        }else{
+            mpExaminations = whereSelectExamByAuth(id);
+        }
+
         //2.set试卷到报文里
         bankPracticeVo.setId(mpExaminations.get(0).getId());
         bankPracticeVo.setName(mpExaminations.get(0).getName());

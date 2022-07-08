@@ -9,6 +9,7 @@ import com.springboot.boot.modules.admin.entity.MpExamination;
 import com.springboot.boot.modules.admin.vo.ChengjiVo;
 import com.springboot.boot.modules.admin.vo.examination.ExaminationVo;
 import com.springboot.boot.utils.ApiResult;
+import org.omg.CORBA.INTERNAL;
 
 import java.util.List;
 
@@ -114,7 +115,7 @@ public interface ExaminationPaperService {
      * @param id
      * @return
      */
-    ApiResult selectSimulation(Long id);
+    ApiResult selectSimulation(Long id, Integer types);
 
     /**
      * 在线模拟考试交卷

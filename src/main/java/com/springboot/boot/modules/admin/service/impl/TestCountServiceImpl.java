@@ -7,17 +7,23 @@ import com.springboot.boot.common.enums.UpTypeEnum;
 import com.springboot.boot.modules.admin.dto.file.CommonAllDto;
 import com.springboot.boot.modules.admin.entity.MpExamination;
 import com.springboot.boot.modules.admin.entity.MpExaminationExample;
+import com.springboot.boot.modules.admin.entity.MpSignUp;
 import com.springboot.boot.modules.admin.mapper.MpExaminationMapper;
 import com.springboot.boot.modules.admin.mapper.TestCountsMapper;
+import com.springboot.boot.modules.admin.service.SignUpService;
 import com.springboot.boot.modules.admin.service.TestCountService;
 import com.springboot.boot.modules.admin.vo.test.MpExaminationVo;
 import com.springboot.boot.modules.admin.vo.test.TestCountVo;
 import com.springboot.boot.modules.admin.vo.test.UsertestVo;
 import com.springboot.boot.utils.BeanCopy;
+import com.springboot.boot.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +33,8 @@ public class TestCountServiceImpl implements TestCountService {
     private MpExaminationMapper mpExaminationMapper;
     @Resource
     private TestCountsMapper testCountsMapper;
+    @Resource
+    private SignUpService signUpService;
 
     @Override
     public TestCountVo testCounts() {
@@ -108,13 +116,28 @@ public class TestCountServiceImpl implements TestCountService {
             for (MpExamination mpExamination : mpExaminationList) {
                 MpExaminationVo mpExaminationVo = new MpExaminationVo();
                 BeanCopy.copy(mpExamination, mpExaminationVo);
+                //2.0判断考试转台
+                Date date = new Date();
+                if (null != mpExamination.getStartTime() && null != mpExamination.getEndTime()){
+                    if (date.getTime()>=mpExamination.getStartTime().getTime() && date.getTime() <= mpExamination.getEndTime().getTime()){
+                        mpExaminationVo.setExamTimeType(1);
+                    }else if (date.getTime() <=mpExamination.getStartTime().getTime()){
+                        mpExaminationVo.setExamTimeType(3);
+                    }else{
+                        mpExaminationVo.setExamTimeType(2);
+                    }
+                }
+                //报名人数
+                //查看报名人数
+                List<MpSignUp> mpSignUps = signUpService.selectByIdAndUserId(mpExamination.getId(), null);
+                mpExaminationVo.setSignUpCount(mpSignUps.size());
                 mpExaminationVoList.add(mpExaminationVo);
             }
             return mpExaminationVoList;
-        } else return null;
+        } else
+            return null;
 
 
     }
-
 
 }
