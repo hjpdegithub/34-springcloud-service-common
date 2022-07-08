@@ -47,12 +47,8 @@ public class WebConfig implements WebMvcConfigurer {
 		fastMediaTypes.add(MediaType.APPLICATION_JSON);
 		fastConverter.setSupportedMediaTypes(fastMediaTypes);
 		//3.在convert中添加配置信息
-
-        fastJsonConfig.setSerializeFilters(new ValueDesensitizeFilter());//添加自己写的拦截器
-        fastConverter.setFastJsonConfig(fastJsonConfig);
-		HttpMessageConverter<?> converter = fastConverter;
-
-		return new HttpMessageConverters(converter);
+		fastConverter.setFastJsonConfig(fastJsonConfig);
+		return new HttpMessageConverters(fastConverter);
 	}
 
 	/**
