@@ -43,6 +43,9 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpAuthHMapper mpAuthHMapper;
     @Resource
     private MpUserAuthExamMapper userAuthExamMapper;
+
+    @Resource
+    private MpUserAuthMapper userAuthMapper;
     @Resource
     private MpAttachmentInfoMapper mpAttachmentInfoMapper;
     @Resource
@@ -51,6 +54,10 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
     @Resource
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
+
+
+    @Resource
+    private MpAuthCertificaseMapper mpAuthCertificaseMapper;
 
 
     /**
@@ -153,10 +160,11 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     /**
      * 分页查询认证前端
+     *
      * @param dto
      * @return
      */
-  public   PageInfo<MpAuthHVo> searchForFront(MpAuthDto dto){
+    public PageInfo<MpAuthHVo> searchForFront(MpAuthDto dto) {
 
         if (dto.getPaging()) {
             PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
@@ -175,7 +183,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         return pageInfo;
 
     }
-
 
 
     @Override
@@ -341,15 +348,42 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setFileUrl(info.getFileUrl());
         revo.setFileLocalUrl(info.getFileUrlLocal());
         revo.setUserVo(vo);
-        //证书绑定
-        MpUserAuthentication ent = new MpUserAuthentication();
+        //证书绑定1
+        MpUserAuth ent = new MpUserAuth();
         BeanCopy.copy(dto, ent);
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
         ent.setId(snowFlakeUtil.nextId());
         ent.setCreateTime(new Date());
         ent.setDeleFlag(CommonEnum.USED.getCode());
-        ent.setCreateUser(dto.getUserId() == null ? dto.getCerUserId() : dto.getUserId());
-        mpUserAuthenticationMapper.insertSelective(ent);
+        ent.setCrateUser(dto.getUserId() == null ? dto.getCerUserId() : dto.getUserId());
+        ent.setAuthId(dto.getId());
+        ent.setUserId(dto.getCerUserId());
+        userAuthMapper.insertSelective(ent);
+        //证书绑定2
+
+        MpAuthCertificaseExample example = new MpAuthCertificaseExample();
+
+        example.createCriteria().andAuthIdEqualTo(dto.getId()).andUserIdEqualTo(dto.getUserId())
+                .andDeleFlagEqualTo(CommonEnum.USED.getCode());
+
+        List<MpAuthCertificase> lis = mpAuthCertificaseMapper.selectByExample(example);
+
+        if (null == lis && lis.size() > 0) {
+            throw new IllegalArgumentException("考生已经领取过证书");
+        }
+
+
+        MpAuthCertificase ent2 = new MpAuthCertificase();
+        BeanCopy.copy(dto, ent2);
+        ent2.setId(snowFlakeUtil.nextId());
+        ent2.setCreateTime(new Date());
+        ent2.setDeleFlag(CommonEnum.USED.getCode());
+        ent2.setCrateUser(dto.getUserId() == null ? dto.getCerUserId() : dto.getUserId());
+        ent2.setAuthId(dto.getId());
+        ent2.setUserId(dto.getCerUserId());
+        mpAuthCertificaseMapper.insertSelective(ent2);
+
+
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }

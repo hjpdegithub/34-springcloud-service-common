@@ -124,7 +124,10 @@ oos:
   #oosFilePath : /nas/file/
 
   # 侯本地和实验环境的返回url
-  oosFileShowPathPrex : http://localhost:8080/mp/showresource/
+
+  oosFileShowPathPrex : http://192.168.43.15:8080/mp/showresource/
+  #oosFileShowPathPrex : http://5k308538j9:qicp:vip:52534/mp/showresource/
+  #oosFileShowPathPrex : http://localhost:8080/mp/showresource/
   # 生产测试url
   #oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
 
