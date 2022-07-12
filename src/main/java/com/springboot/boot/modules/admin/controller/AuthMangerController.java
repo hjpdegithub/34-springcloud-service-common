@@ -118,6 +118,16 @@ public class AuthMangerController {
         return ApiResult.success(authService.certificateGet(dto));
     }
 
+
+    @ApiOperation(value = "证书展示", notes = "证书展示")
+    @PostMapping(value = "/certificateShow")
+    public ApiResult certificateShow(@RequestBody MpNameIdsDto dto
+    ) {
+        log.info("证书领取----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.certificateShow(dto));
+    }
+
+
     @ApiOperation(value = "证书查询", notes = "证书查询")
     @PostMapping(value = "/certifiQuery")
     public ApiResult certifiQuery(@RequestBody MpNameIdsDto dto
