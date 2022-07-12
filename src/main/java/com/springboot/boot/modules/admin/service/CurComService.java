@@ -23,4 +23,5 @@ public interface CurComService {
      int deleteByPrimaryKey(Long id);
 
 
+    int deleteCurCommentRel(CurComDto dto);
 }
