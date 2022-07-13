@@ -388,6 +388,42 @@ public class AuthServiceManageImpl implements AuthManageService {
         return revo;
     }
 
+
+
+
+
+    /**
+     * 证书信息展示
+     * @param dto
+     * @return
+     */
+   public CertificateVo certificateShow(MpNameIdsDto dto){
+        //认证id
+        Long id = dto.getId();
+        //证书所有者Id
+        Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
+        if (null == cerUserId) {
+            throw new BusinessException("userId或者认证者Id都是空");
+        }
+        //获取证书模板信息
+        MpAttachmentInfo info = getfileInfoByCerId(id);
+        //获取试卷id
+        MpAuth infoT = mpAuthMapper.selectByPrimaryKey(id);
+        MpUserAuthentication userInfo =
+                mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+        //获取认证信息
+        MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
+        BeanCopy.copy(userInfo, vo);
+        CertificateVo revo = new CertificateVo();
+        revo.setFileUrl(info.getFileUrl());
+        revo.setFileLocalUrl(info.getFileUrlLocal());
+        revo.setUserVo(vo);
+        revo.setCertificateType(infoT.getCertificateType());
+        return revo;
+    }
+
+
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PageInfo<MpUserAuthenticationVo> certifiQuery(MpNameIdsDto dto) {
