@@ -115,6 +115,7 @@
         <if test="rangeType !=null and rangeType != ''">
             and me.range_type =#{rangeType}
         </if>
+        order by me.create_time desc
     </select>
 
 
