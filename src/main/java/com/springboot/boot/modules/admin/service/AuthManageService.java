@@ -88,6 +88,14 @@ public interface AuthManageService {
      */
      CertificateVo certificateGet(MpNameIdsDto dto);
 
+    /**
+     * 证书信息展示
+     * @param dto
+     * @return
+     */
+    CertificateVo certificateShow(MpNameIdsDto dto);
+
+
 
     /**
      * 证书查询

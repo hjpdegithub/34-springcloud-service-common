@@ -15,16 +15,13 @@ public class ValueDesensitizeFilter implements ValueFilter {
 
     @Override
     public Object process(Object object, String name, Object value) {
-
         log.error("当前数据类型为{},值为{}", object.getClass(), value);
-
         if (null == value || !(value instanceof String) || ((String) value).length() == 0) {
             return value;
         }
         try {
             Field field = object.getClass().getDeclaredField(name);
             Desensitized desensitization;
-
             if (String.class != field.getType() || (desensitization = field.getAnnotation(Desensitized.class)) == null) {
                 return value;
             }
@@ -53,7 +50,10 @@ public class ValueDesensitizeFilter implements ValueFilter {
             }
         } catch (NoSuchFieldException e) {
             return value;
+
+
         }
         return value;
     }
+
 }
