@@ -5,6 +5,7 @@ import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.modules.admin.dto.curriculum.CurComDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.MpAttachmentCommentMapper;
+import com.springboot.boot.modules.admin.mapper.MpAttachmentCommentReplyMapper;
 import com.springboot.boot.modules.admin.service.CurComService;
 import com.springboot.boot.utils.ApiResult;
 import com.springboot.boot.utils.BeanCopy;
@@ -31,6 +32,9 @@ public class CurComServiceImpl implements CurComService {
 
     @Resource
     private MpAttachmentCommentMapper mpAttachmentCommentMapper;
+
+    @Resource
+    private MpAttachmentCommentReplyMapper attachmentCommentReplyMapper;
 
 
     @Override
@@ -62,5 +66,13 @@ public class CurComServiceImpl implements CurComService {
        return  mpAttachmentCommentMapper.deleteByPrimaryKey(id);
 
    }
+
+    @Override
+    public int deleteCurCommentRel(CurComDto dto) {
+        MpAttachmentCommentReplyExample example = new MpAttachmentCommentReplyExample();
+        example.createCriteria().andCommentIdEqualTo(dto.getId());
+
+        return attachmentCommentReplyMapper.deleteByExample(example);
+    }
 
 }
