@@ -15,6 +15,7 @@ import com.springboot.boot.utils.SnowFlakeUtils;
 import com.springboot.boot.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -126,6 +127,7 @@ public class TestNoManageServiceImpl implements TestNoManageService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer TestNoVerifysEdit(MpUserAuthenticationDto dto) {
 
         //先判断电话号码是不是重复
