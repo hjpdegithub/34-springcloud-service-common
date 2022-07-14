@@ -14,5 +14,6 @@ public class CertificateVo {
     private String fileUrl;
     private String fileLocalUrl;
     private Integer certificateType;
+    private String certName;
     private MpUserAuthenticationVo userVo;
 }

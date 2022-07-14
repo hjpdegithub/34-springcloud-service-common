@@ -348,6 +348,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setFileUrl(info.getFileUrl());
         revo.setFileLocalUrl(info.getFileUrlLocal());
         revo.setUserVo(vo);
+        revo.setCertName(infoT.getName());
         //证书绑定1
         MpUserAuth ent = new MpUserAuth();
         BeanCopy.copy(dto, ent);
@@ -371,8 +372,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         if (null == lis && lis.size() > 0) {
             throw new IllegalArgumentException("考生已经领取过证书");
         }
-
-
         MpAuthCertificase ent2 = new MpAuthCertificase();
         BeanCopy.copy(dto, ent2);
         ent2.setId(snowFlakeUtil.nextId());
@@ -382,7 +381,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         ent2.setAuthId(dto.getId());
         ent2.setUserId(dto.getCerUserId());
         mpAuthCertificaseMapper.insertSelective(ent2);
-
 
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
