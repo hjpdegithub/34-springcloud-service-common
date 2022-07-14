@@ -145,7 +145,7 @@ public class TestNoManageServiceImpl implements TestNoManageService {
         }
         MpUserAuthentication record = new MpUserAuthentication();
         BeanCopy.copy(dto, record);
-        record.setUpdateUser(dto.getUserId());
+        record.setUpdateUser(dto.getId());
         record.setUpdateTime(new Date());
         int i = mpUserAuthenticationMapper.updateByPrimaryKeySelective(record);
         if (i <= 0) {
