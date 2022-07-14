@@ -67,6 +67,7 @@ public class AuthController {
         if (CollectionUtils.isEmpty(authUserSignUps)){
             return ApiResult.error("请先预约！");
         }
+
         ApiResult result = authService.startStudy(authId,userId);
         return result;
     }

@@ -102,7 +102,7 @@
         on d.id= a.domain_id
         left join mp_auth_direction e
         on e.id= a.direction_id
-        inner join mp_user_auth f
+        inner join mp_auth_user_sign_up f
         on f.auth_id = a.id
         <trim prefix="where" prefixOverrides="and">
             a.dele_flag ='0'
