@@ -187,6 +187,9 @@ public class AuthServiceImpl implements AuthService {
         startStudyVo.setName(mpAuths.get(0).getName());
         //通过认证id分类id查询出认证的相关课程
         List<MpCurriculum> mpCurriculumList = mpCurriculumList(mpAuths);
+        if (CollectionUtils.isEmpty(mpCurriculumList)){
+            throw new BusinessException("认证课程为空！无法进行学习");
+        }
         List<AuthClassVo> authClassVos = new ArrayList<>();
         if (!mpCurriculumList.isEmpty()) {
             mpCurriculumList.forEach(e -> {
@@ -221,7 +224,7 @@ public class AuthServiceImpl implements AuthService {
         //认证列表的课程
         List<Long> ids = mpCurriculumList.stream().map(MpCurriculum::getId).collect(Collectors.toList());
         boolean result = userIds.containsAll(ids) && ids.containsAll(userIds);
-        if (result) {
+        if (!ids.isEmpty()&&result) {
             startStudyVo.setFinishType(CommonEnum.FINISH.getCode());
         } else {
             startStudyVo.setFinishType(CommonEnum.NOT_FINISH.getCode());
@@ -529,7 +532,7 @@ public class AuthServiceImpl implements AuthService {
         List<Long>ids = mpCurriculumList.stream().map(MpCurriculum::getId).collect(Collectors.toList());
         boolean result = userIds.containsAll(ids) && ids.containsAll(userIds);
         int studyResult = (result)?CommonEnum.NO.getCode():CommonEnum.YES.getCode();
-        if (studyResult ==CommonEnum.NO.getCode()){
+        if (!ids.isEmpty() && studyResult ==CommonEnum.NO.getCode()){
             ifWhereVo.setFinishType(CommonEnum.EXAM_AUTH.getCode());
         }
         //判断是否可以考试=================================================================
