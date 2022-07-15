@@ -61,8 +61,8 @@
         <trim prefix="where" prefixOverrides="and">
             a.dele_flag ='0'
             and a.up_type ='1'
-            <if test="dto.id != null and dto.id != ''">
-                and a.id = #{dto.id}
+            <if test="dto.userId != null and dto.userId != ''">
+                and a.id = #{dto.userId}
             </if>
 
             <if test="dto.directionId != null and dto.directionId != ''">
