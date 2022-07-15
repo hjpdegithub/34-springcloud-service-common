@@ -43,7 +43,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpAuthHMapper mpAuthHMapper;
     @Resource
     private MpUserAuthExamMapper userAuthExamMapper;
-
     @Resource
     private MpUserAuthMapper userAuthMapper;
     @Resource
@@ -54,8 +53,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpBusinessAttachmentInfoMapper mpBusinessAttachmentInfoMapper;
     @Resource
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
-
-
     @Resource
     private MpAuthCertificaseMapper mpAuthCertificaseMapper;
 
@@ -73,7 +70,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         if (fileid == null && fileid == 0) {
             throw new BusinessException("没有上传证书图样！");
         }
-
         //新增文件信息
         //雪花
         SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
@@ -108,7 +104,6 @@ public class AuthServiceManageImpl implements AuthManageService {
                     mpBusinessAttachmentInfoMapper.updateByPrimaryKeySelective(e);
                 }
             }
-
             mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             int i = mpAuthMapper.updateByPrimaryKeySelective(mpAuth);
             if (i <= CommonEnum.UPDATE_ERROR.getCode()) {
@@ -121,7 +116,6 @@ public class AuthServiceManageImpl implements AuthManageService {
             mpAuth.setDeleFlag(CommonEnum.USED.getCode());
             mpAuth.setUpType(CommonEnum.NO_UP.getCode());
             mpBusinessAttachmentInfo.setBusinessId(mpAuth.getId());
-
             mpBusinessAttachmentInfoMapper.insertSelective(mpBusinessAttachmentInfo);
             mpAuth.setCreateTime(new Date());
             int i = mpAuthMapper.insertSelective(mpAuth);
@@ -165,7 +159,6 @@ public class AuthServiceManageImpl implements AuthManageService {
      * @return
      */
     public PageInfo<MpAuthHVo> searchForFront(MpAuthDto dto) {
-
         if (dto.getPaging()) {
             PageHelper.startPage(dto.getPageNo(), dto.getPageSize());
         }
@@ -181,20 +174,15 @@ public class AuthServiceManageImpl implements AuthManageService {
         log.info("分页查询认证===================={}", dto);
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
-
     }
-
 
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
-
         if (null == dto.getUserId()) {
             throw new BusinessException("请传入用户ID");
         }
-
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectMyMpAuths(dto);
         log.info("分页查询认证===================={}", dto);
-
         return mpAuthHVos;
     }
 
@@ -394,10 +382,11 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     /**
      * 证书信息展示
+     *
      * @param dto
      * @return
      */
-   public CertificateVo certificateShow(MpNameIdsDto dto){
+    public CertificateVo certificateShow(MpNameIdsDto dto) {
         //认证id
         Long id = dto.getId();
         //证书所有者Id
