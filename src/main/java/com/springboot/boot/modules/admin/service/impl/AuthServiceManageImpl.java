@@ -290,7 +290,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     public CertificateVo certificateGet(MpNameIdsDto dto) {
         //认证id
         Long id = dto.getId();
-
         //证书所有者Id
         Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
 
@@ -305,7 +304,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         if (null == infoT) {
             throw new BusinessException("根据该证书id没有找到试卷");
         }
-
         Long examId = infoT.getExamId();
         List<MpExamination> mpExaminations = mpExaminations(examId);
         //考试规定次数
@@ -322,9 +320,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         criteria.andAuthIdEqualTo(id);
         criteria.andExamIdEqualTo(examId);
         List<MpUserAuthExam> mpUserAuthExams = userAuthExamMapper.selectByExample(mpUserAuthExamExample);
-
         Integer frequencyCount = mpExaminations.get(0).getFrequencyCount();
-
         List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
         //开始判断
         if (mpUserAuthExams.size() >= frequencyCount.intValue() || userCommonList.size() > 0) {
@@ -357,11 +353,9 @@ public class AuthServiceManageImpl implements AuthManageService {
 
         MpAuthCertificaseExample example = new MpAuthCertificaseExample();
 
-        example.createCriteria().andAuthIdEqualTo(dto.getId()).andUserIdEqualTo(dto.getUserId())
+        example.createCriteria().andAuthIdEqualTo(dto.getId()).andUserIdEqualTo(cerUserId)
                 .andDeleFlagEqualTo(CommonEnum.USED.getCode());
-
         List<MpAuthCertificase> lis = mpAuthCertificaseMapper.selectByExample(example);
-
         if (null == lis && lis.size() > 0) {
             throw new IllegalArgumentException("考生已经领取过证书");
         }

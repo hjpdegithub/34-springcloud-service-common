@@ -293,9 +293,8 @@ public class AttachmentServiceImpl implements AttachmentService {
             attachmentInfoViewVo1.setAuthorName(mpCurriculum.getAuthorName());
             attachmentInfoViewVo1.setReadingCount(mpReadings.size());
             return ApiResult.success(attachmentInfoViewVo1);
-
         }
-        return ApiResult.error(ApiCode.FAIL.getCode(),ApiCode.FAIL.getMessage());
+        return ApiResult.error(ApiCode.FAIL.getCode(),"本课程ID没有查到文件");
 
     }
 
