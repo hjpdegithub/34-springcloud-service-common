@@ -430,11 +430,9 @@ public class AuthServiceManageImpl implements AuthManageService {
             PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
             return pageInfo;
         }
-
         List<MpUserAuthenticationVo>
                 mpUserAuthenticationVoList =
                 mpAuthHMapper.certifiQuery(dto);
-
         PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
         return pageInfo;
     }
