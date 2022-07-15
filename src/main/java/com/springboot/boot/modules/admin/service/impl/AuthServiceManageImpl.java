@@ -188,10 +188,9 @@ public class AuthServiceManageImpl implements AuthManageService {
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
 
-          if(null==null) {
-
-              throw  new BusinessException("请传入用户ID" );
-          }
+        if (null == dto.getUserId()) {
+            throw new BusinessException("请传入用户ID");
+        }
 
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectMyMpAuths(dto);
         log.info("分页查询认证===================={}", dto);
@@ -393,9 +392,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     }
 
 
-
-
-
     /**
      * 证书信息展示
      * @param dto
@@ -425,7 +421,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
-
 
 
     @Override
