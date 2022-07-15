@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 /**
  * @ClassName AppClassifyController
  * @Description TODO 认证管理
@@ -33,18 +32,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mp/app/authManage")
 @Slf4j
 @Api(tags = "10.2", description = "认证管理【侯建鹏】")
-
 @CrossOrigin
 public class AuthMangerController {
-
     @Autowired
     private AuthManageService authService;
     //接口部门/mp/department
     //单位查询/mp/unit
     //课程分类searchClassifyAll包括一级分类2级分类
     //该接口根据一级分类id查询包括二级分类信息")
-
-
     @ApiOperation(value = "认证信息的新增以及修改", notes = "认证信息的新增以及修改")
     @PostMapping(value = "/addOrUpdate")
     public ApiResult addOrUpdate(
@@ -55,7 +50,6 @@ public class AuthMangerController {
         ApiResult result = authService.addOrUpdate(dto);
         return result;
     }
-
     //列表查询
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/search")
@@ -64,9 +58,6 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.search(dto));
     }
-
-
-
     //列表查询
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/searchForFront")
@@ -75,9 +66,6 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.searchForFront(dto));
     }
-
-
-
     //列表查询
     @ApiOperation(value = "我的认证信息列表", notes = "我的认证信息列表")
     @PostMapping(value = "/myAuthSearch")
@@ -86,7 +74,6 @@ public class AuthMangerController {
         log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.myAuthSearch(dto));
     }
-
     //列表查询
     @ApiOperation(value = "认证信息详情查询", notes = "认证信息详情查询")
     @PostMapping(value = "/searchById")
@@ -117,8 +104,6 @@ public class AuthMangerController {
         log.info("证书领取----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.certificateGet(dto));
     }
-
-
     @ApiOperation(value = "证书展示", notes = "证书展示")
     @PostMapping(value = "/certificateShow")
     public ApiResult certificateShow(@RequestBody MpNameIdsDto dto
@@ -126,8 +111,6 @@ public class AuthMangerController {
         log.info("证书领取----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.certificateShow(dto));
     }
-
-
     @ApiOperation(value = "证书查询", notes = "证书查询")
     @PostMapping(value = "/certifiQuery")
     public ApiResult certifiQuery(@RequestBody MpNameIdsDto dto
@@ -135,11 +118,4 @@ public class AuthMangerController {
         log.info("证书查询----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.certifiQuery(dto));
     }
-
-
-
-
-
-
-
 }
