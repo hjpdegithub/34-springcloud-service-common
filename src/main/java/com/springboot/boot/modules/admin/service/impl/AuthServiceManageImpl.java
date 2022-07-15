@@ -187,6 +187,12 @@ public class AuthServiceManageImpl implements AuthManageService {
 
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
+
+          if(null==null) {
+
+              throw  new BusinessException("请传入用户ID" );
+          }
+
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectMyMpAuths(dto);
         log.info("分页查询认证===================={}", dto);
 
