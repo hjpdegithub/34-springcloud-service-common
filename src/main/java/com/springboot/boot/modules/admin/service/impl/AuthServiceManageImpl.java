@@ -425,10 +425,8 @@ public class AuthServiceManageImpl implements AuthManageService {
         } else if ("2".equals(key)) {
             dto.setNumber(Integer.valueOf(dto.getValue()));
         } else {
-            List<MpUserAuthenticationVo>
-                    mpUserAuthenticationVoList = new ArrayList<>();
-            PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
-            return pageInfo;
+            dto.setNumber(null);
+            dto.setPhone(null);
         }
         List<MpUserAuthenticationVo>
                 mpUserAuthenticationVoList =
