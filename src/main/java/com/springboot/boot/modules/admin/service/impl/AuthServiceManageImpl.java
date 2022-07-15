@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
-
 /**
  * @ClassName ClassifyServiceImpl
  * @Description TODO 分类管理业务层
@@ -55,8 +54,6 @@ public class AuthServiceManageImpl implements AuthManageService {
     private MpUserAuthenticationMapper mpUserAuthenticationMapper;
     @Resource
     private MpAuthCertificaseMapper mpAuthCertificaseMapper;
-
-
     /**
      * 分类的新增以及修改
      *
@@ -86,7 +83,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         mpBusinessAttachmentInfo.setBusiness("AuthInfo");
         mpBusinessAttachmentInfo.setDelFlag(CommonEnum.USED.getCode());
         mpBusinessAttachmentInfo.setAttachmentId(dto.getFileId());
-
         //是修改
         if (null != dto.getId() && dto.getId() != 0 && !dto.getId().toString().equals("")) {
             //以下处理以下业务1删除掉 图片业务表的该认证的关联数据 。
@@ -125,7 +121,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         return ApiResult.success(mpAuth);
     }
-
     /**
      * 分页查询认证
      *
@@ -150,8 +145,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
     }
-
-
     /**
      * 分页查询认证前端
      *
@@ -175,7 +168,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
     }
-
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
         if (null == dto.getUserId()) {
@@ -185,7 +177,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         log.info("分页查询认证===================={}", dto);
         return mpAuthHVos;
     }
-
     /**
      * 认证详情查询
      *
@@ -209,8 +200,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         vo.setFileInfo(info);
         return vo;
     }
-
-
     public MpAttachmentInfo getfileInfoByCerId(Long id) {
         Long idt = mpAuthHMapper.selectFileId(id);
         String fileName = null;
@@ -231,8 +220,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         return info1;
     }
-
-
     /**
      * 认证信息上下线
      *
@@ -278,7 +265,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         return 1;
     }
-
     /**
      * 证书信息
      *
@@ -350,9 +336,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         ent.setUserId(dto.getCerUserId());
         userAuthMapper.insertSelective(ent);
         //证书绑定2
-
         MpAuthCertificaseExample example = new MpAuthCertificaseExample();
-
         example.createCriteria().andAuthIdEqualTo(dto.getId()).andUserIdEqualTo(cerUserId)
                 .andDeleFlagEqualTo(CommonEnum.USED.getCode());
         List<MpAuthCertificase> lis = mpAuthCertificaseMapper.selectByExample(example);
@@ -368,12 +352,9 @@ public class AuthServiceManageImpl implements AuthManageService {
         ent2.setAuthId(dto.getId());
         ent2.setUserId(dto.getCerUserId());
         mpAuthCertificaseMapper.insertSelective(ent2);
-
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
-
-
     /**
      * 证书信息展示
      *
@@ -404,8 +385,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
-
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PageInfo<MpUserAuthenticationVo> certifiQuery(MpNameIdsDto dto) {
@@ -419,7 +398,6 @@ public class AuthServiceManageImpl implements AuthManageService {
                 throw new BusinessException("编号或者手机号应该是数字");
             }
         }
-
         if ("1".equals(key)) {
             dto.setPhone(value);
         } else if ("2".equals(key)) {
@@ -434,7 +412,6 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
         return pageInfo;
     }
-
 
     /**
      * 查看试卷次数函数
