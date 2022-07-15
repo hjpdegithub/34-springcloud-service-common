@@ -386,7 +386,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         //证书所有者Id
         Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
         if (null == cerUserId) {
-            throw new BusinessException("userId或者认证者Id都是空");
+            throw new BusinessException("认证者Id都是空");
         }
         //获取证书模板信息
         MpAttachmentInfo info = getfileInfoByCerId(id);
