@@ -326,7 +326,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         if (mpUserAuthExams.size() >= frequencyCount.intValue() || userCommonList.size() > 0) {
             //有合格的考试成绩
         } else {
-            throw new BusinessException("该用户没有合格的考试成绩");
+            throw new BusinessException("该用户没有及格的考试成绩");
         }
         MpUserAuthentication userInfo =
                 mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
