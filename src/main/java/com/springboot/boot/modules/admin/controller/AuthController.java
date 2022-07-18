@@ -5,7 +5,6 @@ import com.springboot.boot.modules.admin.dto.Auth.ExamStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.AuthBaseDto;
 import com.springboot.boot.modules.admin.entity.MpAuthUserSignUp;
 import com.springboot.boot.modules.admin.service.AuthService;
-import com.springboot.boot.modules.admin.vo.classify.app.SearchStudyVo;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
