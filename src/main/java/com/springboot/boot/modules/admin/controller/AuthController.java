@@ -29,7 +29,6 @@ import java.util.List;
 @Api(tags = "10.1", description = "前端认证相关接口【周京昊】")
 @CrossOrigin
 public class AuthController {
-
     @Autowired
     private AuthService authService;
     /**
@@ -45,18 +44,15 @@ public class AuthController {
         ApiResult result = authService.authProcedure(authId,userId);
         return result;
     }
-
     @ApiOperation(value = "立即预约报名接口", notes="立即预约报名接口")
     @PostMapping(value="/authSignUp")
     public ApiResult authSignUp(@RequestBody AuthBaseDto authBaseDto){
         if (null == authBaseDto.getUserId()){
             return ApiResult.error("请先登录！");
         }
-
         ApiResult result = authService.authSignUp(authBaseDto);
         return result;
     }
-
     @ApiOperation(value = "开始学习详情页面", notes="开始学习详情页面")
     @GetMapping(value="/startStudy")
     public ApiResult startStudy(@RequestParam("authId") Long authId,@RequestParam("userId") Long userId){
