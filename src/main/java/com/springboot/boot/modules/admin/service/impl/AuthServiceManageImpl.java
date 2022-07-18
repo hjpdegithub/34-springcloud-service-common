@@ -145,16 +145,12 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
     }
-    public List<MpAuthHVo> searchNoPage(MpAuthDto dto){
+
+    public List<MpAuthHVo> searchNoPage(MpAuthDto dto) {
         List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuthsList(dto);
         log.info("查询认证下拉菜单===================={}", dto);
         return mpAuthHVos;
     }
-
-
-
-
-
 
 
     /**
@@ -180,6 +176,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
     }
+
     @Override
     public List<MpAuthHVo> myAuthSearch(MpAuthDto dto) {
         if (null == dto.getUserId()) {
@@ -189,6 +186,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         log.info("分页查询认证===================={}", dto);
         return mpAuthHVos;
     }
+
     /**
      * 认证详情查询
      *
@@ -212,6 +210,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         vo.setFileInfo(info);
         return vo;
     }
+
     public MpAttachmentInfo getfileInfoByCerId(Long id) {
         Long idt = mpAuthHMapper.selectFileId(id);
         String fileName = null;
@@ -232,6 +231,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         return info1;
     }
+
     /**
      * 认证信息上下线
      *
@@ -277,6 +277,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         return 1;
     }
+
     /**
      * 证书信息
      *
@@ -367,6 +368,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
+
     /**
      * 证书信息展示
      *
@@ -377,26 +379,27 @@ public class AuthServiceManageImpl implements AuthManageService {
         //认证id
         Long id = dto.getId();
         //证书所有者Id
-        Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
-        if (null == cerUserId) {
-            throw new BusinessException("认证者Id都是空");
-        }
+//        Long cerUserId = dto.getCerUserId() == null ? dto.getUserId() : dto.getCerUserId();
+//        if (null == cerUserId) {
+//            throw new BusinessException("认证者Id都是空");
+//        }
         //获取证书模板信息
         MpAttachmentInfo info = getfileInfoByCerId(id);
         //获取试卷id
         MpAuth infoT = mpAuthMapper.selectByPrimaryKey(id);
-        MpUserAuthentication userInfo =
-                mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+//        MpUserAuthentication userInfo =
+//                mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
         //获取认证信息
-        MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
-        BeanCopy.copy(userInfo, vo);
+//        MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
+//        BeanCopy.copy(userInfo, vo);
         CertificateVo revo = new CertificateVo();
         revo.setFileUrl(info.getFileUrl());
         revo.setFileLocalUrl(info.getFileUrlLocal());
-        revo.setUserVo(vo);
+        //  revo.setUserVo(vo);
         revo.setCertificateType(infoT.getCertificateType());
         return revo;
     }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PageInfo<MpUserAuthenticationVo> certifiQuery(MpNameIdsDto dto) {
