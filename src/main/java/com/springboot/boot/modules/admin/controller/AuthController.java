@@ -67,11 +67,9 @@ public class AuthController {
         if (CollectionUtils.isEmpty(authUserSignUps)){
             return ApiResult.error("请先预约！");
         }
-
         ApiResult result = authService.startStudy(authId,userId);
         return result;
     }
-
     @ApiOperation(value = "课程学习完成提交接口", notes="课程学习完成提交接口")
     @PostMapping(value="/classStudyFinish")
     public ApiResult classStudyFinish(@RequestBody ClassStudyFinishDto classStudyFinishDto){
@@ -81,7 +79,6 @@ public class AuthController {
         ApiResult result = authService.classStudyFinish(classStudyFinishDto);
         return result;
     }
-
     @ApiOperation(value = "开始考试交卷接口", notes="开始考试交卷接口")
     @PostMapping(value="/startExam")
     public ApiResult startExam(@RequestBody ExamStudyFinishDto examStudyFinishDto){
@@ -91,13 +88,10 @@ public class AuthController {
         ApiResult result = authService.startExam(examStudyFinishDto);
         return result;
     }
-
-
     @ApiOperation(value = "认证动态接口", notes="认证动态接口")
     @GetMapping(value="/authBanner")
     public ApiResult startStudy(){
         ApiResult result = authService.authBanner();
         return result;
     }
-
 }
