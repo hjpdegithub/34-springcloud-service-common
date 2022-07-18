@@ -13,6 +13,10 @@ import java.util.List;
 public interface MpAuthHMapper {
 
     List<MpAuthHVo> selectAllMpAuths(@Param("dto") MpAuthDto dto);
+    List<MpAuthHVo> selectAllMpAuthsList(@Param("dto") MpAuthDto dto);
+
+
+
 
     List<MpAuthHVo> searchForFront(@Param("dto") MpAuthDto dto);
 
