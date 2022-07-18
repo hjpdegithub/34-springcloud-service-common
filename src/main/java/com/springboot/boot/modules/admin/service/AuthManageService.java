@@ -29,74 +29,63 @@ public interface AuthManageService {
      * @return
      */
     ApiResult addOrUpdate(MpAuthDto dto);
-
-
-
     /**
      * 分页查询认证
      * @param dto
      * @return
      */
     PageInfo<MpAuthHVo> search(MpAuthDto dto);
-
-
     /**
      * 分页查询认证前端
      * @param dto
      * @return
      */
+
+    List<MpAuthHVo> searchNoPage(MpAuthDto dto);
+    /**
+     * 分页查询认证前端
+     * @param dto
+     * @return
+     */
+
     PageInfo<MpAuthHVo> searchForFront(MpAuthDto dto);
-
-
     /**
      * 分页查询认证
      * @param dto
      * @return
      */
+
     List<MpAuthHVo> myAuthSearch(MpAuthDto dto);
-
-
-
     /**
      * 认证详情查询
      * @param dto
      * @return
      */
     MpAuthHVo searchById(MpAuthDto dto);
-
     /**
      * 认证信息上下线
      * @param dto
      * @return
      */
     Integer onOffLine(MpAuthDto dto);
-
     /**
      * 认证信息批量删除
      * @param dto
      * @return
      */
     Integer deleteBatch(MpNameIdsDto dto);
-
-
-
-
      /**
      * 证书信息
      * @param dto
      * @return
      */
      CertificateVo certificateGet(MpNameIdsDto dto);
-
     /**
      * 证书信息展示
      * @param dto
      * @return
      */
     CertificateVo certificateShow(MpNameIdsDto dto);
-
-
-
     /**
      * 证书查询
      * @param dto

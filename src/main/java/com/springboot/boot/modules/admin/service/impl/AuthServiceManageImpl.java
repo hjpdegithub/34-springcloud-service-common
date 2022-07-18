@@ -145,6 +145,18 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpAuthHVo> pageInfo = new PageInfo<>(mpAuthHVos);
         return pageInfo;
     }
+    public List<MpAuthHVo> searchNoPage(MpAuthDto dto){
+        List<MpAuthHVo> mpAuthHVos = mpAuthHMapper.selectAllMpAuthsList(dto);
+        log.info("查询认证下拉菜单===================={}", dto);
+        return mpAuthHVos;
+    }
+
+
+
+
+
+
+
     /**
      * 分页查询认证前端
      *

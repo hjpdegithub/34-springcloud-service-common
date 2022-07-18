@@ -59,6 +59,14 @@ public class AuthMangerController {
         return ApiResult.success(authService.search(dto));
     }
     //列表查询
+    @ApiOperation(value = "认证信息列表查询不分页", notes = "认证信息列表查询不分页")
+    @PostMapping(value = "/searchNoPage")
+    public ApiResult searchNoPage(@RequestBody MpAuthDto dto
+    ) {
+        log.info("认证信息列表查询开始----------", JSONObject.toJSON(dto));
+        return ApiResult.success(authService.searchNoPage(dto));
+    }
+    //列表查询
     @ApiOperation(value = "认证信息列表查询", notes = "认证信息列表查询")
     @PostMapping(value = "/searchForFront")
     public ApiResult searchForFront(@RequestBody MpAuthDto dto
