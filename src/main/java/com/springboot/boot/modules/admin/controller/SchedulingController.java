@@ -48,7 +48,7 @@ public class SchedulingController {
 
 //        boolean b = FileSystemUtils.deleteRecursively(new File("D:\\test1"));
 //        log.info("定时任务执行=================================================结果"+b);
-        boolean result = deleteAllFile("D:\\test1");
+        boolean result = deleteAllFile("/nas/file/");
         return result;
     }
     /**
