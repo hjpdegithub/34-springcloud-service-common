@@ -165,7 +165,6 @@ public class AliyunOSSUtil {
             String dateStr = format.format(new Date());
             ClientConfiguration config = new ClientConfiguration();
             config.setSupportCname(false);
-
             // 创建OSSClient实例
             OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret, config);
             //容器不存在，就创建

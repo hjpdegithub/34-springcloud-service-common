@@ -35,8 +35,17 @@ public class AliyunOSSUtil {
             "mp4", "MP4", "avi", "AVI", "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
             "xls", "XLS", "xlsx", "XLSX","wmv","WMV"
     };
-    private static List<String> list = Arrays.asList(validfileType);
+    private static String docfileType[] = {"jpg", "JPG", "png", "PNG",
+             "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
+            "xls", "XLS", "xlsx", "XLSX"
+    };
+    private static String streamfileType[] = {
+            "mp4", "MP4", "avi", "AVI","wmv","WMV"
+    };
 
+    private static List<String> list = Arrays.asList(validfileType);
+    private static List<String> streamlist = Arrays.asList(streamfileType);
+    private static List<String> doclist = Arrays.asList(streamfileType);
 
     /**
      * 文件格式校验
@@ -52,6 +61,41 @@ public class AliyunOSSUtil {
         }
         return false;
     }
+
+    /**
+     * 文本格式文件校验
+     *
+     * @param uploadFile
+     * @return
+     */
+    public Boolean docFileCheck(File uploadFile) {
+        log.info("=========>fileCheck开始：" + uploadFile.getName());
+        String fileType = FileTypeUtil.getType(uploadFile);
+        if (doclist.contains(fileType)) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 流文件格式校验
+     *
+     * @param uploadFile
+     * @return
+     */
+    public Boolean StreamFileCheck(File uploadFile) {
+        log.info("=========>fileCheck开始：" + uploadFile.getName());
+        String fileType = FileTypeUtil.getType(uploadFile);
+        if (streamlist.contains(fileType)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 
 
     /**
