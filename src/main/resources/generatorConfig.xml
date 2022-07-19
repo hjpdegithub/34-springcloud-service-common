@@ -5,7 +5,7 @@
 <generatorConfiguration>
 
     <!-- 本地数据库驱动程序jar包的全路径 -->
-    <classPathEntry location="D:\environment\maven\maven-repository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
+    <classPathEntry location="D:\maven\MavenRepository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
@@ -19,7 +19,7 @@
         <!-- 数据库的相关配置 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://127.0.0.1:3306/db_data"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/mi_pl_db"
                 userId="root"
                 password="root"/>
 
