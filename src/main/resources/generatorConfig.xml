@@ -5,7 +5,7 @@
 <generatorConfiguration>
 
     <!-- 本地数据库驱动程序jar包的全路径 -->
-    <classPathEntry location="D:\maven\MavenRepository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
+    <classPathEntry location="D:\environment\maven\maven-repository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
@@ -19,7 +19,7 @@
         <!-- 数据库的相关配置 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://127.0.0.1:3306/mi_pl_db"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/db_data"
                 userId="root"
                 password="root"/>
 
@@ -58,7 +58,7 @@
         <!--        <table tableName="mp_attachment_comment_reply" />-->
         <!--        <table tableName="mp_attachment_comment" />-->
         <!--                <table tableName="mp_user_exam" />-->
-<!--                <table tableName="mp_user_authentication" />-->
+        <!--                <table tableName="mp_user_authentication" />-->
         <!--        <table tableName="mp_unit" />-->
         <!--        <table tableName="mp_sign_up" />-->
         <!--        <table tableName="mp_questionnaire" />-->
@@ -70,7 +70,7 @@
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
-<!--        <table tableName="mp_auth" />-->
+        <!--        <table tableName="mp_auth" />-->
         <!--        <table tableName="mp_auth_certificase" />-->
         <!--        <table tableName="mp_auth_direction" />-->
         <!--        <table tableName="mp_auth_domain" />-->
