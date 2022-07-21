@@ -4,6 +4,8 @@ import cn.hutool.core.io.FileTypeUtil;
 import com.aliyun.oss.*;
 import com.aliyun.oss.model.*;
 
+import com.sgcc.uds.cloud.sdk.UdsClient;
+import com.sgcc.uds.cloud.sdk.action.result.AddActionResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,17 +32,20 @@ import java.util.*;
 public class AliyunOSSUtil {
     @Autowired
     private ConstantProperties constantProperties;
+    @Autowired
+    private ConstantUdsProperties constantUdsProperties;
+
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static String validfileType[] = {"jpg", "JPG", "png", "PNG",
             "mp4", "MP4", "avi", "AVI", "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
-            "xls", "XLS", "xlsx", "XLSX","wmv","WMV"
+            "xls", "XLS", "xlsx", "XLSX", "wmv", "WMV"
     };
     private static String docfileType[] = {"jpg", "JPG", "png", "PNG",
-             "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
+            "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
             "xls", "XLS", "xlsx", "XLSX"
     };
     private static String streamfileType[] = {
-            "mp4", "MP4", "avi", "AVI","wmv","WMV"
+            "mp4", "MP4", "avi", "AVI", "wmv", "WMV"
     };
 
     private static List<String> list = Arrays.asList(validfileType);
@@ -92,10 +97,6 @@ public class AliyunOSSUtil {
         }
         return false;
     }
-
-
-
-
 
 
     /**
@@ -154,26 +155,48 @@ public class AliyunOSSUtil {
         String accessKeyId = constantProperties.getKeyid();
         String accessKeySecret = constantProperties.getKeysecret();
         String bucketName = constantProperties.getBucketname();
-        ClientBuilderConfiguration config = new  ClientBuilderConfiguration();
+        ClientBuilderConfiguration config = new ClientBuilderConfiguration();
         config.setSupportCname(false);
 
-        String name = System.currentTimeMillis()+fileName;
+        String name = System.currentTimeMillis() + fileName;
         try {
 
 
-
-
-            String pathName = constantProperties.getOosFilePath()+name;
+            String pathName = constantProperties.getOosFilePath() + name;
             // 创建OSSClient实例。
-            OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret,config);
+            OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret, config);
             // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
             ossClient.getObject(new GetObjectRequest(bucketName, FileFullPath), new File(pathName));
             ossClient.shutdown();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return constantProperties.getOosFileShowPathPrex()+name ;
+        return constantProperties.getOosFileShowPathPrex() + name;
+    }
+    /**
+     * 上传到非结构化平台
+     *
+     * @param uploadFile
+     * @return
+     */
+    public Map<String, String> picOSSUds(File uploadFile, String fileName) {
+        log.info("=========>上传到非结构化平台：" + uploadFile.getName());
+        Map<String, String> rtMap = new HashMap();
+        // 初始化 UdsClient
+        UdsClient client = new UdsClient(constantUdsProperties.getApiServiceUrl(),
+                constantUdsProperties.getAccessKey(), constantUdsProperties.getSecretKey());
+        // 上传数据并得到结果
+        AddActionResult result = client.add(uploadFile
+        )//文件路径
+        .withFileName("fileName").execute();
+        String documentId = result.getDocumentId();
+        String versionId  = result.getVersionId();
+        String resultFileName = result.getFileName();
+        rtMap.put("documentId", documentId);
+        rtMap.put("versionId", versionId);
+        rtMap.put("resultFileName", resultFileName);
+        return rtMap;
 
     }
 
@@ -183,7 +206,6 @@ public class AliyunOSSUtil {
      * @param uploadFile
      * @return
      */
-
     public Map<String, String> picOSS(File uploadFile) {
 
         log.info("=========>OSS文件上传开始：" + uploadFile.getName());

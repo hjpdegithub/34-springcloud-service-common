@@ -13,8 +13,6 @@ public class MpAttachmentInfo {
 
     private String fileUrl;
 
-
-
     private String fileUrlLocal;
 
     private String filePath;
@@ -30,6 +28,11 @@ public class MpAttachmentInfo {
     private Long updateUser;
 
     private Date updateDate;
+
+    private String versionid;
+
+    private String documentid;
+
 
     public String getFileUrlLocal() {
         return fileUrlLocal;
@@ -117,5 +120,21 @@ public class MpAttachmentInfo {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getVersionid() {
+        return versionid;
+    }
+
+    public void setVersionid(String versionid) {
+        this.versionid = versionid == null ? null : versionid.trim();
+    }
+
+    public String getDocumentid() {
+        return documentid;
+    }
+
+    public void setDocumentid(String documentid) {
+        this.documentid = documentid == null ? null : documentid.trim();
     }
 }
