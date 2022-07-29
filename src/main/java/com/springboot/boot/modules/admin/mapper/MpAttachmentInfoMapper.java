@@ -3,8 +3,6 @@ package com.springboot.boot.modules.admin.mapper;
 import com.springboot.boot.modules.admin.entity.MpAttachmentInfo;
 import com.springboot.boot.modules.admin.entity.MpAttachmentInfoExample;
 import java.util.List;
-
-import com.springboot.boot.modules.admin.vo.file.AttachmentInfoViewVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface MpAttachmentInfoMapper {
@@ -29,6 +27,4 @@ public interface MpAttachmentInfoMapper {
     int updateByPrimaryKeySelective(MpAttachmentInfo record);
 
     int updateByPrimaryKey(MpAttachmentInfo record);
-
-
 }

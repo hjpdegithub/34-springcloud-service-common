@@ -22,6 +22,7 @@ public class ErrorPagesController implements ErrorController {
 
 	@Override
 	public String getErrorPath() {
+
 		return ERROR_PATH;
 	}
 }
