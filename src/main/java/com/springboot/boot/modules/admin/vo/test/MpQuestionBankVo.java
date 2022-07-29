@@ -33,21 +33,13 @@ public class MpQuestionBankVo   extends BaseRowModel {
     public void setChoice(String choice) {
         this.choice = choice == null ? null : choice.trim();
     }
+    @ExcelProperty("解析")
+    private  String analysisQuestion;
+
     List<MpOptionVo> mpOptionVoList ;
      //统计用map
     private HashMap statisticsMap;
-
     private Integer total;
-
-
-
-
-
-
-
-
-
-
 
     private Long createUser;
     private Date createTime;
@@ -113,5 +105,11 @@ public class MpQuestionBankVo   extends BaseRowModel {
     }
     public void setDeleFlag(Integer deleFlag) {
         this.deleFlag = deleFlag;
+    }
+    public String getAnalysisQuestion() {
+        return analysisQuestion;
+    }
+    public void setAnalysisQuestion(String analysisQuestion) {
+        this.analysisQuestion = analysisQuestion;
     }
 }
