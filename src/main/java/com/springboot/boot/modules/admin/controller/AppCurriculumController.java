@@ -3,6 +3,8 @@ package com.springboot.boot.modules.admin.controller;
 import com.springboot.boot.modules.admin.entity.MpCurriculum;
 import com.springboot.boot.modules.admin.entity.MpSecondClassify;
 import com.springboot.boot.modules.admin.service.CurriculumService;
+import com.springboot.boot.modules.admin.vo.curriculum.GetCurrMess;
+import com.springboot.boot.modules.admin.vo.curriculum.SrearchAndClassifyVo;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,4 +37,28 @@ public class AppCurriculumController {
         List<MpCurriculum> allVo =  curriculumService.searchCurrBySecond(id,classFormat,className);
         return ApiResult.success(allVo);
     }
+    //3.0版本 重构
+    @ApiOperation(value = "3.0版本 重构课程分类合并", notes="3.0版本 重构")
+    @GetMapping(value="/searchCurrAndSecond")
+    public ApiResult searchCurrAndSecond(@RequestParam("id") Long id,@RequestParam("classFormat") Integer classFormat,@RequestParam("className") String curriculumName) {
+        log.info("查询二级分类和课程的相关信息============"+id,classFormat,curriculumName);
+        if (null == id){
+            ApiResult.error(500,"id不能为空");
+        }
+        List<SrearchAndClassifyVo>  allVo =  curriculumService.searchCurrAndSecond(id,classFormat,curriculumName);
+        return ApiResult.success(allVo);
+    }
+
+    @ApiOperation(value = "3.0版本 重构课程分类合并", notes="3.0版本 重构")
+    @GetMapping(value="/getCurrMess")
+    public ApiResult getCurrMess(@RequestParam("id") Long id) {
+        log.info("查询二级分类和课程的相关信息============"+id);
+        if (null == id){
+            ApiResult.error(500,"id不能为空");
+        }
+        GetCurrMess allVo =  curriculumService.getCurrMess(id);
+        return ApiResult.success(allVo);
+    }
+
+
 }

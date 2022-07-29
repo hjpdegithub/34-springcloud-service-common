@@ -228,11 +228,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
-                    <!--引入外部导入的jar包-->
-                    <compilerArguments>
-                        <extdirs>${project.basedir}/src/main/resources/lib</extdirs>
-                        <!-- <extdirs>${project.basedir}/lib</extdirs>-->
-                    </compilerArguments>
+
                 </configuration>
             </plugin>
 

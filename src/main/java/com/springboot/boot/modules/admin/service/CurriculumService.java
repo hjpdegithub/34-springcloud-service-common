@@ -6,6 +6,8 @@ import com.springboot.boot.modules.admin.dto.curriculum.CurriculumAddOrUpdateDto
 import com.springboot.boot.modules.admin.dto.curriculum.SearchCurriculumDto;
 import com.springboot.boot.modules.admin.entity.MpCurriculum;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.curriculum.GetCurrMess;
+import com.springboot.boot.modules.admin.vo.curriculum.SrearchAndClassifyVo;
 import com.springboot.boot.utils.ApiResult;
 
 import java.util.List;
@@ -71,4 +73,15 @@ public interface CurriculumService {
     List<MpCurriculum> searchCurrBySecond(Long id,Integer classFormat,String className);
 
     MpCurriculum selectByName(String curriculumName);
+
+    /**
+     * 3.0重构课程和分类合并
+     * @param id
+     * @param classFormat
+     * @param curriculumName
+     * @return
+     */
+    List<SrearchAndClassifyVo>  searchCurrAndSecond(Long id, Integer classFormat, String curriculumName);
+
+    GetCurrMess getCurrMess(Long id);
 }

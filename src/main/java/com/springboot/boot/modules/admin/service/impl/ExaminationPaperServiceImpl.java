@@ -528,6 +528,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
                 List<String> strings = Arrays.asList(e.getRightAnswer().toUpperCase().split(","));
                 Collections.sort(strings);
                 vo.setRightAnswer(strings);
+                vo.setAnalysisQuestion(e.getAnalysisQuestion());
                 //找选项===============================开始
                 List<AppOptionVo> appOptionVos = new ArrayList<>();
                 List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
@@ -762,6 +763,7 @@ public class ExaminationPaperServiceImpl implements ExaminationPaperService {
                 List<String> strings = Arrays.asList(e.getRightAnswer().toUpperCase().split(","));
                 Collections.sort(strings);
                 vo.setRightAnswer(strings);
+                vo.setAnalysisQuestion(e.getAnalysisQuestion());
                 //找选项===============================开始
                 List<AppOptionVo> appOptionVos = new ArrayList<>();
                 List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());

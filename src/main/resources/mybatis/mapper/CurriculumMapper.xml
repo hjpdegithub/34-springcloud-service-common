@@ -101,5 +101,54 @@
     </if>
     and dele_flag = 0
   </select>
+  <select id="searchCurrAndSecond"  parameterType="map" resultType="com.springboot.boot.modules.admin.vo.curriculum.SearchCurrAndSencondClassVo">
+    SELECT
+	msc.id as id,
+	msc.second_classify_name as secondClassifyName,
+	mc.id as currId,
+	mc.curriculum_name as curriculumName,
+	mc.class_format as classFormat,
+    mc.cust_second_classify_id as custSecondClassifyId,
+    mc.gen_second_classify_id as genSecondClassifyId
+FROM
+	mp_second_classify msc
+	LEFT JOIN mp_curriculum mc ON msc.id = mc.cust_second_classify_id
+WHERE
+	msc.first_classify_id = #{id}
+    <if test="classFormat !=null and classFormat != ''">
+      and mc.class_format =#{classFormat}
+    </if>
+    <if test="curriculumName !=null and curriculumName != ''">
+      and mc.curriculum_name like CONCAT('%', #{curriculumName},'%')
+    </if>
+	and mc.dele_flag = 0
+    and mc.property_type = 1
+    and msc.dele_flag = 0
+  </select>
+
+  <select id="searchCurrAndSecondByGen"  parameterType="map" resultType="com.springboot.boot.modules.admin.vo.curriculum.SearchCurrAndSencondClassVo">
+    SELECT
+	msc.id as id,
+	msc.second_classify_name as secondClassifyName,
+	mc.id as currId,
+	mc.curriculum_name as curriculumName,
+	mc.class_format as classFormat,
+    mc.cust_second_classify_id as custSecondClassifyId,
+    mc.gen_second_classify_id as genSecondClassifyId
+FROM
+	mp_second_classify msc
+	LEFT JOIN mp_curriculum mc ON msc.id = mc.gen_second_classify_id
+WHERE
+	msc.first_classify_id = #{id}
+    <if test="classFormat !=null and classFormat != ''">
+      and mc.class_format =#{classFormat}
+    </if>
+    <if test="curriculumName !=null and curriculumName != ''">
+      and mc.curriculum_name like CONCAT('%', #{curriculumName},'%')
+    </if>
+    and mc.dele_flag = 0
+    and mc.property_type = 1
+    and msc.dele_flag = 0
+  </select>
 
 </mapper>

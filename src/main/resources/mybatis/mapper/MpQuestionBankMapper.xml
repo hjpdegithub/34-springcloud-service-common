@@ -12,6 +12,7 @@
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
+    <result column="analysis_question" jdbcType="VARCHAR" property="analysisQuestion" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, type, examination_id, right_answer, create_user, create_time, update_user, 
-    update_time, dele_flag
+    update_time, dele_flag, analysis_question
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpQuestionBankExample" resultMap="BaseResultMap">
     select
@@ -109,11 +110,11 @@
     insert into mp_question_bank (id, name, type, 
       examination_id, right_answer, create_user, 
       create_time, update_user, update_time, 
-      dele_flag)
+      dele_flag, analysis_question)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{examinationId,jdbcType=BIGINT}, #{rightAnswer,jdbcType=VARCHAR}, #{createUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleFlag,jdbcType=INTEGER})
+      #{deleFlag,jdbcType=INTEGER}, #{analysisQuestion,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpQuestionBank">
     insert into mp_question_bank
@@ -148,6 +149,9 @@
       <if test="deleFlag != null">
         dele_flag,
       </if>
+      <if test="analysisQuestion != null">
+        analysis_question,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -179,6 +183,9 @@
       </if>
       <if test="deleFlag != null">
         #{deleFlag,jdbcType=INTEGER},
+      </if>
+      <if test="analysisQuestion != null">
+        #{analysisQuestion,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -221,6 +228,9 @@
       <if test="record.deleFlag != null">
         dele_flag = #{record.deleFlag,jdbcType=INTEGER},
       </if>
+      <if test="record.analysisQuestion != null">
+        analysis_question = #{record.analysisQuestion,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -237,7 +247,8 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      dele_flag = #{record.deleFlag,jdbcType=INTEGER}
+      dele_flag = #{record.deleFlag,jdbcType=INTEGER},
+      analysis_question = #{record.analysisQuestion,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +283,9 @@
       <if test="deleFlag != null">
         dele_flag = #{deleFlag,jdbcType=INTEGER},
       </if>
+      <if test="analysisQuestion != null">
+        analysis_question = #{analysisQuestion,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -285,7 +299,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      dele_flag = #{deleFlag,jdbcType=INTEGER}
+      dele_flag = #{deleFlag,jdbcType=INTEGER},
+      analysis_question = #{analysisQuestion,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -27,6 +27,8 @@ public class MpQuestionBank {
 
     private Integer deleFlag;
 
+    private String analysisQuestion;
+
     public Long getId() {
         return id;
     }
@@ -105,5 +107,13 @@ public class MpQuestionBank {
 
     public void setDeleFlag(Integer deleFlag) {
         this.deleFlag = deleFlag;
+    }
+
+    public String getAnalysisQuestion() {
+        return analysisQuestion;
+    }
+
+    public void setAnalysisQuestion(String analysisQuestion) {
+        this.analysisQuestion = analysisQuestion == null ? null : analysisQuestion.trim();
     }
 }

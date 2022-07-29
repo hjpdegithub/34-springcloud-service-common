@@ -31,4 +31,8 @@ public class QuestionBankAddAndUpdateDto {
     private List<OptionDto> optionDtos;
 
     private Long userId;
+
+    //3.0版本---加入字段
+    @ApiModelProperty("解析")
+    private String analysisQuestion;
 }

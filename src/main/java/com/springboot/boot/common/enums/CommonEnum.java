@@ -17,7 +17,7 @@ public enum CommonEnum {
 
     //
     CTYPE(2,"定制分类"),
-
+    PUTONG(1,"普通分类"),
     EXAM(1,"考试类"),
     WENJUAN(2,"问卷类"),
     AUTH_EXAM(3,"认证类"),

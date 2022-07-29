@@ -34,6 +34,9 @@ public class QuestionSearchVo {
     private Integer examinationType;
 
 
+    @ApiModelProperty("解析")
+    private String analysisQuestion;
+
     private String ExamName;
 
     @ApiModelProperty("选项")

@@ -28,6 +28,9 @@ public class AppQuestionVo {
     @ApiModelProperty("正确答案")
     private List<String> rightAnswer;
 
+    @ApiModelProperty("解析")
+    private String analysisQuestion;
+
     @ApiModelProperty("试卷主键id")
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long examinationId;

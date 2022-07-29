@@ -3,6 +3,8 @@ package com.springboot.boot.modules.admin.mapper;
 import com.springboot.boot.modules.admin.entity.MpCurriculum;
 import com.springboot.boot.modules.admin.entity.MpCurriculumExample;
 import java.util.List;
+
+import com.springboot.boot.modules.admin.vo.curriculum.SearchCurrAndSencondClassVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface MpCurriculumMapper {
@@ -27,4 +29,6 @@ public interface MpCurriculumMapper {
     int updateByPrimaryKeySelective(MpCurriculum record);
 
     int updateByPrimaryKey(MpCurriculum record);
+
+
 }

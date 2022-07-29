@@ -16,6 +16,9 @@ import com.springboot.boot.modules.admin.service.AttachmentService;
 import com.springboot.boot.modules.admin.service.ClassifyService;
 import com.springboot.boot.modules.admin.service.CurriculumService;
 import com.springboot.boot.modules.admin.vo.curriculum.CurriculumVo;
+import com.springboot.boot.modules.admin.vo.curriculum.GetCurrMess;
+import com.springboot.boot.modules.admin.vo.curriculum.SearchCurrAndSencondClassVo;
+import com.springboot.boot.modules.admin.vo.curriculum.SrearchAndClassifyVo;
 import com.springboot.boot.utils.ApiCode;
 import com.springboot.boot.utils.ApiResult;
 import com.springboot.boot.utils.BeanCopy;
@@ -26,10 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName CurriculumServiceImpl
@@ -295,5 +296,86 @@ public class CurriculumServiceImpl implements CurriculumService {
             return mpCurriculumList.get(0);
         }
        return null;
+    }
+
+    @Override
+    public List<SrearchAndClassifyVo> searchCurrAndSecond(Long id, Integer classFormat, String curriculumName) {
+        List<SearchCurrAndSencondClassVo> voResult = new ArrayList<>();
+        List<SrearchAndClassifyVo> srearchAndClassifyVos = new ArrayList<>();
+        //区分定制还是普通
+        MpFirstClassify mpFirstClassify = classifyService.searchFirstClassify(id);
+        //定制课程
+        if (mpFirstClassify.getFirstClassifyType().intValue() ==CommonEnum.CTYPE.getCode()){
+             voResult = curriculumMapper.searchCurrAndSecond(id,classFormat,curriculumName);
+            //分组(通过成绩)s
+            Map<Long, List<SearchCurrAndSencondClassVo>> groupBySex = voResult.stream().collect(Collectors.groupingBy(SearchCurrAndSencondClassVo::getCustSecondClassifyId));
+            for (Map.Entry<Long, List<SearchCurrAndSencondClassVo>> entryUser : groupBySex.entrySet()) {
+                SrearchAndClassifyVo vo =new SrearchAndClassifyVo();
+                vo.setId(entryUser.getKey());
+                vo.setSecondClassifyName(entryUser.getValue().get(0).getSecondClassifyName());
+                List<SearchCurrAndSencondClassVo> value = entryUser.getValue();
+                List<MpCurriculum> mpCurricula = new ArrayList<>();
+                value.forEach(e->{
+                    MpCurriculum mpCurriculum= new MpCurriculum();
+                    mpCurriculum.setCurriculumName(e.getCurriculumName());
+                    mpCurriculum.setClassFormat(e.getClassFormat());
+                    mpCurriculum.setId(e.getCurrId());
+                    mpCurricula.add(mpCurriculum);
+                });
+
+                vo.setMpCurr(mpCurricula);
+                srearchAndClassifyVos.add(vo);
+            }
+
+        }
+        //普通课程
+        if (mpFirstClassify.getFirstClassifyType().intValue() ==CommonEnum.PUTONG.getCode()){
+            voResult = curriculumMapper.searchCurrAndSecondByGen(id,classFormat,curriculumName);
+            //分组(通过成绩)s
+            Map<Long, List<SearchCurrAndSencondClassVo>> groupBySex = voResult.stream().collect(Collectors.groupingBy(SearchCurrAndSencondClassVo::getGenSecondClassifyId));
+            for (Map.Entry<Long, List<SearchCurrAndSencondClassVo>> entryUser : groupBySex.entrySet()) {
+                SrearchAndClassifyVo vo =new SrearchAndClassifyVo();
+                vo.setId(entryUser.getKey());
+                vo.setSecondClassifyName(entryUser.getValue().get(0).getSecondClassifyName());
+                List<SearchCurrAndSencondClassVo> value = entryUser.getValue();
+                List<MpCurriculum> mpCurricula = new ArrayList<>();
+                value.forEach(e->{
+                    MpCurriculum mpCurriculum= new MpCurriculum();
+                    mpCurriculum.setCurriculumName(e.getCurriculumName());
+                    mpCurriculum.setClassFormat(e.getClassFormat());
+                    mpCurriculum.setId(e.getCurrId());
+                    mpCurricula.add(mpCurriculum);
+                });
+
+                vo.setMpCurr(mpCurricula);
+                srearchAndClassifyVos.add(vo);
+            }
+        }
+        return srearchAndClassifyVos;
+    }
+
+    @Override
+    public GetCurrMess getCurrMess(Long id) {
+       MpCurriculumExample mpCurriculumExample = new MpCurriculumExample();
+        MpCurriculumExample.Criteria criteria = mpCurriculumExample.createCriteria();
+        criteria.andIdEqualTo(id);
+        GetCurrMess getCurrMess = new GetCurrMess();
+        List<MpCurriculum> mpCurriculumList = mapper.selectByExample(mpCurriculumExample);
+
+        getCurrMess.setId(mpCurriculumList.get(0).getId());
+        getCurrMess.setCurrName(mpCurriculumList.get(0).getCurriculumName());
+        //普通
+        if (mpCurriculumList.get(0).getCustomizedType().intValue() ==1){
+            MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(mpCurriculumList.get(0).getGenSecondClassifyId());
+            getCurrMess.setClssifyName(secondClassify.getSecondClassifyName());
+            getCurrMess.setDsc(secondClassify.getSecondClassifyDescr());
+        }
+        //定制
+        if (mpCurriculumList.get(0).getCustomizedType().intValue() == 2){
+            MpSecondClassify secondClassify = classifyService.searchSecondClassifyById(mpCurriculumList.get(0).getCustSecondClassifyId());
+            getCurrMess.setClssifyName(secondClassify.getSecondClassifyName());
+            getCurrMess.setDsc(secondClassify.getSecondClassifyDescr());
+        }
+        return getCurrMess;
     }
 }
