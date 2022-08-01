@@ -29,7 +29,13 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
+                <!-- 排除旧版本的 Apache Log4j2 组件 -->
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-to-slf4j</artifactId>
+                </exclusion>
             </exclusions>
+
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -172,6 +178,18 @@
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.9.106.ALL</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sgcc.uds.cloud</groupId>
+            <artifactId>uds-sdk-java</artifactId>
+            <version>2.0.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sgcc.uds.cloud</groupId>
+            <artifactId>uds-ms-metadata-rpc-dto</artifactId>
+            <version>2.0.8</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -331,7 +331,7 @@ public class CurriculumServiceImpl implements CurriculumService {
         //普通课程
         if (mpFirstClassify.getFirstClassifyType().intValue() ==CommonEnum.PUTONG.getCode()){
             voResult = curriculumMapper.searchCurrAndSecondByGen(id,classFormat,curriculumName);
-            //分组(通过成绩)s
+            //分组(通过成绩)
             Map<Long, List<SearchCurrAndSencondClassVo>> groupBySex = voResult.stream().collect(Collectors.groupingBy(SearchCurrAndSencondClassVo::getGenSecondClassifyId));
             for (Map.Entry<Long, List<SearchCurrAndSencondClassVo>> entryUser : groupBySex.entrySet()) {
                 SrearchAndClassifyVo vo =new SrearchAndClassifyVo();
