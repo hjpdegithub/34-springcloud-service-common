@@ -36,26 +36,29 @@ public class CurMemComController {
     private CurMemoService curMemoService;
     @Autowired
     private CurComReplyService curComReplyService;
+
     @ApiOperation(value = "1课程评论新增", notes = "课程评论新增")
     @PostMapping(value = "/addCurComment")
     public ApiResult addCurComment(@RequestBody CurComDto dto) {
-        if (null == dto.getUserId()){
+        if (null == dto.getUserId()) {
             throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curComService.add(dto));
     }
+
     @ApiOperation(value = "2课程评论查询", notes = "课程评论查询")
     @PostMapping(value = "/curCommentSelect")
     public ApiResult CurCommentSelect(@RequestBody CurComDto dto) {
-        if (null == dto.getUserId()){
-           // throw new BusinessException("请先登录！");
+        if (null == dto.getUserId()) {
+            // throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curComService.addCurCommentSelect(dto));
     }
+
     @ApiOperation(value = "3课程评论删除", notes = "课程评论删除")
     @PostMapping(value = "/curCommentDeleteById")
     public ApiResult addCurCommentDeleteById(@RequestBody CurComDto dto) {
-        if (null == dto.getUserId()){
+        if (null == dto.getUserId()) {
             throw new BusinessException("请先登录！");
         }
         //删除回复
@@ -65,60 +68,71 @@ public class CurMemComController {
         }
         return ApiResult.success(curComService.deleteByPrimaryKey(dto.getId()));
     }
+
     @ApiOperation(value = "4课程评论回复新增", notes = "课程评论回复新增")
     @PostMapping(value = "/addCurComRely")
     public ApiResult addCurComRely(@RequestBody CurComReplyDto dto) {
         return ApiResult.success(curComReplyService.add(dto));
     }
+
     @ApiOperation(value = "5课程评论回复查询", notes = "课程评论回复查询")
     @PostMapping(value = "/curComRelySelect")
     public ApiResult curComRelySelect(@RequestBody CurComReplyDto dto) {
         return ApiResult.success(curComReplyService.curComRelySelect(dto));
     }
+
+
     @ApiOperation(value = "6课程评论回复删除", notes = "课程评论回复删除")
     @PostMapping(value = "/curComRelyDeleteById")
     public ApiResult curComRelyDeleteById(@RequestBody CurComReplyDto dto) {
         return ApiResult.success(curComReplyService.deleteByPrimaryKey(dto.getId()));
     }
+
     @ApiOperation(value = "7课程笔记新增", notes = "课程笔记新增")
     @PostMapping(value = "/addCurMemo")
     public ApiResult addCurMemo(@RequestBody CurMemDto dto) {
-        if (null == dto.getUserId()){
+        if (null == dto.getUserId()) {
             throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curMemoService.add(dto));
     }
+
     @ApiOperation(value = "8课程笔记查询", notes = "课程笔记查询")
     @PostMapping(value = "/curMemoSelect")
     public ApiResult addCurMemoSelect(@RequestBody CurMemDto dto) {
-        if (null == dto.getUserId()){
+        if (null == dto.getUserId()) {
             throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curMemoService.curComSelect(dto));
     }
+
     @ApiOperation(value = "9课程笔记删除", notes = "课程笔记删除")
     @PostMapping(value = "/curMemoDeleteByid")
     public ApiResult curMemoDeleteByid(@RequestBody CurMemDto dto) {
-        if (null == dto.getUserId()){
+        if (null == dto.getUserId()) {
             throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curMemoService.deleteByPrimaryKey(dto.getId()));
     }
+
     @ApiOperation(value = "10客户点赞状态", notes = "10客户点赞状态")
     @PostMapping(value = "/curThumStatus")
     public ApiResult curThumStatus(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThumStatus(dto));
     }
+
     @ApiOperation(value = "11客户点赞", notes = "11客户点赞")
     @PostMapping(value = "/curThum")
     public ApiResult curThum(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThum(dto));
     }
+
     @ApiOperation(value = "12客户取消点赞", notes = "12客户取消点赞")
     @PostMapping(value = "/curThumCancel")
     public ApiResult curThumCancel(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThumCancel(dto));
     }
+
     @ApiOperation(value = "13客户点赞数量", notes = "13客户点赞数量")
     @PostMapping(value = "/curThumCount")
     public ApiResult curThumCount(@RequestBody CurComDto dto) {
