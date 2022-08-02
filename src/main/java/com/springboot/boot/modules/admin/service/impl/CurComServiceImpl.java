@@ -6,6 +6,7 @@ import com.springboot.boot.modules.admin.dto.curriculum.CurComDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.MpAttachmentCommentMapper;
 import com.springboot.boot.modules.admin.mapper.MpAttachmentCommentReplyMapper;
+import com.springboot.boot.modules.admin.mapper.MpAttachmentCommentXMapper;
 import com.springboot.boot.modules.admin.service.CurComService;
 import com.springboot.boot.utils.ApiResult;
 import com.springboot.boot.utils.BeanCopy;
@@ -31,12 +32,11 @@ import java.util.List;
 public class CurComServiceImpl implements CurComService {
 
     @Resource
+    private MpAttachmentCommentXMapper mpAttachmentCommentXMapper;
+    @Resource
     private MpAttachmentCommentMapper mpAttachmentCommentMapper;
-
     @Resource
     private MpAttachmentCommentReplyMapper attachmentCommentReplyMapper;
-
-
     @Override
     //新增课程评论
     public ApiResult add(CurComDto dto) {
@@ -49,15 +49,11 @@ public class CurComServiceImpl implements CurComService {
         mpAttachmentComment.setCreateDate(new Date());
         mpAttachmentComment.setDelFlag(CommonEnum.USED.getCode());
         return ApiResult.success(mpAttachmentCommentMapper.insert(mpAttachmentComment));
-
     }
-
     //课程评论列表查询
     @Override
-    public  List<MpAttachmentComment>  addCurCommentSelect( CurComDto dto ) {
-        MpAttachmentCommentExample  example = new MpAttachmentCommentExample();
-        example.createCriteria().andCurIdEqualTo(dto.getCurId()).andDelFlagEqualTo(CommonEnum.USED.getCode());
-        return   mpAttachmentCommentMapper.selectByExample(example);
+    public  List<MpAttachmentCommentWithUserName>  addCurCommentSelect( CurComDto dto ) {
+        return   mpAttachmentCommentXMapper.selectByCurId(dto);
     }
 
     //根据ID删除课程
