@@ -46,9 +46,9 @@ public class CurMemComController {
     }
     @ApiOperation(value = "2课程评论查询", notes = "课程评论查询")
     @PostMapping(value = "/curCommentSelect")
-    public ApiResult addCurCommentSelect(@RequestBody CurComDto dto) {
+    public ApiResult CurCommentSelect(@RequestBody CurComDto dto) {
         if (null == dto.getUserId()){
-            throw new BusinessException("请先登录！");
+           // throw new BusinessException("请先登录！");
         }
         return ApiResult.success(curComService.addCurCommentSelect(dto));
     }
