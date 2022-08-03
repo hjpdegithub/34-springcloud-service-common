@@ -115,28 +115,34 @@ public class CurMemComController {
         return ApiResult.success(curMemoService.deleteByPrimaryKey(dto.getId()));
     }
 
-    @ApiOperation(value = "10客户点赞状态", notes = "10客户点赞状态")
-    @PostMapping(value = "/curThumStatus")
-    public ApiResult curThumStatus(@RequestBody CurComDto dto) {
-        return ApiResult.success(curMemoService.curThumStatus(dto));
-    }
-
     @ApiOperation(value = "11客户点赞", notes = "11客户点赞")
     @PostMapping(value = "/curThum")
     public ApiResult curThum(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThum(dto));
     }
 
+
+
+
+    //已经废弃
     @ApiOperation(value = "12客户取消点赞", notes = "12客户取消点赞")
     @PostMapping(value = "/curThumCancel")
     public ApiResult curThumCancel(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThumCancel(dto));
     }
 
+
+
     @ApiOperation(value = "13客户点赞数量", notes = "13客户点赞数量")
     @PostMapping(value = "/curThumCount")
     public ApiResult curThumCount(@RequestBody CurComDto dto) {
         return ApiResult.success(curMemoService.curThumCount(dto));
+    }
+
+    @ApiOperation(value = "10客户点赞状态", notes = "10客户点赞状态")
+    @PostMapping(value = "/curThumStatus")
+    public ApiResult curThumStatus(@RequestBody CurComDto dto) {
+        return ApiResult.success(curMemoService.curThumStatus(dto));
     }
 
 }

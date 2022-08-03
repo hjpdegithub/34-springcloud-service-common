@@ -106,8 +106,8 @@ public class AttachmentServiceImpl implements AttachmentService {
             newFile.delete();
             mpAttachmentInfo.setFileUrl(OSSMap.get("url"));
             mpAttachmentInfo.setFilePath(OSSMap.get("fileKey"));
-            mpAttachmentInfo.setDocumentid(OSSMap.get("documentId"));
-            mpAttachmentInfo.setVersionid(OSSMap.get("versionId"));
+//            mpAttachmentInfo.setDocumentid(OSSMap.get("documentId"));
+//            mpAttachmentInfo.setVersionid(OSSMap.get("versionId"));
             mpAttachmentInfo.setFileName(OSSMap.get("resultFileName"));
 
             mpAttachmentInfoMapper.insert(mpAttachmentInfo);

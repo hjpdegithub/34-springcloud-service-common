@@ -27,6 +27,18 @@ public class CurComDto {
     @ApiModelProperty("更新日期")
     private Date updateDate;
 
+
+    @ApiModelProperty("点赞取消点赞")
+    private Integer thumOrCancel;
+    public Integer getThumOrCancel() {
+        return thumOrCancel;
+    }
+    public void setThumOrCancel(Integer thumOrCancel) {
+        this.thumOrCancel = thumOrCancel;
+    }
+
+
+
     public Long getId() {
         return id;
     }

@@ -28,10 +28,10 @@ public class MpAttachmentInfo {
     private Long updateUser;
 
     private Date updateDate;
-
-    private String versionid;
-
-    private String documentid;
+//   暂时注释掉
+//    private String versionid;
+//
+//    private String documentid;
 
 
     public String getFileUrlLocal() {
@@ -121,20 +121,23 @@ public class MpAttachmentInfo {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+//暂时注释掉
+//    public String getVersionid() {
+//        return versionid;
+//    }
+//
+//    public void setVersionid(String versionid) {
+//        this.versionid = versionid == null ? null : versionid.trim();
+//    }
+//
+//    public String getDocumentid() {
+//        return documentid;
+//    }
+//
+//    public void setDocumentid(String documentid) {
+//        this.documentid = documentid == null ? null : documentid.trim();
+//    }
 
-    public String getVersionid() {
-        return versionid;
-    }
 
-    public void setVersionid(String versionid) {
-        this.versionid = versionid == null ? null : versionid.trim();
-    }
 
-    public String getDocumentid() {
-        return documentid;
-    }
-
-    public void setDocumentid(String documentid) {
-        this.documentid = documentid == null ? null : documentid.trim();
-    }
 }

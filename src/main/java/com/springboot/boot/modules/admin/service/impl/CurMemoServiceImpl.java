@@ -107,28 +107,47 @@ public class CurMemoServiceImpl implements CurMemoService {
 
     @Override
     public int curThum(@RequestBody CurComDto dto) {
-        MpCurthuExample example = new MpCurthuExample();
-        example.createCriteria().andCurIdEqualTo(dto.getCurId())
-                .andUserIdEqualTo(dto.getUserId());
-        List<MpCurthu> mpCurthuList =
-                mpCurthuMapper.selectByExample(example);
-        if (mpCurthuList == null || mpCurthuList.size() == 0) {
-            MpCurthu mpCurthu = new MpCurthu();
-            BeanCopy.copy(dto, mpCurthu);
-            SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
-            //文件的ID主键
-            mpCurthu.setId(snowFlakeUtil.nextId());
-            mpCurthu.setThuStatus(true);
-            return mpCurthuMapper.insert(mpCurthu);
-        } else {
-            MpCurthu mpCurthu = mpCurthuList.get(0);
-            if (mpCurthu.getThuStatus()) {
-                return 1;
-            } else {
+        Integer thumOrCancel = dto.getThumOrCancel();
+        //点赞的逻辑
+        if (true) {
+            //点赞
+            MpCurthuExample example = new MpCurthuExample();
+            example.createCriteria().andCurIdEqualTo(dto.getCurId())
+                    .andUserIdEqualTo(dto.getUserId());
+            List<MpCurthu> mpCurthuList =
+                    mpCurthuMapper.selectByExample(example);
+            if (mpCurthuList == null || mpCurthuList.size() == 0) {
+                MpCurthu mpCurthu = new MpCurthu();
+                BeanCopy.copy(dto, mpCurthu);
+                SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
+                //文件的ID主键
+                mpCurthu.setId(snowFlakeUtil.nextId());
                 mpCurthu.setThuStatus(true);
-                return mpCurthuMapper.updateByExampleSelective(mpCurthu, example);
+                return mpCurthuMapper.insert(mpCurthu);
+            } else {
+                MpCurthu mpCurthu = mpCurthuList.get(0);
+                if (mpCurthu.getThuStatus()) {
+                    return 1;
+                } else {
+                    mpCurthu.setThuStatus(true);
+                    return mpCurthuMapper.updateByExampleSelective(mpCurthu, example);
+                }
+            }
+        } else {
+            //取消点赞
+            MpCurthuExample example = new MpCurthuExample();
+            example.createCriteria().andCurIdEqualTo(dto.getCurId())
+                    .andUserIdEqualTo(dto.getUserId());
+            List<MpCurthu> mpCurthuList = mpCurthuMapper.selectByExample(example);
+            if (null != mpCurthuList && mpCurthuList.size() > 0) {
+                MpCurthu mpCurthu = mpCurthuList.get(0);
+                mpCurthu.setThuStatus(false);
+                return mpCurthuMapper.updateByExample(mpCurthu, example);
+            } else {
+                return 1;
             }
         }
+
     }
 
     @Override
