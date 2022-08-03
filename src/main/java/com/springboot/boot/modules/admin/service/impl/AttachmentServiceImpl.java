@@ -92,8 +92,12 @@ public class AttachmentServiceImpl implements AttachmentService {
             if (checkNotPass) {
                 return ApiResult.error(ApiCode.FAIL.getCode(), "文件格式校验不通过");
             }
-            //云服务上传
+            //云服务上传(以前的代码）改版前
             Map<String, String> OSSMap = aliyunOSSUtil.picOSS(newFile);
+
+            //非结构化数据上传(现在的代码）改版后
+          //  Map<String, String> OSSMap = aliyunOSSUtil.picOSSUds(newFile,fileName);
+
             if(OSSMap.size()==0){
                 throw  new RuntimeException();
             }
@@ -102,6 +106,10 @@ public class AttachmentServiceImpl implements AttachmentService {
             newFile.delete();
             mpAttachmentInfo.setFileUrl(OSSMap.get("url"));
             mpAttachmentInfo.setFilePath(OSSMap.get("fileKey"));
+            mpAttachmentInfo.setDocumentid(OSSMap.get("documentId"));
+            mpAttachmentInfo.setVersionid(OSSMap.get("versionId"));
+            mpAttachmentInfo.setFileName(OSSMap.get("resultFileName"));
+
             mpAttachmentInfoMapper.insert(mpAttachmentInfo);
         } catch (Exception e) {
             log.info(e.getMessage());

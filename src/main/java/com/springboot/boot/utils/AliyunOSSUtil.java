@@ -47,11 +47,9 @@ public class AliyunOSSUtil {
     private static String streamfileType[] = {
             "mp4", "MP4", "avi", "AVI", "wmv", "WMV"
     };
-
     private static List<String> list = Arrays.asList(validfileType);
     private static List<String> streamlist = Arrays.asList(streamfileType);
     private static List<String> doclist = Arrays.asList(streamfileType);
-
     /**
      * 文件格式校验
      *
@@ -66,7 +64,6 @@ public class AliyunOSSUtil {
         }
         return false;
     }
-
     /**
      * 文本格式文件校验
      *
@@ -81,8 +78,6 @@ public class AliyunOSSUtil {
         }
         return false;
     }
-
-
     /**
      * 流文件格式校验
      *
@@ -97,15 +92,12 @@ public class AliyunOSSUtil {
         }
         return false;
     }
-
-
     /**
      * 文件格式校验
      *
      * @param
      * @return
      */
-
     public String uploadByStream(HttpServletResponse response, String FileFullPath, String fileName) {
         response.setContentType("application/pdf");
         String endpoint = constantProperties.getEndpoint();
@@ -117,7 +109,6 @@ public class AliyunOSSUtil {
         try {
             // OSSClient ossClient = new OSSClient(endpoint,accessKeyId,accessKeySecret,config);
             OSS SSossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, config);
-
             OSSObject ossObject = SSossClient.getObject(bucketName, FileFullPath);
             BufferedInputStream in = new BufferedInputStream(ossObject.getObjectContent());
             BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
@@ -140,35 +131,27 @@ public class AliyunOSSUtil {
         }
         return "success";
     }
-
-
     /**
      * 文件格式校验
      *
      * @param
      * @return
      */
-
     public String ossToLocalToShow(HttpServletResponse response, String FileFullPath, String fileName) {
-
         String endpoint = constantProperties.getEndpoint();
         String accessKeyId = constantProperties.getKeyid();
         String accessKeySecret = constantProperties.getKeysecret();
         String bucketName = constantProperties.getBucketname();
         ClientBuilderConfiguration config = new ClientBuilderConfiguration();
         config.setSupportCname(false);
-
         String name = System.currentTimeMillis() + fileName;
         try {
-
-
             String pathName = constantProperties.getOosFilePath() + name;
             // 创建OSSClient实例。
             OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret, config);
             // 下载OSS文件到本地文件。如果指定的本地文件存在会覆盖，不存在则新建。
             ossClient.getObject(new GetObjectRequest(bucketName, FileFullPath), new File(pathName));
             ossClient.shutdown();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,15 +172,36 @@ public class AliyunOSSUtil {
         // 上传数据并得到结果
         AddActionResult result = client.add(uploadFile
         )//文件路径
-        .withFileName("fileName").execute();
+                .withFileName("fileName").execute();
         String documentId = result.getDocumentId();
-        String versionId  = result.getVersionId();
+        String versionId = result.getVersionId();
         String resultFileName = result.getFileName();
         rtMap.put("documentId", documentId);
         rtMap.put("versionId", versionId);
         rtMap.put("resultFileName", resultFileName);
         return rtMap;
-
+    }
+    /**
+     * 从非结构化平台下载
+     *
+     * @param
+     * @return
+     */
+    public String picOSSUpdtoShow(String docunmentId, String name) {
+        log.info("=========>从非结构化平台下载：" + docunmentId);
+        Map<String, String> rtMap = new HashMap();
+        // 初始化 UdsClient
+        UdsClient client = new UdsClient(constantUdsProperties.getApiServiceUrl(),
+                constantUdsProperties.getAccessKey(), constantUdsProperties.getSecretKey());
+        String pathName = constantProperties.getOosFilePath() + name;
+        // 上传数据并得到结果
+        File file = client.getFile("50ea0f9377814b60a4057c28b9d34d20")
+                // 设置下载⽂件保存的完整路径
+                .withSavePath(pathName)
+                // 执⾏
+                .execute();
+        System.out.println(file.getPath());
+        return constantProperties.getOosFileShowPathPrex() + name;
     }
 
     /**
@@ -207,9 +211,7 @@ public class AliyunOSSUtil {
      * @return
      */
     public Map<String, String> picOSS(File uploadFile) {
-
         log.info("=========>OSS文件上传开始：" + uploadFile.getName());
-
         Map<String, String> rtMap = new HashMap();
         try {
             String endpoint = constantProperties.getEndpoint();
@@ -221,7 +223,6 @@ public class AliyunOSSUtil {
             String dateStr = format.format(new Date());
             ClientConfiguration config = new ClientConfiguration();
             config.setSupportCname(false);
-
             // 创建OSSClient实例
             OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret, config);
             //容器不存在，就创建
@@ -246,9 +247,7 @@ public class AliyunOSSUtil {
             e.printStackTrace();
         }
         return rtMap;
-
     }
-
     /**
      * 上传
      *
@@ -265,11 +264,9 @@ public class AliyunOSSUtil {
         System.out.println(endpoint + "endpoint");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = format.format(new Date());
-
         if (null == file) {
             return null;
         }
-
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
             //容器不存在，就创建
@@ -299,8 +296,6 @@ public class AliyunOSSUtil {
         }
         return null;
     }
-
-
     /**
      * 删除
      *
@@ -316,7 +311,6 @@ public class AliyunOSSUtil {
         String fileHost = constantProperties.getFilehost();
         try {
             OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-
             if (!ossClient.doesBucketExist(bucketName)) {
                 log.info("==============>您的Bucket不存在");
                 return "您的Bucket不存在";
@@ -331,7 +325,6 @@ public class AliyunOSSUtil {
             return "删除Object失败";
         }
     }
-
     /**
      * 查询文件名列表
      *
@@ -360,5 +353,4 @@ public class AliyunOSSUtil {
             return new ArrayList<>();
         }
     }
-
 }
