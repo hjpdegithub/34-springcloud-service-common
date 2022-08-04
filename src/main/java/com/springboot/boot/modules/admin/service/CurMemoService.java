@@ -26,7 +26,7 @@ public interface CurMemoService {
     int deleteByPrimaryKey(Long id);
 
 
-    Boolean  curThumStatus(@RequestBody CurComDto dto);
+    CollectStatusVo  curThumStatus(@RequestBody CurComDto dto);
 
 
 

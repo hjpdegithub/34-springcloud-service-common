@@ -105,18 +105,25 @@ public class CurMemoServiceImpl implements CurMemoService {
 
 
     @Override
-    public Boolean curThumStatus(@RequestBody CurComDto dto) {
+    public CollectStatusVo curThumStatus(@RequestBody CurComDto dto) {
+        CollectStatusVo  vo   = new  CollectStatusVo();
         MpCurthuExample example = new MpCurthuExample();
         example.createCriteria().andCurIdEqualTo(dto.getCurId())
                 .andUserIdEqualTo(dto.getUserId());
         List<MpCurthu> mpCurthuList =
                 mpCurthuMapper.selectByExample(example);
         if (mpCurthuList == null || mpCurthuList.size() == 0) {
-            return false;
+            vo.setCollectStatus(false);
         } else {
             MpCurthu mpCurthu = mpCurthuList.get(0);
-            return mpCurthu.getThuStatus();
+            vo.setCollectStatus(mpCurthu.getThuStatus());
         }
+        MpCurthuExample exampleT = new MpCurthuExample();
+        exampleT.createCriteria().andCurIdEqualTo(dto.getCurId())
+                .andThuStatusEqualTo(true);
+        long amount  =    mpCurthuMapper.countByExample(exampleT);
+        vo.setAmount(Long.valueOf(amount));
+        return vo;
     }
 
 
