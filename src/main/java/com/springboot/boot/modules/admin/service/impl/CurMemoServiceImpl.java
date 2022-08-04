@@ -106,7 +106,7 @@ public class CurMemoServiceImpl implements CurMemoService {
 
     @Override
     public CollectStatusVo curThumStatus(@RequestBody CurComDto dto) {
-        CollectStatusVo  vo   = new  CollectStatusVo();
+        CollectStatusVo vo = new CollectStatusVo();
         MpCurthuExample example = new MpCurthuExample();
         example.createCriteria().andCurIdEqualTo(dto.getCurId())
                 .andUserIdEqualTo(dto.getUserId());
@@ -121,7 +121,7 @@ public class CurMemoServiceImpl implements CurMemoService {
         MpCurthuExample exampleT = new MpCurthuExample();
         exampleT.createCriteria().andCurIdEqualTo(dto.getCurId())
                 .andThuStatusEqualTo(true);
-        long amount  =    mpCurthuMapper.countByExample(exampleT);
+        long amount = mpCurthuMapper.countByExample(exampleT);
         vo.setAmount(Long.valueOf(amount));
         return vo;
     }
@@ -244,16 +244,14 @@ public class CurMemoServiceImpl implements CurMemoService {
             SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
             //文件的ID主键
             mpCurthu.setId(snowFlakeUtil.nextId());
-            mpCurthu.setThuStatus(clickOrCancel.intValue()==1?true:false);
+            mpCurthu.setThuStatus(clickOrCancel.intValue() == 1 ? true : false);
+
             return mpCurthuMapper.insert(mpCurthu);
         } else {
             MpCurthu mpCurthu = mpCurthuList.get(0);
-            if (mpCurthu.getThuStatus()) {
-                return 1;
-            } else {
-                mpCurthu.setThuStatus(clickOrCancel.intValue()==1?true:false);
-                return mpCurthuMapper.updateByExampleSelective(mpCurthu, example);
-            }
+            mpCurthu.setThuStatus(clickOrCancel.intValue() == 1 ? true : false);
+            return mpCurthuMapper.updateByExampleSelective(mpCurthu, example);
+
         }
 
     }
