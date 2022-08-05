@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -294,11 +295,15 @@ public class CurMemoServiceImpl implements CurMemoService {
         criteria.andUserIdEqualTo(dto.getUserId());
         criteria.andStatusEqualTo(1);
         List<MpCollect> mpCollectList = mpCollectMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(mpCollectList)) {
-            mpCollectList.forEach(e -> {
+        HashSet<Long> hs =  new HashSet<>();
+        for (MpCollect mp:    mpCollectList){
+            hs.add(mp.getCurriculumId());
+        }
+        if (!CollectionUtils.isEmpty(hs)) {
+            hs.forEach(e -> {
                 MpCurriculumExample example1 = new MpCurriculumExample();
                 MpCurriculumExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andIdEqualTo(e.getCurriculumId());
+                criteria1.andIdEqualTo(e);
                 List<MpCurriculum> mpCurricula = mpCurriculumMapper.selectByExample(example1);
                 MpCurriculum i = mpCurricula.get(0);
                 MyStudyVo vo = new MyStudyVo();
@@ -309,7 +314,6 @@ public class CurMemoServiceImpl implements CurMemoService {
                 vo.setStudyTime(i.getStudyTime());
                 lists.add(vo);
             });
-
 
         }
         return lists;

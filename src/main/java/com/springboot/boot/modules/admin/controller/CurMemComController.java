@@ -154,7 +154,7 @@ public class CurMemComController {
         return ApiResult.success(curMemoService.collectStatus(dto));
     }
 
-    //做过笔记的课程查询
+    //做过笔记的课程查询作废
     @ApiOperation(value = "13将该用户用户做过笔记的课程查询出来", notes = "13将该用户用户做过笔记的课程查询出来")
     @PostMapping(value = "/collectCurSearCh")
     public ApiResult collectCurSearCh(@RequestBody CurMemDto dto) {
