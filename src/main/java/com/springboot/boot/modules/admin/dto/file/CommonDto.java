@@ -9,6 +9,7 @@ import java.util.Date;
 public class CommonDto {
 
     private Long businessId;
+    private Long userId;
 
 
 

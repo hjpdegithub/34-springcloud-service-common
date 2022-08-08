@@ -1,5 +1,7 @@
 package com.springboot.boot.modules.admin.vo.classify;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Date;
  **/
 @Data
 public class FirstClassifyVo {
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long id;
 
     private String label;
