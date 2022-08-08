@@ -12,7 +12,7 @@ public class MpAttachmentMemo {
     private Long curId;
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long userId;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
     private String memo;
 
     private String description;

@@ -73,7 +73,7 @@ public class CurMemoServiceImpl implements CurMemoService {
             MpAttachmentMemo record = reslis.get(0);
             BeanCopy.copy(dto, record);
             MpAttachmentMemoExample example1 = new MpAttachmentMemoExample();
-            example.createCriteria().andDelFlagEqualTo(CommonEnum.USED.getCode())
+            example1.createCriteria().andDelFlagEqualTo(CommonEnum.USED.getCode())
                     .andCurIdEqualTo(dto.getCurId()).andUserIdEqualTo(dto.getUserId());
             return mpAttachmentMemoMapper.updateByExampleSelective(record, example1);
 
