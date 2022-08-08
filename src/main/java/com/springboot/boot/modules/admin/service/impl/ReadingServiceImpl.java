@@ -30,8 +30,8 @@ public class ReadingServiceImpl implements ReadingService {
         MpReading mpReading = new MpReading();
         mpReading.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
         mpReading.setCurriculumId(commonDto.getBusinessId());
-        mpReading.setUserId(123L);
-        mpReading.setMessage("1223浏览了课程");
+        mpReading.setUserId(commonDto.getUserId());
+        mpReading.setMessage(commonDto.getUserId()+"浏览了课程");
         readingMapper.insertSelective(mpReading);
 
     }

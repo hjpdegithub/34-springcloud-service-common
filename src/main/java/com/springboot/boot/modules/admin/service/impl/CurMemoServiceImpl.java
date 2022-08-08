@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName AppClassifyServiceImpl
@@ -210,27 +208,31 @@ public class CurMemoServiceImpl implements CurMemoService {
         criteria.andDelFlagEqualTo(CommonEnum.USED.getCode());
         List<MpAttachmentMemo> mpAttachmentMemos = mpAttachmentMemoMapper.selectByExample(example);
 
-        HashSet<Long> hs = new HashSet<>();
-        for (MpAttachmentMemo mp : mpAttachmentMemos) {
-            hs.add(mp.getCurId());
-        }
-        if (!CollectionUtils.isEmpty(hs)) {
-            hs.forEach(e -> {
+//        HashSet<Long> hs = new HashSet<>();
+//        for (MpAttachmentMemo mp : mpAttachmentMemos) {
+//            hs.add(mp.getCurId());
+//        }
+        List<MpAttachmentMemo> distinctClass = mpAttachmentMemos.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getCurId()))), ArrayList::new));
+        if (!CollectionUtils.isEmpty(distinctClass)) {
+            distinctClass.forEach(e -> {
                 MpCurriculumExample example1 = new MpCurriculumExample();
                 MpCurriculumExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andIdEqualTo(e);
+                criteria1.andIdEqualTo(e.getCurId());
                 List<MpCurriculum> mpCurricula = mpCurriculumMapper.selectByExample(example1);
-                MpCurriculum i = mpCurricula.get(0);
-                MyStudyVo vo = new MyStudyVo();
-                vo.setType(i.getCustomizedType());
-                vo.setCurrName(i.getCurriculumName());
-                vo.setFormate(i.getClassFormat());
-                vo.setId(i.getId());
-                vo.setStudyTime(i.getStudyTime());
-                lists.add(vo);
+
+                if (mpCurricula != null && mpCurricula.size() > 0) {
+                    MpCurriculum i = mpCurricula.get(0);
+                    MyStudyVo vo = new MyStudyVo();
+                    vo.setType(i.getCustomizedType());
+                    vo.setCurrName(i.getCurriculumName());
+                    vo.setFormate(i.getClassFormat());
+                    vo.setId(i.getId());
+                    vo.setStudyTime(i.getStudyTime());
+                    lists.add(vo);
+                }
+
+
             });
-
-
         }
         return lists;
     }
@@ -300,24 +302,29 @@ public class CurMemoServiceImpl implements CurMemoService {
         criteria.andUserIdEqualTo(dto.getUserId());
         criteria.andStatusEqualTo(1);
         List<MpCollect> mpCollectList = mpCollectMapper.selectByExample(example);
-        HashSet<Long> hs = new HashSet<>();
-        for (MpCollect mp : mpCollectList) {
-            hs.add(mp.getCurriculumId());
-        }
-        if (!CollectionUtils.isEmpty(hs)) {
-            hs.forEach(e -> {
+
+        List<MpCollect> distinctClass = mpCollectList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(o -> o.getCurriculumId()))), ArrayList::new));
+//        HashSet<Long> hs = new HashSet<>();
+//        for (MpCollect mp : mpCollectList) {
+//            hs.add(mp.getCurriculumId());
+//        }
+        if (!CollectionUtils.isEmpty(distinctClass)) {
+            distinctClass.forEach(e -> {
                 MpCurriculumExample example1 = new MpCurriculumExample();
                 MpCurriculumExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andIdEqualTo(e);
+                criteria1.andIdEqualTo(e.getCurriculumId());
                 List<MpCurriculum> mpCurricula = mpCurriculumMapper.selectByExample(example1);
-                MpCurriculum i = mpCurricula.get(0);
-                MyStudyVo vo = new MyStudyVo();
-                vo.setType(i.getCustomizedType());
-                vo.setCurrName(i.getCurriculumName());
-                vo.setFormate(i.getClassFormat());
-                vo.setId(i.getId());
-                vo.setStudyTime(i.getStudyTime());
-                lists.add(vo);
+
+                if (mpCurricula != null && mpCurricula.size() > 0) {
+                    MpCurriculum i = mpCurricula.get(0);
+                    MyStudyVo vo = new MyStudyVo();
+                    vo.setType(i.getCustomizedType());
+                    vo.setCurrName(i.getCurriculumName());
+                    vo.setFormate(i.getClassFormat());
+                    vo.setId(i.getId());
+                    vo.setStudyTime(i.getStudyTime());
+                    lists.add(vo);
+                }
             });
 
         }
