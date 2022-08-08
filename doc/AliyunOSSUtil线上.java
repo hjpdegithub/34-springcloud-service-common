@@ -52,15 +52,12 @@ public class AliyunOSSUtil {
         }
         return false;
     }
-
-
     /**
      * 文件格式校验
      *
      * @param
      * @return
      */
-
     public String uploadByStream(HttpServletResponse response, String FileFullPath, String fileName) {
         response.setContentType("application/pdf");
         String endpoint = constantProperties.getEndpoint();
