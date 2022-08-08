@@ -1,5 +1,7 @@
 package com.springboot.boot.modules.admin.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.Date;
 public class AttachmentInfoVo {
 
 	@ApiModelProperty("附件id")
+	@JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
 	private String id;
 	@ApiModelProperty("源文件名称包括后缀")
 	private String fileName;
