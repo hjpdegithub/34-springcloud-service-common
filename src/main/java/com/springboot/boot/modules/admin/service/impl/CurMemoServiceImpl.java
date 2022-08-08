@@ -209,11 +209,16 @@ public class CurMemoServiceImpl implements CurMemoService {
         criteria.andUserIdEqualTo(dto.getUserId());
         criteria.andDelFlagEqualTo(CommonEnum.USED.getCode());
         List<MpAttachmentMemo> mpAttachmentMemos = mpAttachmentMemoMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(mpAttachmentMemos)) {
-            mpAttachmentMemos.forEach(e -> {
+
+        HashSet<Long> hs = new HashSet<>();
+        for (MpAttachmentMemo mp : mpAttachmentMemos) {
+            hs.add(mp.getCurId());
+        }
+        if (!CollectionUtils.isEmpty(hs)) {
+            hs.forEach(e -> {
                 MpCurriculumExample example1 = new MpCurriculumExample();
                 MpCurriculumExample.Criteria criteria1 = example1.createCriteria();
-                criteria1.andIdEqualTo(e.getCurId());
+                criteria1.andIdEqualTo(e);
                 List<MpCurriculum> mpCurricula = mpCurriculumMapper.selectByExample(example1);
                 MpCurriculum i = mpCurricula.get(0);
                 MyStudyVo vo = new MyStudyVo();
@@ -295,8 +300,8 @@ public class CurMemoServiceImpl implements CurMemoService {
         criteria.andUserIdEqualTo(dto.getUserId());
         criteria.andStatusEqualTo(1);
         List<MpCollect> mpCollectList = mpCollectMapper.selectByExample(example);
-        HashSet<Long> hs =  new HashSet<>();
-        for (MpCollect mp:    mpCollectList){
+        HashSet<Long> hs = new HashSet<>();
+        for (MpCollect mp : mpCollectList) {
             hs.add(mp.getCurriculumId());
         }
         if (!CollectionUtils.isEmpty(hs)) {
