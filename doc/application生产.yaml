@@ -17,7 +17,7 @@
 #    password: Abc123!@#
 
 
-  #生产环境
+#生产环境
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -107,12 +107,12 @@ uds:
   #  bucketname: test220321bucket # bucket名称
   #  filehost: mq    #bucket下文件夹的路径
   #测试环境
-#oos:
-#  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
-#  keyid:    h0hTOLSF2M0rYMMW # 填写刚刚生成的AccessKey
-#  keysecret: 9vkIDqKrHngBI475PsYbqjrBpVYcrW  # 填写刚刚生成的Accesssecret
-#  bucketname: oss-nrxt-szh-dev-001 # bucket名称
-#  filehost: mq    #bucket下文件夹的路径
+  #oos:
+  #  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
+  #  keyid:    h0hTOLSF2M0rYMMW # 填写刚刚生成的AccessKey
+  #  keysecret: 9vkIDqKrHngBI475PsYbqjrBpVYcrW  # 填写刚刚生成的Accesssecret
+  #  bucketname: oss-nrxt-szh-dev-001 # bucket名称
+  #  filehost: mq    #bucket下文件夹的路径
   #生产环境
 oos:
   endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
@@ -124,12 +124,12 @@ oos:
   # 侯本地环境
   #  oosFilePath: D:/show/
   #实验环境
-#  oosFilePath: /mnt/file/
+  #  oosFilePath: /mnt/file/
   #生产环境
   oosFilePath: /nas/file/
 
   # 侯本地和实验环境的返回url
-#  oosFileShowPathPrex : http://172.37.42.208:8080/mp/showresource/
+  #  oosFileShowPathPrex : http://172.37.42.208:8080/mp/showresource/
   # oosFileShowPathPrex : http://192.168.43.15:8080/mp/showresource/
   #oosFileShowPathPrex : http://5k308538j9:qicp:vip:52534/mp/showresource/
   #oosFileShowPathPrex : http://localhost:8080/mp/showresource/
@@ -139,7 +139,7 @@ oos:
   # 侯本地
   #  localShowPath : file:D:\\show\\
   # 测试环境环境
-#  localShowPath: file:/mnt/file/
+  #  localShowPath: file:/mnt/file/
   # 生产环境
   localShowPath: file:/nas/file/
 
