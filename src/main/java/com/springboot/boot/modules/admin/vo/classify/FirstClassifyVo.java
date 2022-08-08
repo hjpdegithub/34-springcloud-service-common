@@ -23,11 +23,11 @@ public class FirstClassifyVo {
     private String firstClassifyDescr;
 
     private Integer firstClassifyType;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long createUser;
 
     private Date createTime;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long updateUser;
 
     private Date updateTime;

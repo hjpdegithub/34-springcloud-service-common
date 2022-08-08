@@ -25,7 +25,9 @@ public class SearchCurrAndSencondClassVo {
     private Integer classFormat;
     @ApiModelProperty("课程名称")
     private String curriculumName;
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long custSecondClassifyId;
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long genSecondClassifyId;
 
 

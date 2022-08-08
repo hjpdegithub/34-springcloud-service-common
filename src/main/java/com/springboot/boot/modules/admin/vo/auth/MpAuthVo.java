@@ -1,11 +1,14 @@
 package com.springboot.boot.modules.admin.vo.auth;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.springboot.boot.common.page.PageDto;
 import lombok.Data;
 
 import java.util.Date;
 @Data
 public class MpAuthVo extends PageDto {
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long id;
 
     private String name;
@@ -15,17 +18,17 @@ public class MpAuthVo extends PageDto {
     private Long directionId;
 
     private Long domainId;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long unitId;
 
     private Integer authLevel;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long examId;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long departmentId;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long authFirstClassifyId;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long authSencondClassifyId;
 
     private Long certificateTime1;
@@ -51,7 +54,7 @@ public class MpAuthVo extends PageDto {
     private Date updateTime;
 
     private Integer deleFlag;
-
+    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long userId;
 
 
