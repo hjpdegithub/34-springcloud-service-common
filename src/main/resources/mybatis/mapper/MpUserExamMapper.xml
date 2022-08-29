@@ -15,6 +15,8 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="achievement_id" jdbcType="BIGINT" property="achievementId" />
     <result column="type_exam" jdbcType="INTEGER" property="typeExam" />
+    <result column="entrance_type" jdbcType="INTEGER" property="entranceType" />
+    <result column="analysis_answer" jdbcType="VARCHAR" property="analysisAnswer" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, type, exam_id, question_id, option_id, create_user, create_time, update_user, 
-    update_time, dele_flag, user_id, achievement_id, type_exam
+    update_time, dele_flag, user_id, achievement_id, type_exam, entrance_type, analysis_answer
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpUserExamExample" resultMap="BaseResultMap">
     select
@@ -113,12 +115,14 @@
       question_id, option_id, create_user, 
       create_time, update_user, update_time, 
       dele_flag, user_id, achievement_id, 
-      type_exam)
+      type_exam, entrance_type, analysis_answer
+      )
     values (#{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{examId,jdbcType=BIGINT}, 
       #{questionId,jdbcType=BIGINT}, #{optionId,jdbcType=VARCHAR}, #{createUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleFlag,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{achievementId,jdbcType=BIGINT}, 
-      #{typeExam,jdbcType=INTEGER})
+      #{typeExam,jdbcType=INTEGER}, #{entranceType,jdbcType=INTEGER}, #{analysisAnswer,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpUserExam">
     insert into mp_user_exam
@@ -162,6 +166,12 @@
       <if test="typeExam != null">
         type_exam,
       </if>
+      <if test="entranceType != null">
+        entrance_type,
+      </if>
+      <if test="analysisAnswer != null">
+        analysis_answer,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -202,6 +212,12 @@
       </if>
       <if test="typeExam != null">
         #{typeExam,jdbcType=INTEGER},
+      </if>
+      <if test="entranceType != null">
+        #{entranceType,jdbcType=INTEGER},
+      </if>
+      <if test="analysisAnswer != null">
+        #{analysisAnswer,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -253,6 +269,12 @@
       <if test="record.typeExam != null">
         type_exam = #{record.typeExam,jdbcType=INTEGER},
       </if>
+      <if test="record.entranceType != null">
+        entrance_type = #{record.entranceType,jdbcType=INTEGER},
+      </if>
+      <if test="record.analysisAnswer != null">
+        analysis_answer = #{record.analysisAnswer,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +294,9 @@
       dele_flag = #{record.deleFlag,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=BIGINT},
       achievement_id = #{record.achievementId,jdbcType=BIGINT},
-      type_exam = #{record.typeExam,jdbcType=INTEGER}
+      type_exam = #{record.typeExam,jdbcType=INTEGER},
+      entrance_type = #{record.entranceType,jdbcType=INTEGER},
+      analysis_answer = #{record.analysisAnswer,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +340,12 @@
       <if test="typeExam != null">
         type_exam = #{typeExam,jdbcType=INTEGER},
       </if>
+      <if test="entranceType != null">
+        entrance_type = #{entranceType,jdbcType=INTEGER},
+      </if>
+      <if test="analysisAnswer != null">
+        analysis_answer = #{analysisAnswer,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -332,7 +362,9 @@
       dele_flag = #{deleFlag,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},
       achievement_id = #{achievementId,jdbcType=BIGINT},
-      type_exam = #{typeExam,jdbcType=INTEGER}
+      type_exam = #{typeExam,jdbcType=INTEGER},
+      entrance_type = #{entranceType,jdbcType=INTEGER},
+      analysis_answer = #{analysisAnswer,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

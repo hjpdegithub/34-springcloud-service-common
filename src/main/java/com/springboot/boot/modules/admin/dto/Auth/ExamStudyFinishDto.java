@@ -25,6 +25,8 @@ public class ExamStudyFinishDto extends AuthBaseDto {
     private Integer examType;
     private Integer examTime;
 
+    private String examName;
+
 
 
     @Data

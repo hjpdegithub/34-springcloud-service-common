@@ -34,28 +34,28 @@ public class TestResultController {
     @ApiOperation(value = "考试成绩查询", notes = "考试成绩查询")
     @PostMapping(value = "/resultQuery")
     public ApiResult resultQuery(@RequestBody TestResultPageDto dto) {
-        log.info("题库的新增及修改========={}", JSONObject.toJSON(dto));
+        log.info("考试成绩查询========={}", JSONObject.toJSON(dto));
         return  ApiResult.success(testResultService.resultQuery(dto))  ;
     }
 
     @ApiOperation(value = "考试成绩导出", notes = "考试成绩导出")
     @PostMapping(value = "/export")
     public void export(HttpServletResponse response ,  @RequestBody TestResultDto dto) {
-        log.info("题库的新增及修改========={}", JSONObject.toJSON(dto));
+        log.info("考试成绩导出========={}", JSONObject.toJSON(dto));
         testResultService.export(response, dto)  ;
     }
 
     @ApiOperation(value = "试卷列表查询", notes = "试卷列表查询")
     @PostMapping(value = "/mpExaminationList")
     public ApiResult mpExaminationList(@RequestBody MpExaminationDto dto) {
-        log.info("题库的新增及修改========={}", JSONObject.toJSON(dto));
+        log.info("考试成绩查询========={}", JSONObject.toJSON(dto));
         return  ApiResult.success(testResultService.mpExaminationList(dto))  ;
     }
 
     @ApiOperation(value = "考试人列表查询", notes = "考试人列表查询")
     @PostMapping(value = "/testUserList")
     public ApiResult testUserList(@RequestBody TestUserDto dto) {
-        log.info("题库的新增及修改========={}", JSONObject.toJSON(dto));
+        log.info("考试成绩查询========={}", JSONObject.toJSON(dto));
         return  ApiResult.success(testResultService.testUserList(dto))  ;
     }
 

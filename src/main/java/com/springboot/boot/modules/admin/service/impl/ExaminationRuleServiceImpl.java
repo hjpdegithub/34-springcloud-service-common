@@ -75,7 +75,7 @@ public class ExaminationRuleServiceImpl implements ExaminationRuleService {
         examinationRule.setSubjectName(code);
         examinationRule.setId(ruleId);
         examinationRule.setExamId(id);
-        int i = ruleMapper.updateByPrimaryKeySelective(examinationRule);
+        int i = ruleMapper.updateByPrimaryKey(examinationRule);
         if (i <= CommonEnum.ADD_ERROR.getCode()){
             throw new BusinessException("编辑试卷规则失败！code是："+code);
         }

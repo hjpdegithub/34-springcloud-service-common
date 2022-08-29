@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springboot.boot.modules.admin.mapper.MpUserAuthExamMapper">
-  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpUserAuthExam">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpMakePaperMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpMakePaper">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="auth_id" jdbcType="BIGINT" property="authId" />
+    <result column="exam_name" jdbcType="VARCHAR" property="examName" />
+    <result column="exam_type" jdbcType="INTEGER" property="examType" />
+    <result column="submit_time" jdbcType="INTEGER" property="submitTime" />
     <result column="exam_id" jdbcType="BIGINT" property="examId" />
-    <result column="exam_achievement" jdbcType="INTEGER" property="examAchievement" />
-    <result column="if_whether" jdbcType="INTEGER" property="ifWhether" />
+    <result column="achievement_id" jdbcType="BIGINT" property="achievementId" />
+    <result column="status_type" jdbcType="INTEGER" property="statusType" />
     <result column="create_user" jdbcType="BIGINT" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
@@ -18,6 +19,8 @@
     <result column="multiple_grade" jdbcType="INTEGER" property="multipleGrade" />
     <result column="analysis_grade" jdbcType="INTEGER" property="analysisGrade" />
     <result column="count_grade" jdbcType="INTEGER" property="countGrade" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,17 +81,17 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, auth_id, exam_id, exam_achievement, if_whether, create_user, create_time, 
-    update_user, update_time, dele_flag, judge_grade, single_grade, multiple_grade, analysis_grade, 
-    count_grade
+    id, exam_name, exam_type, submit_time, exam_id, achievement_id, status_type, create_user, 
+    create_time, update_user, update_time, dele_flag, judge_grade, single_grade, multiple_grade, 
+    analysis_grade, count_grade, user_id, auth_id
   </sql>
-  <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExamExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaperExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from mp_user_auth_exam
+    from mp_make_paper
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -99,53 +102,58 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from mp_user_auth_exam
+    from mp_make_paper
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from mp_user_auth_exam
+    delete from mp_make_paper
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExamExample">
-    delete from mp_user_auth_exam
+  <delete id="deleteByExample" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaperExample">
+    delete from mp_make_paper
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExam">
-    insert into mp_user_auth_exam (id, user_id, auth_id, 
-      exam_id, exam_achievement, if_whether, 
-      create_user, create_time, update_user, 
-      update_time, dele_flag, judge_grade, 
-      single_grade, multiple_grade, analysis_grade, 
-      count_grade)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{authId,jdbcType=BIGINT}, 
-      #{examId,jdbcType=BIGINT}, #{examAchievement,jdbcType=INTEGER}, #{ifWhether,jdbcType=INTEGER}, 
-      #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{deleFlag,jdbcType=INTEGER}, #{judgeGrade,jdbcType=INTEGER}, 
-      #{singleGrade,jdbcType=INTEGER}, #{multipleGrade,jdbcType=INTEGER}, #{analysisGrade,jdbcType=INTEGER}, 
-      #{countGrade,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaper">
+    insert into mp_make_paper (id, exam_name, exam_type, 
+      submit_time, exam_id, achievement_id, 
+      status_type, create_user, create_time, 
+      update_user, update_time, dele_flag, 
+      judge_grade, single_grade, multiple_grade, 
+      analysis_grade, count_grade, user_id, 
+      auth_id)
+    values (#{id,jdbcType=BIGINT}, #{examName,jdbcType=VARCHAR}, #{examType,jdbcType=INTEGER}, 
+      #{submitTime,jdbcType=INTEGER}, #{examId,jdbcType=BIGINT}, #{achievementId,jdbcType=BIGINT}, 
+      #{statusType,jdbcType=INTEGER}, #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{deleFlag,jdbcType=INTEGER}, 
+      #{judgeGrade,jdbcType=INTEGER}, #{singleGrade,jdbcType=INTEGER}, #{multipleGrade,jdbcType=INTEGER}, 
+      #{analysisGrade,jdbcType=INTEGER}, #{countGrade,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
+      #{authId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExam">
-    insert into mp_user_auth_exam
+  <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaper">
+    insert into mp_make_paper
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="examName != null">
+        exam_name,
       </if>
-      <if test="authId != null">
-        auth_id,
+      <if test="examType != null">
+        exam_type,
+      </if>
+      <if test="submitTime != null">
+        submit_time,
       </if>
       <if test="examId != null">
         exam_id,
       </if>
-      <if test="examAchievement != null">
-        exam_achievement,
+      <if test="achievementId != null">
+        achievement_id,
       </if>
-      <if test="ifWhether != null">
-        if_whether,
+      <if test="statusType != null">
+        status_type,
       </if>
       <if test="createUser != null">
         create_user,
@@ -177,25 +185,34 @@
       <if test="countGrade != null">
         count_grade,
       </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="authId != null">
+        auth_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
+      <if test="examName != null">
+        #{examName,jdbcType=VARCHAR},
       </if>
-      <if test="authId != null">
-        #{authId,jdbcType=BIGINT},
+      <if test="examType != null">
+        #{examType,jdbcType=INTEGER},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=INTEGER},
       </if>
       <if test="examId != null">
         #{examId,jdbcType=BIGINT},
       </if>
-      <if test="examAchievement != null">
-        #{examAchievement,jdbcType=INTEGER},
+      <if test="achievementId != null">
+        #{achievementId,jdbcType=BIGINT},
       </if>
-      <if test="ifWhether != null">
-        #{ifWhether,jdbcType=INTEGER},
+      <if test="statusType != null">
+        #{statusType,jdbcType=INTEGER},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=BIGINT},
@@ -227,34 +244,43 @@
       <if test="countGrade != null">
         #{countGrade,jdbcType=INTEGER},
       </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExamExample" resultType="java.lang.Long">
-    select count(*) from mp_user_auth_exam
+  <select id="countByExample" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaperExample" resultType="java.lang.Long">
+    select count(*) from mp_make_paper
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update mp_user_auth_exam
+    update mp_make_paper
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=BIGINT},
+      <if test="record.examName != null">
+        exam_name = #{record.examName,jdbcType=VARCHAR},
       </if>
-      <if test="record.authId != null">
-        auth_id = #{record.authId,jdbcType=BIGINT},
+      <if test="record.examType != null">
+        exam_type = #{record.examType,jdbcType=INTEGER},
+      </if>
+      <if test="record.submitTime != null">
+        submit_time = #{record.submitTime,jdbcType=INTEGER},
       </if>
       <if test="record.examId != null">
         exam_id = #{record.examId,jdbcType=BIGINT},
       </if>
-      <if test="record.examAchievement != null">
-        exam_achievement = #{record.examAchievement,jdbcType=INTEGER},
+      <if test="record.achievementId != null">
+        achievement_id = #{record.achievementId,jdbcType=BIGINT},
       </if>
-      <if test="record.ifWhether != null">
-        if_whether = #{record.ifWhether,jdbcType=INTEGER},
+      <if test="record.statusType != null">
+        status_type = #{record.statusType,jdbcType=INTEGER},
       </if>
       <if test="record.createUser != null">
         create_user = #{record.createUser,jdbcType=BIGINT},
@@ -286,19 +312,26 @@
       <if test="record.countGrade != null">
         count_grade = #{record.countGrade,jdbcType=INTEGER},
       </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.authId != null">
+        auth_id = #{record.authId,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update mp_user_auth_exam
+    update mp_make_paper
     set id = #{record.id,jdbcType=BIGINT},
-      user_id = #{record.userId,jdbcType=BIGINT},
-      auth_id = #{record.authId,jdbcType=BIGINT},
+      exam_name = #{record.examName,jdbcType=VARCHAR},
+      exam_type = #{record.examType,jdbcType=INTEGER},
+      submit_time = #{record.submitTime,jdbcType=INTEGER},
       exam_id = #{record.examId,jdbcType=BIGINT},
-      exam_achievement = #{record.examAchievement,jdbcType=INTEGER},
-      if_whether = #{record.ifWhether,jdbcType=INTEGER},
+      achievement_id = #{record.achievementId,jdbcType=BIGINT},
+      status_type = #{record.statusType,jdbcType=INTEGER},
       create_user = #{record.createUser,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=BIGINT},
@@ -308,28 +341,33 @@
       single_grade = #{record.singleGrade,jdbcType=INTEGER},
       multiple_grade = #{record.multipleGrade,jdbcType=INTEGER},
       analysis_grade = #{record.analysisGrade,jdbcType=INTEGER},
-      count_grade = #{record.countGrade,jdbcType=INTEGER}
+      count_grade = #{record.countGrade,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExam">
-    update mp_user_auth_exam
+  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaper">
+    update mp_make_paper
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
+      <if test="examName != null">
+        exam_name = #{examName,jdbcType=VARCHAR},
       </if>
-      <if test="authId != null">
-        auth_id = #{authId,jdbcType=BIGINT},
+      <if test="examType != null">
+        exam_type = #{examType,jdbcType=INTEGER},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=INTEGER},
       </if>
       <if test="examId != null">
         exam_id = #{examId,jdbcType=BIGINT},
       </if>
-      <if test="examAchievement != null">
-        exam_achievement = #{examAchievement,jdbcType=INTEGER},
+      <if test="achievementId != null">
+        achievement_id = #{achievementId,jdbcType=BIGINT},
       </if>
-      <if test="ifWhether != null">
-        if_whether = #{ifWhether,jdbcType=INTEGER},
+      <if test="statusType != null">
+        status_type = #{statusType,jdbcType=INTEGER},
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=BIGINT},
@@ -361,16 +399,23 @@
       <if test="countGrade != null">
         count_grade = #{countGrade,jdbcType=INTEGER},
       </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springboot.boot.modules.admin.entity.MpUserAuthExam">
-    update mp_user_auth_exam
-    set user_id = #{userId,jdbcType=BIGINT},
-      auth_id = #{authId,jdbcType=BIGINT},
+  <update id="updateByPrimaryKey" parameterType="com.springboot.boot.modules.admin.entity.MpMakePaper">
+    update mp_make_paper
+    set exam_name = #{examName,jdbcType=VARCHAR},
+      exam_type = #{examType,jdbcType=INTEGER},
+      submit_time = #{submitTime,jdbcType=INTEGER},
       exam_id = #{examId,jdbcType=BIGINT},
-      exam_achievement = #{examAchievement,jdbcType=INTEGER},
-      if_whether = #{ifWhether,jdbcType=INTEGER},
+      achievement_id = #{achievementId,jdbcType=BIGINT},
+      status_type = #{statusType,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=BIGINT},
@@ -380,7 +425,9 @@
       single_grade = #{singleGrade,jdbcType=INTEGER},
       multiple_grade = #{multipleGrade,jdbcType=INTEGER},
       analysis_grade = #{analysisGrade,jdbcType=INTEGER},
-      count_grade = #{countGrade,jdbcType=INTEGER}
+      count_grade = #{countGrade,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      auth_id = #{authId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

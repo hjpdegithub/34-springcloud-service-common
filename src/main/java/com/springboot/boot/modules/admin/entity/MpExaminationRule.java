@@ -33,6 +33,8 @@ public class MpExaminationRule {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long examId;
 
+    private Integer analysisNum;
+
     public Long getId() {
         return id;
     }
@@ -135,5 +137,13 @@ public class MpExaminationRule {
 
     public void setExamId(Long examId) {
         this.examId = examId;
+    }
+
+    public Integer getAnalysisNum() {
+        return analysisNum;
+    }
+
+    public void setAnalysisNum(Integer analysisNum) {
+        this.analysisNum = analysisNum;
     }
 }

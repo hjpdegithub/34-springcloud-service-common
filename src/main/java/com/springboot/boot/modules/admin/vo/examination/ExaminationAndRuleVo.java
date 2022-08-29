@@ -57,4 +57,7 @@ public class ExaminationAndRuleVo {
 
     private List<MpExaminationRule> rules;
 
+    //分析题版本
+    private Integer analysisNum;
+
 }

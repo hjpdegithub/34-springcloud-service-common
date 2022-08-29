@@ -7,6 +7,7 @@ import com.springboot.boot.modules.admin.dto.Auth.ClassStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.Auth.ExamStudyFinishDto;
 import com.springboot.boot.modules.admin.dto.AuthBaseDto;
 import com.springboot.boot.modules.admin.dto.examination.SubmitSlimylationDto;
+import com.springboot.boot.modules.admin.dto.exanmake.MakerPaperButtonDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
 import com.springboot.boot.modules.admin.service.AuthService;
@@ -60,8 +61,8 @@ public class AuthServiceImpl implements AuthService {
     private MpAuthUserSignUpMapper authUserSignUpMapper;
     @Autowired
     private MpUserAuthExamMapper userAuthExamMapper;
-    @Autowired
-    private MpAuthCertificaseMapper certificaseMapper;
+    @Resource
+    private AuthServiceManageImpl authServiceManage;
     @Autowired
     private MpAuthUserSignUpMapper signUpMapper;
     @Resource
@@ -73,6 +74,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     private MpAuthBusinessMapper mpAuthBusinessMapper;
+    @Resource
+    private MpMakePaperMapper mpMakePaperMapper;
+    @Resource
+    private MpUserExamMapper userExamMapper;
+
+    @Resource
+    private MpExamAchievementMapper mpExamAchievementMapper;
     /**
      * 认证查看流程接口版本2.0
      *
@@ -98,6 +106,7 @@ public class AuthServiceImpl implements AuthService {
         //通过认证id分类id查询出认证的相关课程
         List<MpCurriculum> mpCurriculumList = mpCurriculumList(mpAuths);
         List<AuthClassVo> authClassVos = new ArrayList<>();
+
         if (!mpCurriculumList.isEmpty()) {
             mpCurriculumList.forEach(e -> {
                 AuthClassVo classVo = new AuthClassVo();
@@ -276,10 +285,15 @@ public class AuthServiceImpl implements AuthService {
         if (mpUserAuthExams.size() >= examination.getFrequencyCount().intValue()) {
             return ApiResult.error(500, "考试次数以上限无法参加考试");
         }
+
         //计算考试分数
         long id = SnowFlakeUtils.getFlowIdInstance().nextId();
         //成绩-------------------------
         ChengjiVo chengji = chengji(examStudyFinishDto);
+        //判断是否可以领取证书
+        //查看认证次数
+
+
         MpUserAuthExam mpUserAuthExam = new MpUserAuthExam();
         mpUserAuthExam.setAuthId(examStudyFinishDto.getAuthId());
         mpUserAuthExam.setCreateTime(new Date());
@@ -290,8 +304,87 @@ public class AuthServiceImpl implements AuthService {
         mpUserAuthExam.setIfWhether(chengji.getIfWhere());
         mpUserAuthExam.setUserId(examStudyFinishDto.getUserId());
         mpUserAuthExam.setExamId(examStudyFinishDto.getExamId());
+        //分析版本加入逻辑
+        mpUserAuthExam.setSingleGrade(chengji.getSigele());
+        mpUserAuthExam.setMultipleGrade(chengji.getMultple());
+        mpUserAuthExam.setJudgeGrade(chengji.getJud());
+        mpUserAuthExam.setAnalysisGrade(chengji.getFenxi());
         int i = userAuthExamMapper.insertSelective(mpUserAuthExam);
-        log.info("----------------------------------"+i);
+        //分析题加入新的逻辑--------------------------------------------------开始
+        //获取前端传过来的题库信息和 选项信息
+        List<SubmitSlimylationDto.QuaestVo> quaestVos = examStudyFinishDto.getQuaestVos();
+        long l = SnowFlakeUtils.getFlowIdInstance().nextId();
+        //将考试信息存入到考试表中
+        quaestVos.forEach(e -> {
+            MpUserExam mpUserExam = new MpUserExam();
+            //分析题加入逻辑
+
+            mpUserExam.setCreateTime(new Date());
+            mpUserExam.setCreateUser(examStudyFinishDto.getUserId());
+            mpUserExam.setDeleFlag(CommonEnum.USED.getCode());
+            mpUserExam.setExamId(examStudyFinishDto.getExamId());
+            mpUserExam.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+            mpUserExam.setType(e.getType());
+            mpUserExam.setUpdateTime(new Date());
+            mpUserExam.setUpdateUser(examStudyFinishDto.getUserId());
+            mpUserExam.setUserId(examStudyFinishDto.getUserId());
+            mpUserExam.setAchievementId(l);
+            mpUserExam.setTypeExam(examStudyFinishDto.getExamType());
+            mpUserExam.setEntranceType(2);
+            if(e.getType() == 4){
+                mpUserExam.setAnalysisAnswer(e.getUserAnalysisAnswer());
+                mpUserExam.setQuestionId(e.getId());
+
+            }else{
+                StringBuffer stringBuffer = new StringBuffer();
+                e.getOptionId().stream().forEach(s -> {
+                    stringBuffer.append(s).
+                            append(",");
+                });
+                stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+                mpUserExam.setOptionId(stringBuffer.toString());
+                mpUserExam.setQuestionId(e.getId());
+            }
+            int result = userExamMapper.insertSelective(mpUserExam);
+            if (result <= CommonEnum.ADD_ERROR.getCode()) {
+                throw new BusinessException("考试user记录新增失败");    
+            }
+        });
+        //是否放到判卷表里================分析版本==================
+        if (chengji.getFenxiCount()>0){
+
+            MpMakePaper mpMakePaper = new MpMakePaper();
+            mpMakePaper.setAchievementId(l);
+            mpMakePaper.setSingleGrade(chengji.getSigele());
+            mpMakePaper.setMultipleGrade(chengji.getMultple());
+            mpMakePaper.setJudgeGrade(chengji.getJud());
+            mpMakePaper.setAnalysisGrade(chengji.getFenxi());
+            mpMakePaper.setCreateTime(new Date());
+            mpMakePaper.setCreateUser(examStudyFinishDto.getUserId());
+            mpMakePaper.setDeleFlag(CommonEnum.USED.getCode());
+            mpMakePaper.setExamId(examStudyFinishDto.getExamId());
+            mpMakePaper.setExamName(examStudyFinishDto.getExamName());
+            mpMakePaper.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+            mpMakePaper.setAuthId(examStudyFinishDto.getAuthId());
+            //待办理
+            mpMakePaper.setStatusType(1);
+            mpMakePaper.setSubmitTime(examStudyFinishDto.getExamTime());
+            mpMakePaper.setCountGrade(chengji.getSum());
+            mpMakePaper.setExamType(CommonEnum.CURR_AUTH.getCode());
+            mpMakePaper.setUserId(examStudyFinishDto.getUserId());
+            mpMakePaperMapper.insertSelective(mpMakePaper);
+        }else{
+            if (mpUserAuthExams.size()<=examination.getFrequencyCount()&& chengji.getIfWhere().intValue() == 1
+            ){
+                //领取
+                MakerPaperButtonDto makerPaperButtonDto =new MakerPaperButtonDto();
+                BeanCopy.copy(examStudyFinishDto,makerPaperButtonDto);
+                makerPaperButtonDto.setUserId(makerPaperButtonDto.getUserId());
+                makerPaperButtonDto.setAuthId(makerPaperButtonDto.getAuthId());
+                authServiceManage.certificateGetAuto(makerPaperButtonDto);
+            }
+        }
+
         //将考试信息存入到认证考试表中
         SubimtExamVo vo = new SubimtExamVo();
         vo.setExamAchievement(chengji.getSum());
@@ -410,6 +503,8 @@ public class AuthServiceImpl implements AuthService {
         List<MpExaminationRule> singles = mpExaminationRules.stream().filter(a -> a.getSubjectName().equals(TypeEnum.SINGLE.getCode())).collect(Collectors.toList());
         List<MpExaminationRule> mult = mpExaminationRules.stream().filter(a -> a.getSubjectName().equals(TypeEnum.MULTIPLE.getCode())).collect(Collectors.toList());
         List<MpExaminationRule> judge = mpExaminationRules.stream().filter(a -> a.getSubjectName().equals(TypeEnum.JUDGE.getCode())).collect(Collectors.toList());
+        //分析题版本加入逻辑
+        List<MpExaminationRule> analysis = mpExaminationRules.stream().filter(a -> a.getSubjectName().equals(TypeEnum.ANALYSIS.getCode())).collect(Collectors.toList());
         //开始计算错题数量
         //获取所有选项的id和题库的id
         List<SubmitSlimylationDto.QuaestVo> quaestVos = dto.getQuaestVos();
@@ -420,65 +515,69 @@ public class AuthServiceImpl implements AuthService {
         AtomicReference<Integer> rSsinglesCount = new AtomicReference<>(0);
         AtomicReference<Integer> rMultCount = new AtomicReference<>(0);
         AtomicReference<Integer> rJudgeCount = new AtomicReference<>(0);
+        Integer fenxiCount =0;
         for (SubmitSlimylationDto.QuaestVo quaestVo : quaestVos) {
             QuestionSearchVo vo = questionService.searchById(quaestVo.getId());
             Integer type = vo.getType();
-            //通过前端传过来的选项id集合查询出选项
-            List<MpOption> mpOptions = optionService.selectByIds(quaestVo.getOptionId());
-            //提取所有的选项（用户选的）
-            List<String> ops = mpOptions.stream().map(MpOption::getOpt).collect(Collectors.toList());
-            //获取本题的答案和选项名称
-            String rightAnswer = vo.getRightAnswer();
-            //将答案转换成list集合
-            List<String> rightAnswers = Arrays.asList(rightAnswer.toUpperCase().split(","));
+            if (type !=4){
+                //通过前端传过来的选项id集合查询出选项
+                List<MpOption> mpOptions = optionService.selectByIds(quaestVo.getOptionId());
+                //提取所有的选项（用户选的）
+                List<String> ops = mpOptions.stream().map(MpOption::getOpt).collect(Collectors.toList());
+                //获取本题的答案和选项名称
+                String rightAnswer = vo.getRightAnswer();
+                //将答案转换成list集合
+                List<String> rightAnswers = Arrays.asList(rightAnswer.toUpperCase().split(","));
 
-            //处理大小写问题
-            List<String> trueResult = new ArrayList<>();
-            List<String> opsResult = new ArrayList<>();
-            rightAnswers.forEach(e -> {
-                String s = e.toUpperCase();
-                trueResult.add(s);
-            });
-            ops.forEach(e -> {
-                String s = e.toUpperCase();
-                opsResult.add(s);
-            });
-            boolean result = trueResult.containsAll(opsResult) && opsResult.containsAll(trueResult)
-                    && trueResult.size() == opsResult.size();
-            if (!result) {
-                switch (type) {
-                    //单选
-                    case 1:
-                        //开始判断
-                        singlesCount.getAndSet(singlesCount.get() + 1);
-                        break;
-                    case 2:
-                        //开始判断
-                        multCount.getAndSet(multCount.get() + 1);
-                        break;
-                    default:
-                        judgeCount.getAndSet(judgeCount.get() + 1);
-                        break;
+                //处理大小写问题
+                List<String> trueResult = new ArrayList<>();
+                List<String> opsResult = new ArrayList<>();
+                rightAnswers.forEach(e -> {
+                    String s = e.toUpperCase();
+                    trueResult.add(s);
+                });
+                ops.forEach(e -> {
+                    String s = e.toUpperCase();
+                    opsResult.add(s);
+                });
+                boolean result = trueResult.containsAll(opsResult) && opsResult.containsAll(trueResult)
+                        && trueResult.size() == opsResult.size();
+                if (!result) {
+                    switch (type) {
+                        //单选
+                        case 1:
+                            //开始判断
+                            singlesCount.getAndSet(singlesCount.get() + 1);
+                            break;
+                        case 2:
+                            //开始判断
+                            multCount.getAndSet(multCount.get() + 1);
+                            break;
+                        default:
+                            judgeCount.getAndSet(judgeCount.get() + 1);
+                            break;
+                    }
                 }
-            }
-            //-----------------------------------------正确的数量
-            if (result) {
-                switch (type) {
-                    //单选
-                    case 1:
-                        //开始判断
-                        rSsinglesCount.getAndSet(rSsinglesCount.get() + 1);
-                        break;
-                    case 2:
-                        //开始判断
-                        rMultCount.getAndSet(rMultCount.get() + 1);
-                        break;
-                    default:
-                        rJudgeCount.getAndSet(rJudgeCount.get() + 1);
-                        break;
+                //-----------------------------------------正确的数量
+                if (result) {
+                    switch (type) {
+                        //单选
+                        case 1:
+                            //开始判断
+                            rSsinglesCount.getAndSet(rSsinglesCount.get() + 1);
+                            break;
+                        case 2:
+                            //开始判断
+                            rMultCount.getAndSet(rMultCount.get() + 1);
+                            break;
+                        default:
+                            rJudgeCount.getAndSet(rJudgeCount.get() + 1);
+                            break;
+                    }
                 }
+            }else{
+                fenxiCount ++;
             }
-
         }
         //计算中分
         MpExaminationRule singleExaminationRule = singles.get(0);
@@ -487,15 +586,23 @@ public class AuthServiceImpl implements AuthService {
         Integer mfraction = multEx.getFraction();
         MpExaminationRule examinationRule = judge.get(0);
         Integer jfraction = examinationRule.getFraction();
-        Integer sigele = sfraction * singlesCount.get();
-        Integer multple = mfraction * multCount.get();
-        Integer jud = jfraction * judgeCount.get();
-        Integer sum = paper - (sigele + multple + jud);
-        chengjiVo.setSum(sum);
+
+//        Integer sigele = sfraction * singlesCount.get();
+//        Integer multple = mfraction * multCount.get();
+//        Integer jud = jfraction * judgeCount.get();
+//        Integer sum = paper - (sigele + multple + jud);
+//        if (fenxiCount == 0){
+//            chengjiVo.setSum(chengjiVo.getSigele()+chengjiVo.getMultple()+chengjiVo.getJud());
+//        }else{
+//            chengjiVo.setSum(chengjiVo.getSigele()+chengjiVo.getMultple()+chengjiVo.getJud());
+//        }
+
         chengjiVo.setSigele(sfraction * rSsinglesCount.get());
         chengjiVo.setMultple(mfraction * rMultCount.get());
         chengjiVo.setJud(jfraction * rJudgeCount.get());
-        if (examination.getPassingMark() <= sum) {
+        chengjiVo.setFenxiCount(fenxiCount);
+        chengjiVo.setSum(chengjiVo.getSigele()+chengjiVo.getMultple()+chengjiVo.getJud());
+        if (examination.getPassingMark() <= chengjiVo.getSum()) {
             chengjiVo.setIfWhere(CommonEnum.IF_WHERE.getCode());
         } else {
             chengjiVo.setIfWhere(CommonEnum.NOT_IF_WHERE.getCode());
@@ -553,22 +660,61 @@ public class AuthServiceImpl implements AuthService {
         //是否存在合格的数据
         List<MpUserAuthExam> userCommonList = mpUserAuthExams.stream().filter(a -> a.getIfWhether().intValue() == 1).collect(Collectors.toList());
 
-        if (userCommonList.size()>0){
-            ifWhereVo.setFinishType(CommonEnum.SCER_AUTH.getCode());
-        }else{
-            if (mpUserAuthExams.size()>=frequencyCount.intValue()){
-                ifWhereVo.setFinishType(CommonEnum.NO_FINISH_AUTH.getCode());
-            }
-        }
-        //是否领取证书
-        MpAuthCertificaseExample certificaseExample = new MpAuthCertificaseExample();
-        MpAuthCertificaseExample.Criteria criteria1 = certificaseExample.createCriteria();
+        //分析版本加入逻辑
+        //查看该认证用户下是否有判卷
+        MpMakePaperExample paperExample = new MpMakePaperExample();
+        MpMakePaperExample.Criteria criteria1 = paperExample.createCriteria();
+        criteria1.andExamIdEqualTo(mpAuths.get(0).getExamId());
         criteria1.andAuthIdEqualTo(authId);
         criteria1.andUserIdEqualTo(userId);
-        List<MpAuthCertificase> mpAuthCertificases = certificaseMapper.selectByExample(certificaseExample);
-        if (mpAuthCertificases.size()>0){
-            ifWhereVo.setFinishType(CommonEnum.FINISH_AUTH.getCode());
+        List<MpMakePaper> mpMakePapers = mpMakePaperMapper.selectByExample(paperExample);
+        //如果没有判卷信息看看是否没有分析题交卷了
+        if (CollectionUtils.isEmpty(mpMakePapers)){
+            if (userCommonList.size()>0){
+                ifWhereVo.setFinishType(CommonEnum.FINISH_AUTH.getCode());
+            }else{
+                if (mpUserAuthExams.size()>=frequencyCount.intValue()){
+                    ifWhereVo.setFinishType(CommonEnum.NO_FINISH_AUTH.getCode());
+                }
+            }
+        }else{
+            //如果有判卷信息
+            //查看状态待审核
+            //审核
+            List<MpMakePaper> smakePapers = mpMakePapers.stream().filter(a -> a.getStatusType().intValue() == 2).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(smakePapers)){
+                //找到 试卷的合格分数
+                Integer passingMark = mpExaminations.get(0).getPassingMark();
+                Integer count =0;
+                for (MpMakePaper e:smakePapers) {
+                    if (e.getCountGrade().intValue() >= passingMark.intValue()){
+                        count++;
+                    }
+                }
+                if (count >0){
+                    ifWhereVo.setFinishType(CommonEnum.FINISH_AUTH.getCode());
+                }else{
+                    if (mpUserAuthExams.size()>=frequencyCount.intValue()){
+                        ifWhereVo.setFinishType(CommonEnum.NO_FINISH_AUTH.getCode());
+                    }
+                }
+            }else{
+                if (mpUserAuthExams.size()>=frequencyCount.intValue()){
+                    ifWhereVo.setFinishType(CommonEnum.SCER_AUTH.getCode());
+                }
+            }
         }
+
+
+//        //是否领取证书
+//        MpAuthCertificaseExample certificaseExample = new MpAuthCertificaseExample();
+//        MpAuthCertificaseExample.Criteria criteria1 = certificaseExample.createCriteria();
+//        criteria1.andAuthIdEqualTo(authId);
+//        criteria1.andUserIdEqualTo(userId);
+//        List<MpAuthCertificase> mpAuthCertificases = certificaseMapper.selectByExample(certificaseExample);
+//        if (mpAuthCertificases.size()>0){
+//            ifWhereVo.setFinishType(CommonEnum.FINISH_AUTH.getCode());
+//        }
         return ifWhereVo;
     }
 

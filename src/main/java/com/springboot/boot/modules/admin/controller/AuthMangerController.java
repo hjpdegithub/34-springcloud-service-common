@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
+import com.springboot.boot.modules.admin.dto.exanmake.MakerPaperButtonDto;
 import com.springboot.boot.modules.admin.service.AuthManageService;
 import com.springboot.boot.utils.ApiResult;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,5 +127,14 @@ public class AuthMangerController {
     ) {
         log.info("证书查询----------", JSONObject.toJSON(dto));
         return ApiResult.success(authService.certifiQuery(dto));
+    }
+    @ApiOperation(value = "自动领取证书", notes = "自动领取证书")
+    @PostMapping(value = "/certificateGetAuto")
+    public ApiResult certificateGetAuto(@RequestBody MakerPaperButtonDto
+    makerPaperButtonDto                                        ) {
+        log.info("自动证书领取----------", JSONObject.toJSON(makerPaperButtonDto));
+        ApiResult result = authService.certificateGetAuto(makerPaperButtonDto);
+        return ApiResult.success(result);
+
     }
 }

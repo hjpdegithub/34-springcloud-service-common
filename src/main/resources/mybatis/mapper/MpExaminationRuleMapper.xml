@@ -15,6 +15,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
     <result column="exam_id" jdbcType="BIGINT" property="examId" />
+    <result column="analysis_num" jdbcType="INTEGER" property="analysisNum" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,7 +77,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, single_choice_num, multiple_choice_num, judge_num, subject_name, subject_num, 
-    fraction, create_user, create_time, update_user, update_time, dele_flag, exam_id
+    fraction, create_user, create_time, update_user, update_time, dele_flag, exam_id, 
+    analysis_num
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpExaminationRuleExample" resultMap="BaseResultMap">
     select
@@ -113,12 +115,12 @@
       judge_num, subject_name, subject_num, 
       fraction, create_user, create_time, 
       update_user, update_time, dele_flag, 
-      exam_id)
+      exam_id, analysis_num)
     values (#{id,jdbcType=BIGINT}, #{singleChoiceNum,jdbcType=INTEGER}, #{multipleChoiceNum,jdbcType=INTEGER}, 
       #{judgeNum,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR}, #{subjectNum,jdbcType=INTEGER}, 
       #{fraction,jdbcType=INTEGER}, #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{deleFlag,jdbcType=INTEGER}, 
-      #{examId,jdbcType=BIGINT})
+      #{examId,jdbcType=BIGINT}, #{analysisNum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpExaminationRule">
     insert into mp_examination_rule
@@ -162,6 +164,9 @@
       <if test="examId != null">
         exam_id,
       </if>
+      <if test="analysisNum != null">
+        analysis_num,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -202,6 +207,9 @@
       </if>
       <if test="examId != null">
         #{examId,jdbcType=BIGINT},
+      </if>
+      <if test="analysisNum != null">
+        #{analysisNum,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -253,6 +261,9 @@
       <if test="record.examId != null">
         exam_id = #{record.examId,jdbcType=BIGINT},
       </if>
+      <if test="record.analysisNum != null">
+        analysis_num = #{record.analysisNum,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -272,7 +283,8 @@
       update_user = #{record.updateUser,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       dele_flag = #{record.deleFlag,jdbcType=INTEGER},
-      exam_id = #{record.examId,jdbcType=BIGINT}
+      exam_id = #{record.examId,jdbcType=BIGINT},
+      analysis_num = #{record.analysisNum,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -316,6 +328,9 @@
       <if test="examId != null">
         exam_id = #{examId,jdbcType=BIGINT},
       </if>
+      <if test="analysisNum != null">
+        analysis_num = #{analysisNum,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -332,7 +347,8 @@
       update_user = #{updateUser,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       dele_flag = #{deleFlag,jdbcType=INTEGER},
-      exam_id = #{examId,jdbcType=BIGINT}
+      exam_id = #{examId,jdbcType=BIGINT},
+      analysis_num = #{analysisNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

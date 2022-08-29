@@ -62,11 +62,11 @@
         <!--        <table tableName="mp_unit" />-->
         <!--        <table tableName="mp_sign_up" />-->
         <!--        <table tableName="mp_questionnaire" />-->
-        <!--        <table tableName="mp_question_bank" />-->
+<!--                <table tableName="mp_question_bank" />-->
         <!--        <table tableName="mp_option" />-->
-        <!--        <table tableName="mp_examination_rule" />-->
-        <!--                <table tableName="mp_examination" />-->
-        <!--        <table tableName="mp_exam_achievement" />-->
+<!--                <table tableName="mp_examination_rule" />-->
+<!--                        <table tableName="mp_examination" />-->
+<!--                <table tableName="mp_exam_achievement" />-->
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
@@ -77,8 +77,9 @@
         <!--        <table tableName="mp_auth_user_sign_up" />-->
         <!--        <table tableName="mp_user_auth" />-->
         <!--        <table tableName="mp_user_auth_class" />-->
-        <!--        <table tableName="mp_user_auth_class" />-->
-        <!--        <table tableName="mp_user_auth_exam" />-->
+        <table tableName="mp_make_paper" />
+<!--        <table tableName="mp_user_exam" />-->
+<!--                <table tableName="mp_user_auth_exam" />-->
         <table tableName="testoo" />
     </context>
 </generatorConfiguration>

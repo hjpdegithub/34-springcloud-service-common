@@ -52,7 +52,8 @@ public enum CommonEnum {
     INIT_AUTH(0,"认证预约流程"),
     STUDY_AUTH(1,"学习流程"),
     EXAM_AUTH(2,"考试流程"),
-    SCER_AUTH(3,"证书流程"),
+    //认证版本类型修改
+    SCER_AUTH(3,"开始判卷"),
     FINISH_AUTH(4,"全部完成"),
     NO_FINISH_AUTH(5,"全部置灰"),
     ;

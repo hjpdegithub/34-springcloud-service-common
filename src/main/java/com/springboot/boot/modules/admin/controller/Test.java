@@ -1,11 +1,11 @@
 package com.springboot.boot.modules.admin.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.springboot.boot.modules.admin.vo.examination.ExaminationVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @ClassName Test
@@ -14,9 +14,13 @@ import java.util.List;
  * @Date 2022/5/27 0027 16:44
  * @Version 1.0
  **/
+
+@RequestMapping("/test")
+@RestController
+@Slf4j
 public class Test {
-    public static void main(String[] args) {
 
 
-    }
+
+
 }

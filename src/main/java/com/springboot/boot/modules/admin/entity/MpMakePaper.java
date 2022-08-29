@@ -1,28 +1,26 @@
 package com.springboot.boot.modules.admin.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-
 import java.util.Date;
 
-public class MpUserAuthExam {
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+public class MpMakePaper {
     private Long id;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
-    private Long userId;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
-    private Long authId;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
+    private String examName;
+
+    private Integer examType;
+
+    private Integer submitTime;
+
     private Long examId;
 
-    private Integer examAchievement;
+    private Long achievementId;
 
-    private Integer ifWhether;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+    private Integer statusType;
+
     private Long createUser;
 
     private Date createTime;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
     private Long updateUser;
 
     private Date updateTime;
@@ -39,6 +37,10 @@ public class MpUserAuthExam {
 
     private Integer countGrade;
 
+    private Long userId;
+
+    private Long authId;
+
     public Long getId() {
         return id;
     }
@@ -47,20 +49,28 @@ public class MpUserAuthExam {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getExamName() {
+        return examName;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setExamName(String examName) {
+        this.examName = examName == null ? null : examName.trim();
     }
 
-    public Long getAuthId() {
-        return authId;
+    public Integer getExamType() {
+        return examType;
     }
 
-    public void setAuthId(Long authId) {
-        this.authId = authId;
+    public void setExamType(Integer examType) {
+        this.examType = examType;
+    }
+
+    public Integer getSubmitTime() {
+        return submitTime;
+    }
+
+    public void setSubmitTime(Integer submitTime) {
+        this.submitTime = submitTime;
     }
 
     public Long getExamId() {
@@ -71,20 +81,20 @@ public class MpUserAuthExam {
         this.examId = examId;
     }
 
-    public Integer getExamAchievement() {
-        return examAchievement;
+    public Long getAchievementId() {
+        return achievementId;
     }
 
-    public void setExamAchievement(Integer examAchievement) {
-        this.examAchievement = examAchievement;
+    public void setAchievementId(Long achievementId) {
+        this.achievementId = achievementId;
     }
 
-    public Integer getIfWhether() {
-        return ifWhether;
+    public Integer getStatusType() {
+        return statusType;
     }
 
-    public void setIfWhether(Integer ifWhether) {
-        this.ifWhether = ifWhether;
+    public void setStatusType(Integer statusType) {
+        this.statusType = statusType;
     }
 
     public Long getCreateUser() {
@@ -165,5 +175,21 @@ public class MpUserAuthExam {
 
     public void setCountGrade(Integer countGrade) {
         this.countGrade = countGrade;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getAuthId() {
+        return authId;
+    }
+
+    public void setAuthId(Long authId) {
+        this.authId = authId;
     }
 }

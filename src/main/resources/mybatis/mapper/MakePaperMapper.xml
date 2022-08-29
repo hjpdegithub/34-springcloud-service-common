@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springboot.boot.modules.admin.mapper.MpQuestionBankBusinessMapper">
-  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpQuestionBank">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MakeExamMapper">
+  <resultMap id="BaseResultMap" type="com.springboot.boot.modules.admin.entity.MpMakePaper">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="examination_id" jdbcType="BIGINT" property="examinationId" />
-    <result column="right" jdbcType="VARCHAR" property="right" />
+    <result column="exam_name" jdbcType="VARCHAR" property="examName" />
+    <result column="exam_type" jdbcType="INTEGER" property="examType" />
+    <result column="submit_time" jdbcType="INTEGER" property="submitTime" />
+    <result column="exam_id" jdbcType="BIGINT" property="examId" />
+    <result column="achievement_id" jdbcType="BIGINT" property="achievementId" />
+    <result column="status_type" jdbcType="INTEGER" property="statusType" />
     <result column="create_user" jdbcType="BIGINT" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
+    <result column="judge_grade" jdbcType="INTEGER" property="judgeGrade" />
+    <result column="single_grade" jdbcType="INTEGER" property="singleGrade" />
+    <result column="multiple_grade" jdbcType="INTEGER" property="multipleGrade" />
+    <result column="analysis_grade" jdbcType="INTEGER" property="analysisGrade" />
+    <result column="count_grade" jdbcType="INTEGER" property="countGrade" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,40 +80,36 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, type, examination_id, right, create_user, create_time, update_user, update_time, 
-    dele_flag
+    id, exam_name, exam_type, submit_time, exam_id, achievement_id, status_type, create_user, 
+    create_time, update_user, update_time, dele_flag, judge_grade, single_grade, multiple_grade, 
+    analysis_grade, count_grade, user_id
   </sql>
-  <select id="selectQuestionAll" parameterType="com.springboot.boot.modules.admin.dto.QuestionSerchDto" resultType="com.springboot.boot.modules.admin.vo.question.QuestionSearchVo">
-    SELECT
-    mqb.id AS id,
-    mqb.NAME AS NAME,
-    mqb.type AS type,
-    mqb.examination_id AS examinationId,
-    mqb.right_answer AS rightAnswer,
-    me.examination_type AS examinationType,
-    me.NAME AS ExamName,
-    me.up_type as upType,
-    mqb.analysis_answer as analysisAnswer
-    FROM
-    mp_question_bank mqb
-    inner JOIN mp_examination me ON mqb.examination_id =  me.id
-    WHERE
-    mqb.dele_flag = 0
-    <if test="examinationType != null and examinationType != ''">
-      and me.examination_type =#{examinationType}
-    </if>
-    <if test="type != null and type != ''">
-      and mqb.type =#{type}
-    </if>
-
-    <if test="name != null and name != ''">
-      and mqb.name like CONCAT("%",#{name},"%")
-    </if>
-    <if test="examinationId != null and examinationId != ''">
-      and me.id =#{examinationId}
-    </if>
-
-
-
-  </select>
+ <select id="searchExamMake" parameterType="com.springboot.boot.modules.admin.dto.exanmake.ExamMakeSearchDto" resultType="com.springboot.boot.modules.admin.vo.makeexam.ExamMakeSearchVo">
+   SELECT
+   a.id AS id,
+   b.number AS number,
+   a.exam_name AS examName,
+   a.exam_type AS examType,
+   a.submit_time AS submitTime,
+   a.status_type AS status_type,
+   a.count_grade AS countGrade,
+   c.NAME AS authName
+   FROM
+   mp_make_paper a
+   LEFT JOIN mp_user_authentication b ON a.user_id = b.id
+   LEFT JOIN mp_auth c ON c.id = a.auth_id
+    where 1= 1
+   <if test="number !=null and number != ''">
+     and b.number =#{number}
+   </if>
+   <if test="examId !=null and examId != ''">
+     and a.exam_id =#{examId}
+   </if>
+   <if test="examType !=null and examType != ''">
+     and a.exam_type =#{examType}
+   </if>
+   <if test="statusType !=null and statusType != ''">
+     and a.status_type =#{statusType}
+   </if>
+ </select>
 </mapper>

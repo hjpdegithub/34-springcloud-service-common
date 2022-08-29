@@ -12,12 +12,14 @@ import lombok.Data;
  **/
 @Data
 public class SubimtExamVo {
-    @ApiModelProperty("单选题数量")
+    @ApiModelProperty("单选题")
     private Integer singleChoiceNum;
-    @ApiModelProperty("多选题数量")
+    @ApiModelProperty("多选题")
     private Integer multipleChoiceNum;
-    @ApiModelProperty("判断题数量")
+    @ApiModelProperty("判断题")
     private Integer judgeNum;
+    @ApiModelProperty("分析")
+    private Integer fenxiNum;
     @ApiModelProperty("成绩")
     private Integer examAchievement;
 

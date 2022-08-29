@@ -56,12 +56,17 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
         Integer singleChoiceNum = mpExamination.getSingleChoiceNum();
         Integer multipleChoiceNum = mpExamination.getMultipleChoiceNum();
         Integer judgeNum = mpExamination.getJudgeNum();
+        //分析题加入逻辑
+        Integer analysisNum = mpExamination.getAnalysisNum();
+
         int singleChoiceNumInt = singleChoiceNum == null ? 0 : singleChoiceNum.intValue();
         int multipleChoiceNumInt = multipleChoiceNum == null ? 0 : multipleChoiceNum.intValue();
         int judgeNumInt = judgeNum == null ? 0 : judgeNum.intValue();
+        int analysisNumInt = analysisNum == null ? 0 : analysisNum.intValue();
         int singleChoiceNumTmp = 0;
         int multipleChoiceNumTmp = 0;
         int judgeNumTmp = 0;
+        int analysisNumTmp = 0;
         MpQuestionBankExample mpQuestionBankExample = new MpQuestionBankExample();
         mpQuestionBankExample.
                 createCriteria().
@@ -81,6 +86,9 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
             }
             if (oldQuestionBank.getType() != null && oldQuestionBank.getType().toString().equals("3")) {
                 judgeNumTmp++;
+            }
+            if (oldQuestionBank.getType() !=null && oldQuestionBank.getType().toString().equals("4")){
+                analysisNumTmp++;
             }
         }
 
@@ -107,6 +115,9 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
             if (mpQuestionBankVo.getType() != null && mpQuestionBankVo.getType().toString().equals("3")) {
                 judgeNumTmp++;
             }
+            if (mpQuestionBankVo.getType() != null && mpQuestionBankVo.getType().toString().equals("4")){
+                analysisNumTmp++;
+            }
         }
         if (singleChoiceNumInt != singleChoiceNumTmp) {
             return "单选题数量与试卷设定的数量不一致";
@@ -117,6 +128,9 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
 
         if (judgeNumInt != judgeNumTmp) {
             return "判断题数量与试卷设定的数量不一致";
+        }
+        if (analysisNumInt != analysisNumTmp){
+            return "分析题数量与试卷设定的数量不一致";
         }
 
         List<MpQuestionBankVo> originalList = new ArrayList<MpQuestionBankVo>();
@@ -137,73 +151,85 @@ public class QuestionsExcelImportServiceImpl implements QuestionsExcelService {
                 logger.info("执行批量入库");
                 for (MpQuestionBankVo e : originalList) {
                     i++;
-                    if (mpExamination.getExaminationType() == 1) {
-                        if ("".equals(e.getType()) || e.getType() == null ||
-                                "".equals(e.getRightAnswer()) || e.getRightAnswer() == null ||
-                                "".equals(e.getChoice()) || e.getChoice() == null) {
-                            throw new RuntimeException();
-                        }
-                    }
-                    if (mpExamination.getExaminationType() == 2) {
-                        if ("".equals(e.getType()) || e.getType() == null ||
-                                "".equals(e.getChoice()) || e.getChoice() == null) {
-                            throw new RuntimeException();
-                        }
-                    }
-                    MpQuestionBank mpQuestionBank = new MpQuestionBank();
-                    BeanCopy.copy(e, mpQuestionBank);
-                    mpQuestionBank.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
-                    //试卷ID
-                    mpQuestionBank.setExaminationId(pid);
-                    mpQuestionBank.setDeleFlag(CommonEnum.USED.getCode());
-                    mpQuestionBank.setCreateTime(new Date());
-                    mpQuestionBankMapper.insert(mpQuestionBank);
-                    String choice = e.getChoice();
-                    String[] choices = choice.split("##");
-                    if (e.getType().toString().equals("1") || e.getType().toString().equals("2")
-                    ) {
-                        if (choices.length > 6) {
-                            throw new RuntimeException();
-                        }
-                    }
-                    if (e.getType().toString().equals("3")) {
-                        if (choices.length > 2) {
-                            throw new RuntimeException();
-                        }
-                        if (null != e.getRightAnswer()) {
-                            if (e.getRightAnswer().contains(",")) {
+                    //加入分析题逻辑===========================开始
+                    if(e.getType().intValue() == 4){
+                        MpQuestionBank mpQuestionBank = new MpQuestionBank();
+                        BeanCopy.copy(e, mpQuestionBank);
+                        mpQuestionBank.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+                        //试卷ID
+                        mpQuestionBank.setExaminationId(pid);
+                        mpQuestionBank.setDeleFlag(CommonEnum.USED.getCode());
+                        mpQuestionBank.setCreateTime(new Date());
+                        mpQuestionBankMapper.insert(mpQuestionBank);
+                    }else{
+                        if (mpExamination.getExaminationType() == 1) {
+                            if ("".equals(e.getType()) || e.getType() == null ||
+                                    "".equals(e.getRightAnswer()) || e.getRightAnswer() == null ||
+                                    "".equals(e.getChoice()) || e.getChoice() == null) {
                                 throw new RuntimeException();
                             }
                         }
-                    }
-                    if (e.getType().toString().equals("3")) {
-                        if (null != e.getRightAnswer()) {
-                            if (e.getRightAnswer().contains(",")) {
+                        if (mpExamination.getExaminationType() == 2) {
+                            if ("".equals(e.getType()) || e.getType() == null ||
+                                    "".equals(e.getChoice()) || e.getChoice() == null) {
                                 throw new RuntimeException();
                             }
                         }
-                    }
-                    if (e.getType().toString().equals("1")) {
-                        if (null != e.getRightAnswer()) {
-                            if (e.getRightAnswer().length() > 1 || e.getRightAnswer().contains(",")) {
+                        MpQuestionBank mpQuestionBank = new MpQuestionBank();
+                        BeanCopy.copy(e, mpQuestionBank);
+                        mpQuestionBank.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+                        //试卷ID
+                        mpQuestionBank.setExaminationId(pid);
+                        mpQuestionBank.setDeleFlag(CommonEnum.USED.getCode());
+                        mpQuestionBank.setCreateTime(new Date());
+                        mpQuestionBankMapper.insert(mpQuestionBank);
+                        String choice = e.getChoice();
+                        String[] choices = choice.split("##");
+                        if (e.getType().toString().equals("1") || e.getType().toString().equals("2")
+                        ) {
+                            if (choices.length > 6) {
                                 throw new RuntimeException();
                             }
                         }
-                    }
-                    List<String> choiceList = Arrays.asList(choices);
-                    for (String choiceOption : choiceList) {
-                        String[] choiceArray = choiceOption.split(":");
-                        if (choiceArray.length != 2) {
-                            throw new RuntimeException();
+                        if (e.getType().toString().equals("3")) {
+                            if (choices.length > 2) {
+                                throw new RuntimeException();
+                            }
+                            if (null != e.getRightAnswer()) {
+                                if (e.getRightAnswer().contains(",")) {
+                                    throw new RuntimeException();
+                                }
+                            }
                         }
-                        MpOption mpOption = new MpOption();
-                        mpOption.setOpt(choiceArray[0]);
-                        mpOption.setOptionName(choiceArray[1]);
-                        mpOption.setQuestionId(mpQuestionBank.getId());
-                        mpOption.setDeleFlag(CommonEnum.USED.getCode());
-                        mpOption.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
-                        mpOption.setCreateTime(new Date());
-                        MpOptionMapper.insert(mpOption);
+                        if (e.getType().toString().equals("3")) {
+                            if (null != e.getRightAnswer()) {
+                                if (e.getRightAnswer().contains(",")) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
+                        if (e.getType().toString().equals("1")) {
+                            if (null != e.getRightAnswer()) {
+                                if (e.getRightAnswer().length() > 1 || e.getRightAnswer().contains(",")) {
+                                    throw new RuntimeException();
+                                }
+                            }
+                        }
+                        List<String> choiceList = Arrays.asList(choices);
+                        for (String choiceOption : choiceList) {
+                            String[] choiceArray = choiceOption.split(":");
+                            if (choiceArray.length != 2) {
+                                throw new RuntimeException();
+                            }
+                            MpOption mpOption = new MpOption();
+                            mpOption.setOpt(choiceArray[0]);
+                            mpOption.setOptionName(choiceArray[1]);
+                            mpOption.setQuestionId(mpQuestionBank.getId());
+                            mpOption.setDeleFlag(CommonEnum.USED.getCode());
+                            mpOption.setId(SnowFlakeUtils.getFlowIdInstance().nextId());
+                            mpOption.setCreateTime(new Date());
+                            MpOptionMapper.insert(mpOption);
+                        }
                     }
                 }
             }

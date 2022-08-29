@@ -1504,6 +1504,66 @@ public class MpExaminationExample {
             addCriterion("up_type not between", value1, value2, "upType");
             return (Criteria) this;
         }
+
+        public Criteria andAnalysisNumIsNull() {
+            addCriterion("analysis_num is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumIsNotNull() {
+            addCriterion("analysis_num is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumEqualTo(Integer value) {
+            addCriterion("analysis_num =", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumNotEqualTo(Integer value) {
+            addCriterion("analysis_num <>", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumGreaterThan(Integer value) {
+            addCriterion("analysis_num >", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("analysis_num >=", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumLessThan(Integer value) {
+            addCriterion("analysis_num <", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumLessThanOrEqualTo(Integer value) {
+            addCriterion("analysis_num <=", value, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumIn(List<Integer> values) {
+            addCriterion("analysis_num in", values, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumNotIn(List<Integer> values) {
+            addCriterion("analysis_num not in", values, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumBetween(Integer value1, Integer value2) {
+            addCriterion("analysis_num between", value1, value2, "analysisNum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("analysis_num not between", value1, value2, "analysisNum");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

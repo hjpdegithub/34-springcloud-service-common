@@ -16,4 +16,7 @@ public class ChengjiVo {
     private Integer sigele;
     private Integer multple;
     private Integer jud;
+    private Integer fenxi;
+    //判断是否存在分析字段
+    private Integer fenxiCount;
 }

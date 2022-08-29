@@ -21,7 +21,6 @@ public class MpExamAchievement {
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long crateUser;
 
-
     private Date createTime;
     @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
     private Long updateUser;
@@ -31,6 +30,18 @@ public class MpExamAchievement {
     private Integer deleFlag;
 
     private Integer ifWhether;
+
+    private Integer judgeGrade;
+
+    private Integer singleGrade;
+
+    private Integer multipleGrade;
+
+    private Integer analysisGrade;
+
+    private Integer countGrade;
+
+    private Integer showType;
 
     public Long getId() {
         return id;
@@ -126,5 +137,53 @@ public class MpExamAchievement {
 
     public void setIfWhether(Integer ifWhether) {
         this.ifWhether = ifWhether;
+    }
+
+    public Integer getJudgeGrade() {
+        return judgeGrade;
+    }
+
+    public void setJudgeGrade(Integer judgeGrade) {
+        this.judgeGrade = judgeGrade;
+    }
+
+    public Integer getSingleGrade() {
+        return singleGrade;
+    }
+
+    public void setSingleGrade(Integer singleGrade) {
+        this.singleGrade = singleGrade;
+    }
+
+    public Integer getMultipleGrade() {
+        return multipleGrade;
+    }
+
+    public void setMultipleGrade(Integer multipleGrade) {
+        this.multipleGrade = multipleGrade;
+    }
+
+    public Integer getAnalysisGrade() {
+        return analysisGrade;
+    }
+
+    public void setAnalysisGrade(Integer analysisGrade) {
+        this.analysisGrade = analysisGrade;
+    }
+
+    public Integer getCountGrade() {
+        return countGrade;
+    }
+
+    public void setCountGrade(Integer countGrade) {
+        this.countGrade = countGrade;
+    }
+
+    public Integer getShowType() {
+        return showType;
+    }
+
+    public void setShowType(Integer showType) {
+        this.showType = showType;
     }
 }

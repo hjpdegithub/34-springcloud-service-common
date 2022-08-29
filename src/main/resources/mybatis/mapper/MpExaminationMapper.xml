@@ -25,6 +25,7 @@
     <result column="multiple_choice_num" jdbcType="INTEGER" property="multipleChoiceNum" />
     <result column="judge_num" jdbcType="INTEGER" property="judgeNum" />
     <result column="up_type" jdbcType="INTEGER" property="upType" />
+    <result column="analysis_num" jdbcType="INTEGER" property="analysisNum" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -88,7 +89,7 @@
     id, examination_type, range_type, name, start_time, end_time, unit_id, department_id, 
     subject, frequency_count, paper, passing_mark, time_lengh, up_time, crate_user, create_time, 
     update_user, update_time, dele_flag, single_choice_num, multiple_choice_num, judge_num, 
-    up_type
+    up_type, analysis_num
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpExaminationExample" resultMap="BaseResultMap">
     select
@@ -128,7 +129,8 @@
       time_lengh, up_time, crate_user, 
       create_time, update_user, update_time, 
       dele_flag, single_choice_num, multiple_choice_num, 
-      judge_num, up_type)
+      judge_num, up_type, analysis_num
+      )
     values (#{id,jdbcType=BIGINT}, #{examinationType,jdbcType=INTEGER}, #{rangeType,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
       #{unitId,jdbcType=BIGINT}, #{departmentId,jdbcType=BIGINT}, #{subject,jdbcType=VARCHAR}, 
@@ -136,7 +138,8 @@
       #{timeLengh,jdbcType=INTEGER}, #{upTime,jdbcType=TIMESTAMP}, #{crateUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleFlag,jdbcType=INTEGER}, #{singleChoiceNum,jdbcType=INTEGER}, #{multipleChoiceNum,jdbcType=INTEGER}, 
-      #{judgeNum,jdbcType=INTEGER}, #{upType,jdbcType=INTEGER})
+      #{judgeNum,jdbcType=INTEGER}, #{upType,jdbcType=INTEGER}, #{analysisNum,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpExamination">
     insert into mp_examination
@@ -210,6 +213,9 @@
       <if test="upType != null">
         up_type,
       </if>
+      <if test="analysisNum != null">
+        analysis_num,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -280,6 +286,9 @@
       </if>
       <if test="upType != null">
         #{upType,jdbcType=INTEGER},
+      </if>
+      <if test="analysisNum != null">
+        #{analysisNum,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -361,6 +370,9 @@
       <if test="record.upType != null">
         up_type = #{record.upType,jdbcType=INTEGER},
       </if>
+      <if test="record.analysisNum != null">
+        analysis_num = #{record.analysisNum,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -390,7 +402,8 @@
       single_choice_num = #{record.singleChoiceNum,jdbcType=INTEGER},
       multiple_choice_num = #{record.multipleChoiceNum,jdbcType=INTEGER},
       judge_num = #{record.judgeNum,jdbcType=INTEGER},
-      up_type = #{record.upType,jdbcType=INTEGER}
+      up_type = #{record.upType,jdbcType=INTEGER},
+      analysis_num = #{record.analysisNum,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -464,6 +477,9 @@
       <if test="upType != null">
         up_type = #{upType,jdbcType=INTEGER},
       </if>
+      <if test="analysisNum != null">
+        analysis_num = #{analysisNum,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -490,7 +506,8 @@
       single_choice_num = #{singleChoiceNum,jdbcType=INTEGER},
       multiple_choice_num = #{multipleChoiceNum,jdbcType=INTEGER},
       judge_num = #{judgeNum,jdbcType=INTEGER},
-      up_type = #{upType,jdbcType=INTEGER}
+      up_type = #{upType,jdbcType=INTEGER},
+      analysis_num = #{analysisNum,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

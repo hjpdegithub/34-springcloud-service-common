@@ -42,4 +42,9 @@ public class AppQuestionVo {
     @ApiModelProperty("选项集合")
     private List<AppOptionVo> appOptionVos;
 
+    //分析题版本加入-----------
+    @ApiModelProperty("分析答案字段")
+    private String analysisAnswer;
+
+
 }

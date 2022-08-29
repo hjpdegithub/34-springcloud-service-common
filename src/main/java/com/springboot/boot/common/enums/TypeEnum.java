@@ -15,6 +15,7 @@ public enum TypeEnum {
     SINGLE("single", "单选"),
     MULTIPLE ("multipe", "多选"),
     JUDGE ("judge", "判断"),
+    ANALYSIS ("analysis", "分析"),
     ;
 
 

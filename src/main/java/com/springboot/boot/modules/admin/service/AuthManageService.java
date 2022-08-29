@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
+import com.springboot.boot.modules.admin.dto.exanmake.MakerPaperButtonDto;
 import com.springboot.boot.modules.admin.entity.MpAuth;
 import com.springboot.boot.modules.admin.entity.MpAuthCertificase;
 import com.springboot.boot.modules.admin.entity.MpUserAuthentication;
@@ -95,6 +96,5 @@ public interface AuthManageService {
 
 
 
-
-
+    ApiResult certificateGetAuto(MakerPaperButtonDto makerPaperButtonDto);
 }

@@ -824,6 +824,366 @@ public class MpExamAchievementExample {
             addCriterion("if_whether not between", value1, value2, "ifWhether");
             return (Criteria) this;
         }
+
+        public Criteria andJudgeGradeIsNull() {
+            addCriterion("judge_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeIsNotNull() {
+            addCriterion("judge_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeEqualTo(Integer value) {
+            addCriterion("judge_grade =", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeNotEqualTo(Integer value) {
+            addCriterion("judge_grade <>", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeGreaterThan(Integer value) {
+            addCriterion("judge_grade >", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("judge_grade >=", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeLessThan(Integer value) {
+            addCriterion("judge_grade <", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("judge_grade <=", value, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeIn(List<Integer> values) {
+            addCriterion("judge_grade in", values, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeNotIn(List<Integer> values) {
+            addCriterion("judge_grade not in", values, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeBetween(Integer value1, Integer value2) {
+            addCriterion("judge_grade between", value1, value2, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("judge_grade not between", value1, value2, "judgeGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeIsNull() {
+            addCriterion("single_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeIsNotNull() {
+            addCriterion("single_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeEqualTo(Integer value) {
+            addCriterion("single_grade =", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeNotEqualTo(Integer value) {
+            addCriterion("single_grade <>", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeGreaterThan(Integer value) {
+            addCriterion("single_grade >", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("single_grade >=", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeLessThan(Integer value) {
+            addCriterion("single_grade <", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("single_grade <=", value, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeIn(List<Integer> values) {
+            addCriterion("single_grade in", values, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeNotIn(List<Integer> values) {
+            addCriterion("single_grade not in", values, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeBetween(Integer value1, Integer value2) {
+            addCriterion("single_grade between", value1, value2, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("single_grade not between", value1, value2, "singleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeIsNull() {
+            addCriterion("multiple_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeIsNotNull() {
+            addCriterion("multiple_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeEqualTo(Integer value) {
+            addCriterion("multiple_grade =", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeNotEqualTo(Integer value) {
+            addCriterion("multiple_grade <>", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeGreaterThan(Integer value) {
+            addCriterion("multiple_grade >", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("multiple_grade >=", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeLessThan(Integer value) {
+            addCriterion("multiple_grade <", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("multiple_grade <=", value, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeIn(List<Integer> values) {
+            addCriterion("multiple_grade in", values, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeNotIn(List<Integer> values) {
+            addCriterion("multiple_grade not in", values, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeBetween(Integer value1, Integer value2) {
+            addCriterion("multiple_grade between", value1, value2, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andMultipleGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("multiple_grade not between", value1, value2, "multipleGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeIsNull() {
+            addCriterion("analysis_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeIsNotNull() {
+            addCriterion("analysis_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeEqualTo(Integer value) {
+            addCriterion("analysis_grade =", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeNotEqualTo(Integer value) {
+            addCriterion("analysis_grade <>", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeGreaterThan(Integer value) {
+            addCriterion("analysis_grade >", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("analysis_grade >=", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeLessThan(Integer value) {
+            addCriterion("analysis_grade <", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("analysis_grade <=", value, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeIn(List<Integer> values) {
+            addCriterion("analysis_grade in", values, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeNotIn(List<Integer> values) {
+            addCriterion("analysis_grade not in", values, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeBetween(Integer value1, Integer value2) {
+            addCriterion("analysis_grade between", value1, value2, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("analysis_grade not between", value1, value2, "analysisGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeIsNull() {
+            addCriterion("count_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeIsNotNull() {
+            addCriterion("count_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeEqualTo(Integer value) {
+            addCriterion("count_grade =", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeNotEqualTo(Integer value) {
+            addCriterion("count_grade <>", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeGreaterThan(Integer value) {
+            addCriterion("count_grade >", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("count_grade >=", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeLessThan(Integer value) {
+            addCriterion("count_grade <", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeLessThanOrEqualTo(Integer value) {
+            addCriterion("count_grade <=", value, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeIn(List<Integer> values) {
+            addCriterion("count_grade in", values, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeNotIn(List<Integer> values) {
+            addCriterion("count_grade not in", values, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeBetween(Integer value1, Integer value2) {
+            addCriterion("count_grade between", value1, value2, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andCountGradeNotBetween(Integer value1, Integer value2) {
+            addCriterion("count_grade not between", value1, value2, "countGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeIsNull() {
+            addCriterion("show_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeIsNotNull() {
+            addCriterion("show_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeEqualTo(Integer value) {
+            addCriterion("show_type =", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeNotEqualTo(Integer value) {
+            addCriterion("show_type <>", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeGreaterThan(Integer value) {
+            addCriterion("show_type >", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("show_type >=", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeLessThan(Integer value) {
+            addCriterion("show_type <", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("show_type <=", value, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeIn(List<Integer> values) {
+            addCriterion("show_type in", values, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeNotIn(List<Integer> values) {
+            addCriterion("show_type not in", values, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeBetween(Integer value1, Integer value2) {
+            addCriterion("show_type between", value1, value2, "showType");
+            return (Criteria) this;
+        }
+
+        public Criteria andShowTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("show_type not between", value1, value2, "showType");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

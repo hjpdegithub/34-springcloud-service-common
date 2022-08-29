@@ -45,7 +45,7 @@ public class QuestionController {
     @PostMapping(value="/addOrUpdate")
     public ApiResult addOrUpdate(@RequestBody QuestionBankAddAndUpdateDto dto){
         log.info("题库的新增及修改========={}", JSONObject.toJSON(dto));
-        if (dto.getOptionDtos().isEmpty()){
+        if (dto.getType() != 4 && dto.getOptionDtos().isEmpty()){
             throw new BusinessException("选项内容不能为空");
         }
         //新增题库判断试卷题数量是否上限 上限提示不让添加

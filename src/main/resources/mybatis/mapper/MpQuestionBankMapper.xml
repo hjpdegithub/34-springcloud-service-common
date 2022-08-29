@@ -13,6 +13,8 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="dele_flag" jdbcType="INTEGER" property="deleFlag" />
     <result column="analysis_question" jdbcType="VARCHAR" property="analysisQuestion" />
+    <result column="analysis_answer" jdbcType="VARCHAR" property="analysisAnswer" />
+    <result column="user_analysis_answer" jdbcType="VARCHAR" property="userAnalysisAnswer" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, type, examination_id, right_answer, create_user, create_time, update_user, 
-    update_time, dele_flag, analysis_question
+    update_time, dele_flag, analysis_question, analysis_answer, user_analysis_answer
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpQuestionBankExample" resultMap="BaseResultMap">
     select
@@ -110,11 +112,13 @@
     insert into mp_question_bank (id, name, type, 
       examination_id, right_answer, create_user, 
       create_time, update_user, update_time, 
-      dele_flag, analysis_question)
+      dele_flag, analysis_question, analysis_answer, 
+      user_analysis_answer)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
       #{examinationId,jdbcType=BIGINT}, #{rightAnswer,jdbcType=VARCHAR}, #{createUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{deleFlag,jdbcType=INTEGER}, #{analysisQuestion,jdbcType=VARCHAR})
+      #{deleFlag,jdbcType=INTEGER}, #{analysisQuestion,jdbcType=VARCHAR}, #{analysisAnswer,jdbcType=VARCHAR}, 
+      #{userAnalysisAnswer,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpQuestionBank">
     insert into mp_question_bank
@@ -152,6 +156,12 @@
       <if test="analysisQuestion != null">
         analysis_question,
       </if>
+      <if test="analysisAnswer != null">
+        analysis_answer,
+      </if>
+      <if test="userAnalysisAnswer != null">
+        user_analysis_answer,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -186,6 +196,12 @@
       </if>
       <if test="analysisQuestion != null">
         #{analysisQuestion,jdbcType=VARCHAR},
+      </if>
+      <if test="analysisAnswer != null">
+        #{analysisAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnalysisAnswer != null">
+        #{userAnalysisAnswer,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -231,6 +247,12 @@
       <if test="record.analysisQuestion != null">
         analysis_question = #{record.analysisQuestion,jdbcType=VARCHAR},
       </if>
+      <if test="record.analysisAnswer != null">
+        analysis_answer = #{record.analysisAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAnalysisAnswer != null">
+        user_analysis_answer = #{record.userAnalysisAnswer,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +270,9 @@
       update_user = #{record.updateUser,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       dele_flag = #{record.deleFlag,jdbcType=INTEGER},
-      analysis_question = #{record.analysisQuestion,jdbcType=VARCHAR}
+      analysis_question = #{record.analysisQuestion,jdbcType=VARCHAR},
+      analysis_answer = #{record.analysisAnswer,jdbcType=VARCHAR},
+      user_analysis_answer = #{record.userAnalysisAnswer,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +310,12 @@
       <if test="analysisQuestion != null">
         analysis_question = #{analysisQuestion,jdbcType=VARCHAR},
       </if>
+      <if test="analysisAnswer != null">
+        analysis_answer = #{analysisAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="userAnalysisAnswer != null">
+        user_analysis_answer = #{userAnalysisAnswer,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -300,7 +330,9 @@
       update_user = #{updateUser,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       dele_flag = #{deleFlag,jdbcType=INTEGER},
-      analysis_question = #{analysisQuestion,jdbcType=VARCHAR}
+      analysis_question = #{analysisQuestion,jdbcType=VARCHAR},
+      analysis_answer = #{analysisAnswer,jdbcType=VARCHAR},
+      user_analysis_answer = #{userAnalysisAnswer,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

@@ -80,7 +80,14 @@ public class ExaminationAddOrUpdateDto {
     @ApiModelProperty("判断规则")
     private ExaminationRuleDto judgeRule;
 
+    @ApiModelProperty("分析规则")
+    private ExaminationRuleDto analysisRule;
+
     private Long userId;
+
+    //
+    @ApiModelProperty("分析题数量")
+    private Integer analysisNum;
 
 
 

@@ -7,6 +7,7 @@ import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.Auth.MpAuthDto;
 
 import com.springboot.boot.modules.admin.dto.Auth.MpNameIdsDto;
+import com.springboot.boot.modules.admin.dto.exanmake.MakerPaperButtonDto;
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.*;
 import com.springboot.boot.modules.admin.service.AuthManageService;
@@ -20,6 +21,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -278,6 +280,41 @@ public class AuthServiceManageImpl implements AuthManageService {
         return 1;
     }
 
+
+
+    @Transactional
+    @Override
+    public ApiResult certificateGetAuto(MakerPaperButtonDto makerPaperButtonDto) {
+
+
+        //证书绑定2
+        MpAuthCertificaseExample example = new MpAuthCertificaseExample();
+        example.createCriteria().andAuthIdEqualTo(makerPaperButtonDto.getAuthId()).andUserIdEqualTo(makerPaperButtonDto.getUserId())
+                .andDeleFlagEqualTo(CommonEnum.USED.getCode());
+        List<MpAuthCertificase> lis = mpAuthCertificaseMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(lis)) {
+            //证书绑定1
+            MpUserAuth ent = new MpUserAuth();
+            SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
+            ent.setId(snowFlakeUtil.nextId());
+            ent.setCreateTime(new Date());
+            ent.setDeleFlag(CommonEnum.USED.getCode());
+            ent.setCrateUser(makerPaperButtonDto.getUserId());
+            ent.setAuthId(makerPaperButtonDto.getAuthId());
+            ent.setUserId(makerPaperButtonDto.getUserId());
+            userAuthMapper.insertSelective(ent);
+            MpAuthCertificase ent2 = new MpAuthCertificase();
+            ent2.setId(snowFlakeUtil.nextId());
+            ent2.setCreateTime(new Date());
+            ent2.setDeleFlag(CommonEnum.USED.getCode());
+            ent2.setCrateUser(makerPaperButtonDto.getUserId());
+            ent2.setAuthId(makerPaperButtonDto.getAuthId());
+            ent2.setUserId(makerPaperButtonDto.getUserId());
+            mpAuthCertificaseMapper.insertSelective(ent2);
+        }
+
+        return ApiResult.success();
+    }
     /**
      * 证书信息
      *
@@ -329,6 +366,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         }
         MpUserAuthentication userInfo =
                 mpUserAuthenticationMapper.selectByPrimaryKey(dto.getCerUserId());
+
         //获取认证信息
         MpUserAuthenticationVo vo = new MpUserAuthenticationVo();
         BeanCopy.copy(userInfo, vo);
@@ -427,6 +465,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         PageInfo<MpUserAuthenticationVo> pageInfo = new PageInfo<>(mpUserAuthenticationVoList);
         return pageInfo;
     }
+
 
     /**
      * 查看试卷次数函数

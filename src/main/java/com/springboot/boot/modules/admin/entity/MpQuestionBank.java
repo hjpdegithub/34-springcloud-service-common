@@ -29,6 +29,10 @@ public class MpQuestionBank {
 
     private String analysisQuestion;
 
+    private String analysisAnswer;
+
+    private String userAnalysisAnswer;
+
     public Long getId() {
         return id;
     }
@@ -115,5 +119,21 @@ public class MpQuestionBank {
 
     public void setAnalysisQuestion(String analysisQuestion) {
         this.analysisQuestion = analysisQuestion == null ? null : analysisQuestion.trim();
+    }
+
+    public String getAnalysisAnswer() {
+        return analysisAnswer;
+    }
+
+    public void setAnalysisAnswer(String analysisAnswer) {
+        this.analysisAnswer = analysisAnswer == null ? null : analysisAnswer.trim();
+    }
+
+    public String getUserAnalysisAnswer() {
+        return userAnalysisAnswer;
+    }
+
+    public void setUserAnalysisAnswer(String userAnalysisAnswer) {
+        this.userAnalysisAnswer = userAnalysisAnswer == null ? null : userAnalysisAnswer.trim();
     }
 }

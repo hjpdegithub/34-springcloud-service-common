@@ -33,6 +33,10 @@ public class MpUserExam {
 
     private Integer typeExam;
 
+    private Integer entranceType;
+
+    private String analysisAnswer;
+
     public Long getId() {
         return id;
     }
@@ -135,5 +139,21 @@ public class MpUserExam {
 
     public void setTypeExam(Integer typeExam) {
         this.typeExam = typeExam;
+    }
+
+    public Integer getEntranceType() {
+        return entranceType;
+    }
+
+    public void setEntranceType(Integer entranceType) {
+        this.entranceType = entranceType;
+    }
+
+    public String getAnalysisAnswer() {
+        return analysisAnswer;
+    }
+
+    public void setAnalysisAnswer(String analysisAnswer) {
+        this.analysisAnswer = analysisAnswer == null ? null : analysisAnswer.trim();
     }
 }

@@ -22,6 +22,7 @@ public class QuestionBankAddAndUpdateDto {
     @ApiModelProperty("题干信息")
     private String name;
 
+    //分析题加入类型4
     private Integer type;
 
     private Long examinationId;
@@ -35,4 +36,8 @@ public class QuestionBankAddAndUpdateDto {
     //3.0版本---加入字段
     @ApiModelProperty("解析")
     private String analysisQuestion;
+    //分析题版本加入字段
+    @ApiModelProperty("分析答案字段")
+    private String analysisAnswer;
+
 }

@@ -144,4 +144,11 @@ public interface ExaminationPaperService {
     ApiResult select();
 
     List<MpExamination> selectByName(ExaminationAddOrUpdateDto dto);
+
+    /**
+     * 模拟考试交卷
+     * @param dto
+     * @return
+     */
+    ApiResult submitSimulationByMoni(SubmitSlimylationDto dto);
 }

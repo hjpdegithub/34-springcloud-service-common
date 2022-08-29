@@ -794,6 +794,146 @@ public class MpQuestionBankExample {
             addCriterion("analysis_question not between", value1, value2, "analysisQuestion");
             return (Criteria) this;
         }
+
+        public Criteria andAnalysisAnswerIsNull() {
+            addCriterion("analysis_answer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerIsNotNull() {
+            addCriterion("analysis_answer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerEqualTo(String value) {
+            addCriterion("analysis_answer =", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerNotEqualTo(String value) {
+            addCriterion("analysis_answer <>", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerGreaterThan(String value) {
+            addCriterion("analysis_answer >", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerGreaterThanOrEqualTo(String value) {
+            addCriterion("analysis_answer >=", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerLessThan(String value) {
+            addCriterion("analysis_answer <", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerLessThanOrEqualTo(String value) {
+            addCriterion("analysis_answer <=", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerLike(String value) {
+            addCriterion("analysis_answer like", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerNotLike(String value) {
+            addCriterion("analysis_answer not like", value, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerIn(List<String> values) {
+            addCriterion("analysis_answer in", values, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerNotIn(List<String> values) {
+            addCriterion("analysis_answer not in", values, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerBetween(String value1, String value2) {
+            addCriterion("analysis_answer between", value1, value2, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andAnalysisAnswerNotBetween(String value1, String value2) {
+            addCriterion("analysis_answer not between", value1, value2, "analysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerIsNull() {
+            addCriterion("user_analysis_answer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerIsNotNull() {
+            addCriterion("user_analysis_answer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerEqualTo(String value) {
+            addCriterion("user_analysis_answer =", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerNotEqualTo(String value) {
+            addCriterion("user_analysis_answer <>", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerGreaterThan(String value) {
+            addCriterion("user_analysis_answer >", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerGreaterThanOrEqualTo(String value) {
+            addCriterion("user_analysis_answer >=", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerLessThan(String value) {
+            addCriterion("user_analysis_answer <", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerLessThanOrEqualTo(String value) {
+            addCriterion("user_analysis_answer <=", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerLike(String value) {
+            addCriterion("user_analysis_answer like", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerNotLike(String value) {
+            addCriterion("user_analysis_answer not like", value, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerIn(List<String> values) {
+            addCriterion("user_analysis_answer in", values, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerNotIn(List<String> values) {
+            addCriterion("user_analysis_answer not in", values, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerBetween(String value1, String value2) {
+            addCriterion("user_analysis_answer between", value1, value2, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserAnalysisAnswerNotBetween(String value1, String value2) {
+            addCriterion("user_analysis_answer not between", value1, value2, "userAnalysisAnswer");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

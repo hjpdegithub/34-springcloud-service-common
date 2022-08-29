@@ -129,7 +129,7 @@ public class AppExaminationPaperControoller {
         return result;
     }
 
-    @ApiOperation(value = "模拟在线考试交卷", notes="模拟在线考试")
+    @ApiOperation(value = "在线考试交卷", notes="在线考试")
     @PostMapping(value="/submitSimulation")
     public ApiResult submitSimulation(@RequestBody SubmitSlimylationDto dto){
         if (null == dto.getUserId()){
@@ -137,6 +137,17 @@ public class AppExaminationPaperControoller {
         }
         log.info("模拟在线考试交卷========={}", dto);
         ApiResult result = paperService.submitSimulation(dto);
+        return result;
+    }
+
+    @ApiOperation(value = "模拟考试交卷", notes="模拟考试")
+    @PostMapping(value="/submitSimulationByMoni")
+    public ApiResult submitSimulationByMoni(@RequestBody SubmitSlimylationDto dto){
+        if (null == dto.getUserId()){
+            ApiResult.error(500,"请先验证用户信息!");
+        }
+        log.info("模拟在线考试交卷========={}", dto);
+        ApiResult result = paperService.submitSimulationByMoni(dto);
         return result;
     }
 

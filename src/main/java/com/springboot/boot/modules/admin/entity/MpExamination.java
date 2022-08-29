@@ -53,6 +53,8 @@ public class MpExamination {
 
     private Integer upType;
 
+    private Integer analysisNum;
+
     public Long getId() {
         return id;
     }
@@ -235,5 +237,13 @@ public class MpExamination {
 
     public void setUpType(Integer upType) {
         this.upType = upType;
+    }
+
+    public Integer getAnalysisNum() {
+        return analysisNum;
+    }
+
+    public void setAnalysisNum(Integer analysisNum) {
+        this.analysisNum = analysisNum;
     }
 }

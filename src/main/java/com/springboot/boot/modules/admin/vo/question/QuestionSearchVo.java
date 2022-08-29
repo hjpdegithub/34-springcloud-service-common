@@ -42,6 +42,11 @@ public class QuestionSearchVo {
     @ApiModelProperty("选项")
     private List<MpOption> options;
 
+    //3.0分析题版本加入正确答案字段
+    private String analysisAnswer;
+
+    private String userAnalysisAnswer;
+
 
 
 }

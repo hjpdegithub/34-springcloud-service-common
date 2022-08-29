@@ -12,7 +12,7 @@ import lombok.Data;
  **/
 @Data
 public class IfWhereVo {
-    @ApiModelProperty("完成类型  0初始1学习2考试3证书4全部完成5全部置灰")
+    @ApiModelProperty("完成类型  0初始1学习2考试3正在判卷4全部完成5全部置灰")
     private Integer finishType;
 
 }

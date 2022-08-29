@@ -36,6 +36,9 @@ public class MpQuestionBankVo   extends BaseRowModel {
     @ExcelProperty("解析")
     private  String analysisQuestion;
 
+    @ExcelProperty("分析题答案")
+    private String analysisAnswer;
+
     List<MpOptionVo> mpOptionVoList ;
      //统计用map
     private HashMap statisticsMap;

@@ -69,6 +69,13 @@ public class ExaminationPaperController {
                 return ApiResult.error("500", "判断抽取数量大于题目数量无法创建");
             }
         }
+        //分析题版本加入字段
+        //非空校验
+        if (null != dto.getAnalysisNum() && null != dto.getAnalysisRule().getSubjectNum()) {
+            if (dto.getAnalysisNum() < dto.getAnalysisRule().getSubjectNum()) {
+                return ApiResult.error("500", "分析抽取数量大于题目数量无法创建");
+            }
+        }
         //计算抽题数量
         Integer j = 0;
         if (dto.getJudgeRule() != null
@@ -90,8 +97,15 @@ public class ExaminationPaperController {
         ) {
             m = dto.getMultipleRule().getSubjectNum() * dto.getMultipleRule().getFraction();
         }
+        //分析版本加入
+        Integer a = 0;
+        if (dto.getAnalysisRule() != null
+                && dto.getAnalysisRule().getSubjectNum() != null
+                && dto.getAnalysisRule().getFraction() != null){
+            a = dto.getAnalysisRule().getSubjectNum() * dto.getAnalysisRule().getFraction();
+        }
         if (null != dto.getPaper()) {
-            if (dto.getPaper() != (j + s + m)) {
+            if (dto.getPaper() != (j + s + m + a)) {
                 return ApiResult.error("500", "试卷不等于题目总分数无法创建");
             }
         }
@@ -173,6 +187,8 @@ public class ExaminationPaperController {
         List<MpQuestionBank> singles = mpQuestionBanks.stream().filter(a -> a.getType() == 1).collect(Collectors.toList());
         List<MpQuestionBank> ms = mpQuestionBanks.stream().filter(a -> a.getType() == 2).collect(Collectors.toList());
         List<MpQuestionBank> js = mpQuestionBanks.stream().filter(a -> a.getType() == 3).collect(Collectors.toList());
+        //分析题版本加入
+        List<MpQuestionBank> as = mpQuestionBanks.stream().filter(a -> a.getType() == 4).collect(Collectors.toList());
         //如果上线判断数量是否相同
         if (switchUpDto.getUpType() == CommonEnum.UP.getCode()) {
             if (singles.size() != examination.getSingleChoiceNum()) {
@@ -181,11 +197,16 @@ public class ExaminationPaperController {
             if (ms.size() != examination.getMultipleChoiceNum()) {
                 return ApiResult.error(500, "多选题数量不足或已超出无法上线");
             }
-            if (examination.getExaminationType() == 1) {
+            //3.0版本加入分析
+            if (!CollectionUtils.isEmpty(as) && as.size() != examination.getAnalysisNum()){
+                return ApiResult.error(500, "分析题数量不足或已超出无法上线");
+            }
+            if (examination.getExaminationType() == 1 || examination.getExaminationType() == 3) {
                 if (js.size() != examination.getJudgeNum()) {
                     return ApiResult.error(500, "判断题数量不足或已超出无法上线");
                 }
             }
+
         }
         ApiResult result = paperService.SwitchUp(switchUpDto);
         return result;

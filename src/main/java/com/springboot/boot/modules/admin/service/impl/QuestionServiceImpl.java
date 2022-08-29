@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.springboot.boot.common.enums.CommonEnum;
+import com.springboot.boot.common.enums.TypeEnum;
 import com.springboot.boot.common.exc.BusinessException;
 import com.springboot.boot.modules.admin.dto.QuestionBankAddAndUpdateDto;
 import com.springboot.boot.modules.admin.dto.QuestionDeleteDto;
@@ -77,7 +78,9 @@ public class QuestionServiceImpl implements QuestionService {
             });
             stringBuffer.deleteCharAt(stringBuffer.length() - 1);
             questionBank.setRightAnswer(stringBuffer.toString());
+
         }
+
         //判断该接口新增还是修改
         if (null != dto.getId()) {
             //修改
@@ -86,7 +89,10 @@ public class QuestionServiceImpl implements QuestionService {
             if (i <= CommonEnum.UPDATE_ERROR.getCode()) {
                 throw new BusinessException("题库编辑失败");
             }
-            optionService.updateOptionByQuestion(dto.getId(), dto.getOptionDtos(), dto.getUserId());
+            if (null != dto.getType() && 4 != dto.getType()){
+                optionService.updateOptionByQuestion(dto.getId(), dto.getOptionDtos(), dto.getUserId());
+            }
+
         } else {
             long id = SnowFlakeUtils.getFlowIdInstance().nextId();
             questionBank.setId(id);
@@ -97,9 +103,11 @@ public class QuestionServiceImpl implements QuestionService {
             if (i <= CommonEnum.ADD_ERROR.getCode()) {
                 throw new BusinessException("题库新增失败");
             }
-            //选项的新增
-            optionService.addOptionByQuestion(dto.getOptionDtos(), id, dto.getUserId());
-
+            //分析题没有选型
+            if (null != dto.getType() && 4 != dto.getType()){
+                //选项的新增
+                optionService.addOptionByQuestion(dto.getOptionDtos(), id, dto.getUserId());
+            }
         }
         return ApiResult.success();
     }
@@ -137,8 +145,13 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionSearchVo> questionSearchVos = questionBankBusinessMapper.selectQuestionAll(dto);
         if (!questionSearchVos.isEmpty()) {
             questionSearchVos.forEach(e -> {
-                List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
-                e.setOptions(mpOptions);
+                //当题库类型为分析题四的时候
+                if (e.getType().intValue() != 4){
+                    List<MpOption> mpOptions = optionService.selectByQuestionId(e.getId());
+                    e.setOptions(mpOptions);
+
+                }
+//                e.setRightAnswer(e.getAnalysisAnswer());
 
             });
         }
@@ -169,8 +182,10 @@ public class QuestionServiceImpl implements QuestionService {
         if (null != mpQuestionBanks && mpQuestionBanks.size() > 0) {
             questionBank = mpQuestionBanks.get(0);
             BeanCopy.copy(questionBank, vo);
-            List<MpOption> mpOptions = optionService.selectByQuestionId(questionBank.getId());
-            vo.setOptions(mpOptions);
+            if (questionBank.getType().intValue() != 4){
+                List<MpOption> mpOptions = optionService.selectByQuestionId(questionBank.getId());
+                vo.setOptions(mpOptions);
+            }
             return vo;
         } else {
             return null;
