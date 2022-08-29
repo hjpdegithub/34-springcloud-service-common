@@ -253,13 +253,11 @@ public class CurMemoServiceImpl implements CurMemoService {
             //文件的ID主键
             mpCurthu.setId(snowFlakeUtil.nextId());
             mpCurthu.setThuStatus(clickOrCancel.intValue() == 1 ? true : false);
-
             return mpCurthuMapper.insert(mpCurthu);
         } else {
             MpCurthu mpCurthu = mpCurthuList.get(0);
             mpCurthu.setThuStatus(clickOrCancel.intValue() == 1 ? true : false);
             return mpCurthuMapper.updateByExampleSelective(mpCurthu, example);
-
         }
 
     }
