@@ -10,9 +10,6 @@ import java.util.Date;
 
 public class AttachmentInfoDto {
 
-
-
-
     private Long id;
     public void setId(Long id) {
         this.id = id;

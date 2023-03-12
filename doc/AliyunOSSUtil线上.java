@@ -102,7 +102,6 @@ public class AliyunOSSUtil {
      */
 
     public String ossToLocalToShow(HttpServletResponse response, String FileFullPath, String fileName) {
-
         String endpoint = constantProperties.getEndpoint();
         String accessKeyId = constantProperties.getKeyid();
         String accessKeySecret = constantProperties.getKeysecret();

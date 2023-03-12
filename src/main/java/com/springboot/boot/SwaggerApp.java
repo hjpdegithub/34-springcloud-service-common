@@ -1,7 +1,6 @@
 package com.springboot.boot;
 
-import org.springframework.context.annotation.ComponentScan;
-import springfox.documentation.service.Contact;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -39,4 +38,6 @@ public class SwaggerApp {
                 .build();
 
     }
+
+
 }

@@ -1,30 +1,30 @@
 #侯建鹏的本地环境
-#spring:
-#  datasource:
-#    type: com.zaxxer.hikari.HikariDataSource
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://127.0.0.1:3306/db_data?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
-#    username: root
-#    password: root
-
-#   测试环境
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://e52kva4b30qgsz8vcdru-rw4rm.maxscale.rds.ops.sgepri.sgcc.com.cn:3306/mp?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
-    username: admin_user
-    password: Abc123!@#
+    url: jdbc:mysql://127.0.0.1:3306/mi_pl_db?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+
+  # 测试环境
+  #spring:
+  #  datasource:
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jjdbc:mysql://e52kva4b30qgsz8vcdru-rw4rm.maxscale.rds.ops.sgepri.sgcc.com.cn:3306/mp?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+  #    username: admin_user
+  #    password: Abc123!@#
 
 
-#生产环境
-#spring:
-#  datasource:
-#    type: com.zaxxer.hikari.HikariDataSource
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://rm-9ur799905q5nc0140rw.mysql.rds.ops.sgmc.sgcc.com.cn:3306/mp?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false
-#    username: rdsuser
-#    password: nengliKF@2021
+  #生产环境
+  #spring:
+  #  datasource:
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    driver-class-name: com.mysql.jdbc.Driver
+  #    url: jdbc:mysql://rm-9ur799905q5nc0140rw.mysql.rds.ops.sgmc.sgcc.com.cn:3306/mp?serverTimezone=GMT%2B8&characterEncoding=utf8&useSSL=false
+  #    username: rdsuser
+  #    password: nengliKF@2021
 
   servlet:
     multipart:
@@ -93,51 +93,53 @@ att:
   username:
   password:
 
-#侯本地环境
-#oos:
-#  endpoint: oss-cn-beijing.aliyuncs.com
-#  keyid: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
-#  keysecret: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
-#  bucketname: test220321bucket # bucket名称
-#  filehost: mq    #bucket下文件夹的路径
-#测试环境
-oos:
-  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
-  keyid:    h0hTOLSF2M0rYMMW # 填写刚刚生成的AccessKey
-  keysecret: 9vkIDqKrHngBI475PsYbqjrBpVYcrW  # 填写刚刚生成的Accesssecret
-  bucketname: oss-nrxt-szh-dev-001 # bucket名称
-  filehost: mq    #bucket下文件夹的路径
-#生产环境
-#oos:
-#  endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
-#  keyid:    dB9c2A1CrDVVkBqM # 填写刚刚生成的AccessKey
-#  keysecret: 7dio40l2jIJJYF27n1NtvrBw70df96  # 填写刚刚生成的Accesssecret
-#  bucketname: szhnlkfpt-oss-prod # bucket名称
-#  filehost: mq    #bucket下文件夹的路径
+#侯本地环境非机构化
+uds:
+  apiServiceUrl: oss-cn-beijing.aliyuncs.com
+  accessKey: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
+  secretKey: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
 
+#侯本地环境
+oos:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  keyid: LTAI5tNzKdQnKpi63KwkHDRA # 填写刚刚生成的AccessKey
+  keysecret: b5xpJ37mSNtWctVlgBwhe4kcJ2Mwfy  # 填写刚刚生成的Accesssecret
+  bucketname: test220321bucket # bucket名称
+  filehost: mq    #bucket下文件夹的路径
+  #测试环境
+  #oos:
+  #  endpoint: oss-cn-nanjing-nrwyy-d01-a.ops.sgepri.sgcc.com.cn
+  #  keyid:    h0hTOLSF2M0rYMMW # 填写刚刚生成的AccessKey
+  #  keysecret: 9vkIDqKrHngBI475PsYbqjrBpVYcrW  # 填写刚刚生成的Accesssecret
+  #  bucketname: oss-nrxt-szh-dev-001 # bucket名称
+  #  filehost: mq    #bucket下文件夹的路径
+  #生产环境
+  #oos:
+  #  endpoint: oss-bjdc-1-a.ops.sgmc.sgcc.com.cn
+  #  keyid:    dB9c2A1CrDVVkBqM # 填写刚刚生成的AccessKey
+  #  keysecret: 7dio40l2jIJJYF27n1NtvrBw70df96  # 填写刚刚生成的Accesssecret
+  #  bucketname: szhnlkfpt-oss-prod # bucket名称
+  #  filehost: mq    #bucket下文件夹的路径
 
   # 侯本地环境
-#  oosFilePath: D:/show/
+  oosFilePath: D:/show/
   #实验环境
-  oosFilePath: /mnt/file/
+  #oosFilePath :/mnt/file/
   #生产环境
   #oosFilePath : /nas/file/
 
   # 侯本地和实验环境的返回url
-
-
-
-  oosFileShowPathPrex : http://172.37.42.208:8080/mp/showresource/
-  #oosFileShowPathPrex : http://192.168.43.15:8080/mp/showresource/
+  oosFileShowPathPrex : http://192.168.1.133:8080/mp/showresource/
+  # oosFileShowPathPrex : http://192.168.43.15:8080/mp/showresource/
   #oosFileShowPathPrex : http://5k308538j9:qicp:vip:52534/mp/showresource/
   #oosFileShowPathPrex : http://localhost:8080/mp/showresource/
   # 生产测试url
   #oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
 
   # 侯本地
-#  localShowPath : file:D:\\show\\
+  localShowPath : file:D:\\show\\
   # 测试环境环境
-  localShowPath: file:/mnt/file/
+  #localShowPath: file:/mnt/file/
   # 生产环境
   #localShowPath : file:/nas/file/
 

@@ -13,34 +13,27 @@ public class MpAttachmentInfo {
 
     private String fileUrl;
 
-    private String fileUrlLocal;
-
     private String filePath;
 
     private String description;
 
     private Integer delFlag;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
     private Long createUser;
 
     private Date createDate;
-    @JsonSerialize(using = ToStringSerializer.class)//解决long精度丢失问题
+
     private Long updateUser;
 
     private Date updateDate;
-//   暂时注释掉
-//    private String versionid;
-//
-//    private String documentid;
 
+    private String documentid;
 
-    public String getFileUrlLocal() {
-        return fileUrlLocal;
-    }
+    private String versionid;
 
-    public void setFileUrlLocal(String fileUrlLocal) {
-        this.fileUrlLocal = fileUrlLocal;
-    }
+    private String fileurllocal;
+
+    private String linkurl;
 
     public Long getId() {
         return id;
@@ -121,23 +114,36 @@ public class MpAttachmentInfo {
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
-//暂时注释掉
-//    public String getVersionid() {
-//        return versionid;
-//    }
-//
-//    public void setVersionid(String versionid) {
-//        this.versionid = versionid == null ? null : versionid.trim();
-//    }
-//
-//    public String getDocumentid() {
-//        return documentid;
-//    }
-//
-//    public void setDocumentid(String documentid) {
-//        this.documentid = documentid == null ? null : documentid.trim();
-//    }
 
+    public String getDocumentid() {
+        return documentid;
+    }
 
+    public void setDocumentid(String documentid) {
+        this.documentid = documentid == null ? null : documentid.trim();
+    }
 
+    public String getVersionid() {
+        return versionid;
+    }
+
+    public void setVersionid(String versionid) {
+        this.versionid = versionid == null ? null : versionid.trim();
+    }
+
+    public String getFileurllocal() {
+        return fileurllocal;
+    }
+
+    public void setFileurllocal(String fileurllocal) {
+        this.fileurllocal = fileurllocal == null ? null : fileurllocal.trim();
+    }
+
+    public String getLinkurl() {
+        return linkurl;
+    }
+
+    public void setLinkurl(String linkurl) {
+        this.linkurl = linkurl == null ? null : linkurl.trim();
+    }
 }

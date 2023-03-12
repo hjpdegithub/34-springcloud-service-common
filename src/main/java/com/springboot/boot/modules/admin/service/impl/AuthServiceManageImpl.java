@@ -225,10 +225,12 @@ public class AuthServiceManageImpl implements AuthManageService {
             fileName = info1.getFileName();
             fileUrl = info1.getFileUrl();
             filePath = info1.getFilePath();
-            String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
+            //String fileUrlLocal = aliyunOSSUtil.ossToLocalToShow(null, filePath, fileName);
+            String fileUrlLocal = aliyunOSSUtil.picOSSUpdtoShow(info1.getDocumentid(), info1.getFileName());
+            // String fileUrlLocal = aliyunOSSUtil.picOSSUpdtoShow(null, filePath, fileName);
             info1.setFileUrl(fileUrl);
             info1.setFilePath(filePath);
-            info1.setFileUrlLocal(fileUrlLocal);
+            info1.setFileurllocal(fileUrlLocal);
             info1.setFileName(fileName);
         }
         return info1;
@@ -372,7 +374,7 @@ public class AuthServiceManageImpl implements AuthManageService {
         BeanCopy.copy(userInfo, vo);
         CertificateVo revo = new CertificateVo();
         revo.setFileUrl(info.getFileUrl());
-        revo.setFileLocalUrl(info.getFileUrlLocal());
+        revo.setFileLocalUrl(info.getFileurllocal());
         revo.setUserVo(vo);
         revo.setCertName(infoT.getName());
         //证书绑定1
@@ -432,7 +434,7 @@ public class AuthServiceManageImpl implements AuthManageService {
 //        BeanCopy.copy(userInfo, vo);
         CertificateVo revo = new CertificateVo();
         revo.setFileUrl(info.getFileUrl());
-        revo.setFileLocalUrl(info.getFileUrlLocal());
+        revo.setFileLocalUrl(info.getFileurllocal());
         //  revo.setUserVo(vo);
         revo.setCertificateType(infoT.getCertificateType());
         return revo;

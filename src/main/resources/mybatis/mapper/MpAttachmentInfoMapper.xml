@@ -12,6 +12,10 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_user" jdbcType="BIGINT" property="updateUser" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="documentid" jdbcType="VARCHAR" property="documentid" />
+    <result column="versionid" jdbcType="VARCHAR" property="versionid" />
+    <result column="fileurllocal" jdbcType="VARCHAR" property="fileurllocal" />
+    <result column="linkurl" jdbcType="VARCHAR" property="linkurl" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, file_name, file_url, file_path, description, del_flag, create_user, create_date,
-    update_user, update_date
+    id, file_name, file_url, file_path, description, del_flag, create_user, create_date, 
+    update_user, update_date, documentid, versionid, fileurllocal, linkurl
   </sql>
   <select id="selectByExample" parameterType="com.springboot.boot.modules.admin.entity.MpAttachmentInfoExample" resultMap="BaseResultMap">
     select
@@ -90,7 +94,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from mp_attachment_info
     where id = #{id,jdbcType=BIGINT}
@@ -106,14 +110,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.springboot.boot.modules.admin.entity.MpAttachmentInfo">
-    insert into mp_attachment_info (id, file_name, file_url,
-      file_path, description, del_flag,
-      create_user, create_date, update_user,
-      update_date)
-    values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR},
-      #{filePath,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER},
-      #{createUser,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT},
-      #{updateDate,jdbcType=TIMESTAMP})
+    insert into mp_attachment_info (id, file_name, file_url, 
+      file_path, description, del_flag, 
+      create_user, create_date, update_user, 
+      update_date, documentid, versionid, 
+      fileurllocal, linkurl)
+    values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{delFlag,jdbcType=INTEGER}, 
+      #{createUser,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{documentid,jdbcType=VARCHAR}, #{versionid,jdbcType=VARCHAR}, 
+      #{fileurllocal,jdbcType=VARCHAR}, #{linkurl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.springboot.boot.modules.admin.entity.MpAttachmentInfo">
     insert into mp_attachment_info
@@ -148,6 +154,18 @@
       <if test="updateDate != null">
         update_date,
       </if>
+      <if test="documentid != null">
+        documentid,
+      </if>
+      <if test="versionid != null">
+        versionid,
+      </if>
+      <if test="fileurllocal != null">
+        fileurllocal,
+      </if>
+      <if test="linkurl != null">
+        linkurl,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -179,6 +197,18 @@
       </if>
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="documentid != null">
+        #{documentid,jdbcType=VARCHAR},
+      </if>
+      <if test="versionid != null">
+        #{versionid,jdbcType=VARCHAR},
+      </if>
+      <if test="fileurllocal != null">
+        #{fileurllocal,jdbcType=VARCHAR},
+      </if>
+      <if test="linkurl != null">
+        #{linkurl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -221,6 +251,18 @@
       <if test="record.updateDate != null">
         update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.documentid != null">
+        documentid = #{record.documentid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.versionid != null">
+        versionid = #{record.versionid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileurllocal != null">
+        fileurllocal = #{record.fileurllocal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkurl != null">
+        linkurl = #{record.linkurl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -229,15 +271,19 @@
   <update id="updateByExample" parameterType="map">
     update mp_attachment_info
     set id = #{record.id,jdbcType=BIGINT},
-    file_name = #{record.fileName,jdbcType=VARCHAR},
-    file_url = #{record.fileUrl,jdbcType=VARCHAR},
-    file_path = #{record.filePath,jdbcType=VARCHAR},
-    description = #{record.description,jdbcType=VARCHAR},
-    del_flag = #{record.delFlag,jdbcType=INTEGER},
-    create_user = #{record.createUser,jdbcType=BIGINT},
-    create_date = #{record.createDate,jdbcType=TIMESTAMP},
-    update_user = #{record.updateUser,jdbcType=BIGINT},
-    update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      file_url = #{record.fileUrl,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=INTEGER},
+      create_user = #{record.createUser,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=BIGINT},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      documentid = #{record.documentid,jdbcType=VARCHAR},
+      versionid = #{record.versionid,jdbcType=VARCHAR},
+      fileurllocal = #{record.fileurllocal,jdbcType=VARCHAR},
+      linkurl = #{record.linkurl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +318,18 @@
       <if test="updateDate != null">
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="documentid != null">
+        documentid = #{documentid,jdbcType=VARCHAR},
+      </if>
+      <if test="versionid != null">
+        versionid = #{versionid,jdbcType=VARCHAR},
+      </if>
+      <if test="fileurllocal != null">
+        fileurllocal = #{fileurllocal,jdbcType=VARCHAR},
+      </if>
+      <if test="linkurl != null">
+        linkurl = #{linkurl,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -285,8 +343,11 @@
       create_user = #{createUser,jdbcType=BIGINT},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=BIGINT},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      documentid = #{documentid,jdbcType=VARCHAR},
+      versionid = #{versionid,jdbcType=VARCHAR},
+      fileurllocal = #{fileurllocal,jdbcType=VARCHAR},
+      linkurl = #{linkurl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
 </mapper>

@@ -5,10 +5,11 @@
 <generatorConfiguration>
 
     <!-- 本地数据库驱动程序jar包的全路径 -->
-    <classPathEntry location="D:\environment\maven\maven-repository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
+    <classPathEntry
+            location="D:\maven\MavenRepository\mysql\mysql-connector-java\5.1.49\mysql-connector-java-5.1.49.jar"/>
 
     <context id="context" targetRuntime="MyBatis3">
-        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
         <commentGenerator>
             <!--是否取消生成实体类字段注释，自动生成的注释没有任何意义，直接取消-->
             <property name="suppressAllComments" value="true"/>
@@ -19,13 +20,13 @@
         <!-- 数据库的相关配置 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://127.0.0.1:3306/db_data"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/mi_pl_db"
                 userId="root"
                 password="root"/>
 
 
         <javaTypeResolver>
-            <property name="nullCatalogMeansCurrent" value="true" />
+            <property name="nullCatalogMeansCurrent" value="true"/>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
@@ -62,11 +63,11 @@
         <!--        <table tableName="mp_unit" />-->
         <!--        <table tableName="mp_sign_up" />-->
         <!--        <table tableName="mp_questionnaire" />-->
-<!--                <table tableName="mp_question_bank" />-->
+        <!--                <table tableName="mp_question_bank" />-->
         <!--        <table tableName="mp_option" />-->
-<!--                <table tableName="mp_examination_rule" />-->
-<!--                        <table tableName="mp_examination" />-->
-<!--                <table tableName="mp_exam_achievement" />-->
+        <!--                <table tableName="mp_examination_rule" />-->
+        <!--                        <table tableName="mp_examination" />-->
+        <!--                <table tableName="mp_exam_achievement" />-->
         <!--        <table tableName="mp_error_question" />-->
         <!--        <table tableName="mp_department" />-->
 
@@ -77,10 +78,16 @@
         <!--        <table tableName="mp_auth_user_sign_up" />-->
         <!--        <table tableName="mp_user_auth" />-->
         <!--        <table tableName="mp_user_auth_class" />-->
-        <table tableName="mp_make_paper" />
-<!--        <table tableName="mp_user_exam" />-->
-<!--                <table tableName="mp_user_auth_exam" />-->
-        <table tableName="testoo" />
+        <!--        <table tableName="mp_make_paper" />-->
+        <!--        <table tableName="mp_user_exam" />-->
+        <!--        <table tableName="mp_user_auth_exam" />-->
+        <!--         <table tableName="testoo" />-->
+<!--        <table tableName="mp_user"/>-->
+<!--        <table tableName="mp_attachment_info"/>-->
+<!--        <table tableName="mp_banner_manage"/>-->
+        <table tableName="mp_index_manage"/>
+        <table tableName="mp_index"/>
+
     </context>
 </generatorConfiguration>
 

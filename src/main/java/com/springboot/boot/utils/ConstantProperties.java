@@ -13,6 +13,7 @@ public class ConstantProperties {
     private  String keysecret;
     private  String bucketname;
     private  String filehost;
+    //以下的三个参数和oos通用
     private  String oosFilePath;
     private  String oosFileShowPathPrex;
     private  String localShowPath;

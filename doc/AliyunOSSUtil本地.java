@@ -33,7 +33,7 @@ public class AliyunOSSUtil {
     private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private static String validfileType[] = {"jpg", "JPG", "png", "PNG",
             "mp4", "MP4", "avi", "AVI", "doc", "DOC", "docx", "DOCX", "pdf", "PDF",
-            "xls", "XLS", "xlsx", "XLSX"
+            "xls", "XLS", "xlsx", "XLSX","gif","GIF"
     };
     private static List<String> list = Arrays.asList(validfileType);
 

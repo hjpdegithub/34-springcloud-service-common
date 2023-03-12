@@ -29,15 +29,10 @@ import java.util.List;
 @Api(tags = "1.0", description = "文件上传公共接口【周京昊】")
 @CrossOrigin
 public class FileController {
-
-
-
     @Autowired
     private AttachmentService attachmentService;
-
     @Resource
     private FileService fileService;
-
 //    @ApiOperation("通过ftp上传文件")
 //    @PostMapping(value = "/uploadByFtp",headers = "content-type=multipart/form-data")
 //    public ApiResult uploadByFtp(@RequestParam("description") String description,
@@ -52,8 +47,6 @@ public class FileController {
     ) {
         return attachmentService.attachmentDeal(file);
     }
-
-
     @CrossOrigin
     @PostMapping(value = "/attachmentFileSelectById")
     @ApiOperation(value = "按照id查询课件详细信息")
@@ -61,8 +54,6 @@ public class FileController {
             @RequestBody CommonDto commonDto) {
         return attachmentService.attachmentFileSelect(commonDto);
     }
-
-
 
 //
 //    @PostMapping(value = "/attachmentFileListSelect")

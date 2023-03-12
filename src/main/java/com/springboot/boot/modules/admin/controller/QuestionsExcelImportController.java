@@ -42,7 +42,6 @@ public class QuestionsExcelImportController {
         } else if (!"sucess".equals(result)&&!result.contains("(")){
             return ApiResult.error(ApiCode.FAIL, result);
         }
-
         else {
             return ApiResult.success("success");
         }

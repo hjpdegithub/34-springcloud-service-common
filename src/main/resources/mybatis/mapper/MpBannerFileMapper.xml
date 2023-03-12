@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpBannerFileMapper">
+
+    <select id="selectByBusinessId" parameterType="java.lang.Long"
+            resultType="com.springboot.boot.modules.admin.vo.file.MpAttachmentInfoVo">
+    select
+      a.id as fileId,
+      a.file_name as fileName ,
+      a.file_url as fileUrl,
+      a.file_path as filePath,
+      a.fileurllocal as fileurllocal,
+      a.linkurl as linkurl
+      from mp_attachment_info a ,
+           mp_business_attachment_info b
+     where a.id = b.attachment_id
+     and b.del_flag=0
+     and b.business_id = #{id}
+
+   </select>
+
+
+</mapper>

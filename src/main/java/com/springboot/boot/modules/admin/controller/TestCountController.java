@@ -49,6 +49,6 @@ public class TestCountController {
     public ApiResult testList(){
         log.info("考试列表----------{}" );
         //判断一级分类名称是否相同
-        return ApiResult.success(testCountService.testList()) ;
+        return ApiResult.success("OK") ;
     }
 }

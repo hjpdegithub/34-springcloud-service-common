@@ -127,11 +127,11 @@ oos:
   # 生产测试url
   oosFileShowPathPrex : http://open.sgcc.com.cn/mp/showresource/
   # 侯本地
-  #localShowPath : file:D:\\show\\
+  localShowPath : file:D:\\show\\
   # 测试环境环境
   #localShowPath: file:/mnt/file/
   # 生产环境
-  localShowPath : file:/nas/file/
+  #localShowPath : file:/nas/file/
 
 # mybatis-plus相关配置
 mybatis-plus:

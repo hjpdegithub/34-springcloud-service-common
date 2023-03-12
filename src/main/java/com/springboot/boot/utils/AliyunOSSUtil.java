@@ -50,6 +50,7 @@ public class AliyunOSSUtil {
     private static List<String> list = Arrays.asList(validfileType);
     private static List<String> streamlist = Arrays.asList(streamfileType);
     private static List<String> doclist = Arrays.asList(streamfileType);
+
     /**
      * 文件格式校验
      *
@@ -64,6 +65,7 @@ public class AliyunOSSUtil {
         }
         return false;
     }
+
     /**
      * 文本格式文件校验
      *
@@ -92,6 +94,7 @@ public class AliyunOSSUtil {
         }
         return false;
     }
+
     /**
      * 文件格式校验
      *
@@ -131,6 +134,7 @@ public class AliyunOSSUtil {
         }
         return "success";
     }
+
     /**
      * 文件格式校验
      *
@@ -157,6 +161,7 @@ public class AliyunOSSUtil {
         }
         return constantProperties.getOosFileShowPathPrex() + name;
     }
+
     /**
      * 上传到非结构化平台
      *
@@ -170,17 +175,21 @@ public class AliyunOSSUtil {
         UdsClient client = new UdsClient(constantUdsProperties.getApiServiceUrl(),
                 constantUdsProperties.getAccessKey(), constantUdsProperties.getSecretKey());
         // 上传数据并得到结果
-        AddActionResult result = client.add(uploadFile
+        AddActionResult result = client.add(uploadFile.getAbsolutePath()
         )//文件路径
-                .withFileName("fileName").execute();
+                .withFileName(fileName)
+                // 若要设置业务元数据采⽤下⾯⽅法设置
+                .withBizMeta("ecm_99504_banner", "banner图")
+                .execute();
         String documentId = result.getDocumentId();
         String versionId = result.getVersionId();
         String resultFileName = result.getFileName();
         rtMap.put("documentId", documentId);
         rtMap.put("versionId", versionId);
-        rtMap.put("resultFileName", resultFileName);
+        rtMap.put("resultFileName", fileName);
         return rtMap;
     }
+
     /**
      * 从非结构化平台下载
      *
@@ -189,19 +198,19 @@ public class AliyunOSSUtil {
      */
     public String picOSSUpdtoShow(String docunmentId, String name) {
         log.info("=========>从非结构化平台下载：" + docunmentId);
-        Map<String, String> rtMap = new HashMap();
+        String fileName = System.currentTimeMillis() + name;
         // 初始化 UdsClient
         UdsClient client = new UdsClient(constantUdsProperties.getApiServiceUrl(),
                 constantUdsProperties.getAccessKey(), constantUdsProperties.getSecretKey());
-        String pathName = constantProperties.getOosFilePath() + name;
+        String pathName = constantProperties.getOosFilePath() + fileName;
         // 上传数据并得到结果
-        File file = client.getFile("50ea0f9377814b60a4057c28b9d34d20")
+        File file = client.getFile(docunmentId)
                 // 设置下载⽂件保存的完整路径
                 .withSavePath(pathName)
                 // 执⾏
                 .execute();
         System.out.println(file.getPath());
-        return constantProperties.getOosFileShowPathPrex() + name;
+        return constantProperties.getOosFileShowPathPrex() + fileName;
     }
 
     /**
@@ -243,11 +252,14 @@ public class AliyunOSSUtil {
             String url = ossClient.generatePresignedUrl(bucketName, fileKey, expiration).toString();
             rtMap.put("url", url);
             rtMap.put("fileKey", fileKey);
+            rtMap.put("resultFileName", uploadFile.getName());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rtMap;
     }
+
     /**
      * 上传
      *
@@ -296,6 +308,7 @@ public class AliyunOSSUtil {
         }
         return null;
     }
+
     /**
      * 删除
      *
@@ -325,6 +338,7 @@ public class AliyunOSSUtil {
             return "删除Object失败";
         }
     }
+
     /**
      * 查询文件名列表
      *

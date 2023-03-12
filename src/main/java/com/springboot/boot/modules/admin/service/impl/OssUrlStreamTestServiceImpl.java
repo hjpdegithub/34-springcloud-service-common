@@ -37,9 +37,11 @@ public class OssUrlStreamTestServiceImpl implements OssUrlStreamTestService {
 
 
     @Override
-    public String ossToLocalToShow(HttpServletResponse response,String FileFullPath,String fileName) throws IOException {
+    public String ossToLocalToShow(HttpServletResponse response,String FileFullPath,String fileName,String documentid) throws IOException {
 
         return aliyunOSSUtil.ossToLocalToShow(response,FileFullPath,fileName);
+
+        //  return aliyunOSSUtil.picOSSUpdtoShow(documentid,fileName);
 
 
     }

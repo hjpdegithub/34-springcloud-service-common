@@ -744,6 +744,286 @@ public class MpAttachmentInfoExample {
             addCriterion("update_date not between", value1, value2, "updateDate");
             return (Criteria) this;
         }
+
+        public Criteria andDocumentidIsNull() {
+            addCriterion("documentid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidIsNotNull() {
+            addCriterion("documentid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidEqualTo(String value) {
+            addCriterion("documentid =", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidNotEqualTo(String value) {
+            addCriterion("documentid <>", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidGreaterThan(String value) {
+            addCriterion("documentid >", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidGreaterThanOrEqualTo(String value) {
+            addCriterion("documentid >=", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidLessThan(String value) {
+            addCriterion("documentid <", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidLessThanOrEqualTo(String value) {
+            addCriterion("documentid <=", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidLike(String value) {
+            addCriterion("documentid like", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidNotLike(String value) {
+            addCriterion("documentid not like", value, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidIn(List<String> values) {
+            addCriterion("documentid in", values, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidNotIn(List<String> values) {
+            addCriterion("documentid not in", values, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidBetween(String value1, String value2) {
+            addCriterion("documentid between", value1, value2, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDocumentidNotBetween(String value1, String value2) {
+            addCriterion("documentid not between", value1, value2, "documentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidIsNull() {
+            addCriterion("versionid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidIsNotNull() {
+            addCriterion("versionid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidEqualTo(String value) {
+            addCriterion("versionid =", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidNotEqualTo(String value) {
+            addCriterion("versionid <>", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidGreaterThan(String value) {
+            addCriterion("versionid >", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidGreaterThanOrEqualTo(String value) {
+            addCriterion("versionid >=", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidLessThan(String value) {
+            addCriterion("versionid <", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidLessThanOrEqualTo(String value) {
+            addCriterion("versionid <=", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidLike(String value) {
+            addCriterion("versionid like", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidNotLike(String value) {
+            addCriterion("versionid not like", value, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidIn(List<String> values) {
+            addCriterion("versionid in", values, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidNotIn(List<String> values) {
+            addCriterion("versionid not in", values, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidBetween(String value1, String value2) {
+            addCriterion("versionid between", value1, value2, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andVersionidNotBetween(String value1, String value2) {
+            addCriterion("versionid not between", value1, value2, "versionid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalIsNull() {
+            addCriterion("fileurllocal is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalIsNotNull() {
+            addCriterion("fileurllocal is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalEqualTo(String value) {
+            addCriterion("fileurllocal =", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalNotEqualTo(String value) {
+            addCriterion("fileurllocal <>", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalGreaterThan(String value) {
+            addCriterion("fileurllocal >", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalGreaterThanOrEqualTo(String value) {
+            addCriterion("fileurllocal >=", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalLessThan(String value) {
+            addCriterion("fileurllocal <", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalLessThanOrEqualTo(String value) {
+            addCriterion("fileurllocal <=", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalLike(String value) {
+            addCriterion("fileurllocal like", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalNotLike(String value) {
+            addCriterion("fileurllocal not like", value, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalIn(List<String> values) {
+            addCriterion("fileurllocal in", values, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalNotIn(List<String> values) {
+            addCriterion("fileurllocal not in", values, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalBetween(String value1, String value2) {
+            addCriterion("fileurllocal between", value1, value2, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andFileurllocalNotBetween(String value1, String value2) {
+            addCriterion("fileurllocal not between", value1, value2, "fileurllocal");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlIsNull() {
+            addCriterion("linkurl is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlIsNotNull() {
+            addCriterion("linkurl is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlEqualTo(String value) {
+            addCriterion("linkurl =", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlNotEqualTo(String value) {
+            addCriterion("linkurl <>", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlGreaterThan(String value) {
+            addCriterion("linkurl >", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlGreaterThanOrEqualTo(String value) {
+            addCriterion("linkurl >=", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlLessThan(String value) {
+            addCriterion("linkurl <", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlLessThanOrEqualTo(String value) {
+            addCriterion("linkurl <=", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlLike(String value) {
+            addCriterion("linkurl like", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlNotLike(String value) {
+            addCriterion("linkurl not like", value, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlIn(List<String> values) {
+            addCriterion("linkurl in", values, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlNotIn(List<String> values) {
+            addCriterion("linkurl not in", values, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlBetween(String value1, String value2) {
+            addCriterion("linkurl between", value1, value2, "linkurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andLinkurlNotBetween(String value1, String value2) {
+            addCriterion("linkurl not between", value1, value2, "linkurl");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

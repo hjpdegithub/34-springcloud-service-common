@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.boot.modules.admin.mapper.MpBannerManageTMapper">
+    <select id="selectAll" parameterType="com.springboot.boot.modules.admin.dto.file.BannerManageDto"
+            resultType="com.springboot.boot.modules.admin.entity.MpBannerManage">
+        select
+        *
+        from mp_banner_manage a
+        where
+        a.del_flag ='0'
+        <if test="dto.name != null and dto.name != ''">
+            and a.name like CONCAT("%",#{dto.name},"%")
+        </if>
+        <if test="dto.bannerBelongMenu != null and dto.bannerBelongMenu != ''">
+            and a.banner_belong_menu like CONCAT("%",#{dto.bannerBelongMenu},"%")
+        </if>
+        <if test="dto.bannerBelongModule != null and dto.bannerBelongModule != ''">
+            and a.banner_belong_module like CONCAT("%",#{dto.bannerBelongModule},"%")
+        </if>
+    </select>
+    <select id="listforShow" parameterType="com.springboot.boot.modules.admin.dto.file.BannerManageDto"
+            resultType="com.springboot.boot.modules.admin.vo.banner.MpBannerBelongModuleVo">
+        select
+        *
+        from mp_banner_manage a
+        where
+        a.del_flag ='0'
+        and up_type ='1'
+        <if test="dto.name != null and dto.name != ''">
+            and a.name like CONCAT("%",#{dto.name},"%")
+        </if>
+        <if test="dto.bannerBelongMenu != null and dto.bannerBelongMenu != ''">
+            and a.banner_belong_menu like CONCAT("%",#{dto.bannerBelongMenu},"%")
+        </if>
+        <if test="dto.bannerBelongModule != null and dto.bannerBelongModule != ''">
+            and a.banner_belong_module like CONCAT("%",#{dto.bannerBelongModule},"%")
+        </if>
+    </select>
+</mapper>

@@ -8,6 +8,7 @@ public enum TypeEnum {
      * 类型
      */
     CLASS("Class", "课程管理"),
+    banner("banner", "课程管理"),
     /**
      * 考试规则
      *

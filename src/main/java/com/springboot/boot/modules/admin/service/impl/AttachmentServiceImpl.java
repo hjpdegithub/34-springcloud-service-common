@@ -4,12 +4,12 @@ import com.springboot.boot.common.constant.CommonConstant;
 
 import com.springboot.boot.common.enums.CommonEnum;
 import com.springboot.boot.modules.admin.dto.file.CommonDto;
-import com.springboot.boot.modules.admin.dto.file.FileDto;
+
 import com.springboot.boot.modules.admin.entity.*;
 import com.springboot.boot.modules.admin.mapper.AttachmentInfoMapper;
 import com.springboot.boot.modules.admin.mapper.MpAttachmentInfoMapper;
 import com.springboot.boot.modules.admin.mapper.MpBusinessAttachmentInfoMapper;
-import com.springboot.boot.modules.admin.mapper.MpCurriculumMapper;
+
 import com.springboot.boot.modules.admin.service.AttachmentService;
 import com.springboot.boot.modules.admin.service.CurriculumService;
 import com.springboot.boot.modules.admin.service.FileService;
@@ -33,6 +33,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static io.netty.util.internal.SystemPropertyUtil.contains;
 
 @Service
 @Slf4j
@@ -73,17 +75,23 @@ public class AttachmentServiceImpl implements AttachmentService {
             //文件格式校验
             Boolean checkNotPass = false;
             File newFile = null;
+            String filename = null;
             try {
                 if (null != uploadFile) {
-                    String filename = uploadFile.getOriginalFilename();
+                    filename = uploadFile.getOriginalFilename();
                     if (!"".equals(filename.trim())) {
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         String dateStr = format.format(new Date());
                         //创建文件路径
                         String fileKeyname = "/" + (dateStr + "/" + UUID.randomUUID().toString().replace("-", "") + "-" + filename);
+
+                        Boolean containsF = filename.contains(".gif");
+
                         newFile = new File(fileKeyname);
                         FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), newFile);
-                        checkNotPass = !aliyunOSSUtil.fileCheck(newFile);
+                        if (!containsF) {
+                            checkNotPass = !aliyunOSSUtil.fileCheck(newFile);
+                        }
                     }
                 }
             } catch (Exception ex) {
@@ -94,31 +102,30 @@ public class AttachmentServiceImpl implements AttachmentService {
             }
             //云服务上传(以前的代码）改版前
             Map<String, String> OSSMap = aliyunOSSUtil.picOSS(newFile);
-
             //非结构化数据上传(现在的代码）改版后
-          //  Map<String, String> OSSMap = aliyunOSSUtil.picOSSUds(newFile,fileName);
-
-            if(OSSMap.size()==0){
-                throw  new RuntimeException();
+            //Map<String, String> OSSMap = aliyunOSSUtil.picOSSUds(newFile,fileName);
+            if (OSSMap.size() == 0) {
+                throw new RuntimeException();
             }
             newFile.getAbsoluteFile();
             newFile.getAbsolutePath();
             newFile.delete();
             mpAttachmentInfo.setFileUrl(OSSMap.get("url"));
             mpAttachmentInfo.setFilePath(OSSMap.get("fileKey"));
-//            mpAttachmentInfo.setDocumentid(OSSMap.get("documentId"));
-//            mpAttachmentInfo.setVersionid(OSSMap.get("versionId"));
+            mpAttachmentInfo.setDocumentid(OSSMap.get("documentId"));
+            mpAttachmentInfo.setVersionid(OSSMap.get("versionId"));
             mpAttachmentInfo.setFileName(OSSMap.get("resultFileName"));
-
+            mpAttachmentInfo.setFileName(filename);
+            String fileLocalUrl = aliyunOSSUtil.ossToLocalToShow(null, OSSMap.get("fileKey"), OSSMap.get("resultFileName"));
+            // String fileLocalUrl = aliyunOSSUtil.picOSSUpdtoShow(OSSMap.get("documentId"), filename);
+            mpAttachmentInfo.setFileUrl(fileLocalUrl);
             mpAttachmentInfoMapper.insert(mpAttachmentInfo);
         } catch (Exception e) {
             log.info(e.getMessage());
             return ApiResult.error(ApiCode.FAIL.getCode(), e.getMessage());
         }
         return ApiResult.success(mpAttachmentInfo);
-
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -201,6 +208,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         return ApiResult.success(mpAttachmentInfo);
 
     }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult questionTemplatedowndLoad(HttpServletResponse response, Integer type) {
@@ -208,12 +216,11 @@ public class AttachmentServiceImpl implements AttachmentService {
         String mark = null;
         if (null != type && type == 1) {
             mark = "tikumoban";
-        }
-        else if (null != type && type == 2) {
+        } else if (null != type && type == 2) {
             mark = "wenjuanmoban";
         } else {
-        return ApiResult.error("请选择试卷类型");
-    }
+            return ApiResult.error("请选择试卷类型");
+        }
         //查询出有效的业务文件表的题库模板数据
         MpBusinessAttachmentInfoExample example = new MpBusinessAttachmentInfoExample();
         example.createCriteria().andDelFlagEqualTo(CommonEnum.USED.getCode())
@@ -235,7 +242,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public ApiResult addBusinessFile(Long id,String business,Long businessId) {
+    public ApiResult addBusinessFile(Long id, String business, Long businessId) {
         MpBusinessAttachmentInfoExample example = new MpBusinessAttachmentInfoExample();
         MpBusinessAttachmentInfoExample.Criteria criteria = example.createCriteria();
         criteria.andDelFlagEqualTo(CommonEnum.USED.getCode());
@@ -243,7 +250,7 @@ public class AttachmentServiceImpl implements AttachmentService {
         //businessAttachmentInfoMapper
         List<MpBusinessAttachmentInfo> businessAttachmentInfos = businessAttachmentInfoMapper.selectByExample(example);
         MpBusinessAttachmentInfo businessAttachmentInfo = new MpBusinessAttachmentInfo();
-        if (businessAttachmentInfos.size()>0 ){
+        if (businessAttachmentInfos.size() > 0) {
             MpBusinessAttachmentInfo info = businessAttachmentInfos.get(0);
 
             MpBusinessAttachmentInfo deleteInfo = new MpBusinessAttachmentInfo();
@@ -272,6 +279,42 @@ public class AttachmentServiceImpl implements AttachmentService {
         return null;
     }
 
+
+    @Override
+    public ApiResult addBusinessFileForBanner(List<Long> ids, String business, Long businessId) {
+        MpBusinessAttachmentInfoExample example = new MpBusinessAttachmentInfoExample();
+        MpBusinessAttachmentInfoExample.Criteria criteria = example.createCriteria();
+        criteria.andDelFlagEqualTo(CommonEnum.USED.getCode());
+        criteria.andBusinessIdEqualTo(businessId);
+        //businessAttachmentInfoMapper
+        List<MpBusinessAttachmentInfo> businessAttachmentInfos = businessAttachmentInfoMapper.selectByExample(example);
+
+        if (businessAttachmentInfos.size() > 0) {
+            for (MpBusinessAttachmentInfo info : businessAttachmentInfos) {
+                MpBusinessAttachmentInfo deleteInfo = new MpBusinessAttachmentInfo();
+                deleteInfo.setId(info.getId());
+                deleteInfo.setDelFlag(CommonEnum.DELETE.getCode());
+                businessAttachmentInfoMapper.updateByPrimaryKeySelective(deleteInfo);
+            }
+        }
+        MpBusinessAttachmentInfo businessAttachmentInfo = new MpBusinessAttachmentInfo();
+        for (Long id : ids) {
+            //业务表关联文件ID
+            SnowFlakeUtils snowFlakeUtil = SnowFlakeUtils.getFlowIdInstance();
+            businessAttachmentInfo.setId(snowFlakeUtil.nextId());
+            businessAttachmentInfo.setAttachmentId(id);
+            businessAttachmentInfo.setBusiness(business);
+            businessAttachmentInfo.setBusinessId(businessId);
+            businessAttachmentInfo.setCreateTime(new Date());
+            businessAttachmentInfo.setUpdateTime(null);
+            businessAttachmentInfo.setDelFlag(0);
+            businessAttachmentInfo.setCreateUser(null);
+            businessAttachmentInfoMapper.insert(businessAttachmentInfo);
+        }
+        return null;
+    }
+
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ApiResult attachmentFileSelect(CommonDto CommonDto) {
@@ -279,30 +322,30 @@ public class AttachmentServiceImpl implements AttachmentService {
         readingService.addUser(CommonDto);
         //查询课程信息
         MpCurriculum mpCurriculum = curriculumService.searchById(CommonDto.getBusinessId());
-        if (null == mpCurriculum){
-            return  ApiResult.error(500,"课程为空");
+        if (null == mpCurriculum) {
+            return ApiResult.error(500, "课程为空");
         }
-        if (null != mpCurriculum.getStudyTime()){
+        if (null != mpCurriculum.getStudyTime()) {
             //判断学习年限
             String SystemDate = DateUtils.formatShortDate(new Date());
             String studyDate = DateUtils.formatShortDate(mpCurriculum.getStudyTime());
 
-            if (studyDate.compareTo(SystemDate)<0){
-                return ApiResult.error(ApiCode.FAIL.getCode(),"学习年限已过期！");
+            if (studyDate.compareTo(SystemDate) < 0) {
+                return ApiResult.error(ApiCode.FAIL.getCode(), "学习年限已过期！");
             }
         }
 
         List<MpReading> mpReadings = readingService.selectByBusinessId(CommonDto);
 
         List<AttachmentInfoViewVo> attachmentInfoViewVo = attachmentInfoMapper.selectViewVoByPrimaryKey(CommonDto.getBusinessId());
-        if (attachmentInfoViewVo.size()>0){
+        if (attachmentInfoViewVo.size() > 0) {
             AttachmentInfoViewVo attachmentInfoViewVo1 = attachmentInfoViewVo.get(0);
             attachmentInfoViewVo1.setStudyTime(mpCurriculum.getStudyTime());
             attachmentInfoViewVo1.setAuthorName(mpCurriculum.getAuthorName());
             attachmentInfoViewVo1.setReadingCount(mpReadings.size());
             return ApiResult.success(attachmentInfoViewVo1);
         }
-        return ApiResult.error(ApiCode.FAIL.getCode(),"本课程ID没有查到文件");
+        return ApiResult.error(ApiCode.FAIL.getCode(), "本课程ID没有查到文件");
 
     }
 

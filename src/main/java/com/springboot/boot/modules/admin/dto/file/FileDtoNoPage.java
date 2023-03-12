@@ -14,4 +14,7 @@ public class FileDtoNoPage  {
     private String fileName;
 
 
+    private String documentid;
+
+
 }
